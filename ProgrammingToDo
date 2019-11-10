@@ -1,0 +1,22 @@
+1. Create window application
+2. Display graphics
+3. Add player input
+4. Layered graphics
+5. Threading
+6. Design first enemy.
+7. Add shooting mechanic (player, enemies)
+8. Add more enemy variations.
+9. Add more player options and mechanics (change speed, alternative weapons)
+10. Add Boss enemy.
+11. Design first test level.
+12. Clean code, divide code into clean classes to allow for easier content addition.
+- ships
+  - player
+  - enemy
+    - boss
+- projectiles
+- game events, level data.
+10. Add more variants to each class / object.
+11. Add scoring.
+12. Create menu and other screens outside main gameplay (victory screen, options, help, etc)
+13. Further testing, optimalization, tweaking, personalizing.
