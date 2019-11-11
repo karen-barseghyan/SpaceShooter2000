@@ -1,9 +1,11 @@
-1. Find graphics, an abandonware game should be good enough. No licensing problems.
-2. Find a way to use graphics from this game for our own.
+1. Find graphics, an abandonware game should be good enough. No licensing problems. - DONE
+2. Find a way to use graphics from this game for our own. 
+   This point will take a while, there are no sprites available online, so I have to take screenshots of the game and edit the graphics myself.
 3. Design graphics and levels.
 4. Design enemies and bosses.
 5. Design UI.
 6. Program it all.
+   Further expanded in "ProgrammingToDo"
 7. Get a working prototype, one enemy and one level.
 8. Implement eye-candy and finish all else, including the UI.
 9. Celebrate!
