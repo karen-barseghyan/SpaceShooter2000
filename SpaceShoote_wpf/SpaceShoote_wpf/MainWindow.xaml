@@ -11,12 +11,25 @@
             <Image Name="Viewport" Loaded="Viewport_Loaded"></Image>
         </Grid>
         <Grid Margin="600,0,0,0">
-            <TextBox HorizontalAlignment="Left" Height="559" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="400" Name="DebugLine" Loaded="DebugLine_Loaded" RenderTransformOrigin="0.5,0.5" Margin="0,0,-8,0">
+            <TextBox HorizontalAlignment="Left" Height="274" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="400" Name="DebugLine" Loaded="DebugLine_Loaded" RenderTransformOrigin="0.5,0.5" Margin="0,0,-8,0">
             </TextBox>
             <TextBox Name="PlayerPosX" HorizontalAlignment="Left" Height="22" Margin="21,21,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="64" RenderTransformOrigin="0.178,0.306"/>
             <TextBox Name="PlayerPosY" HorizontalAlignment="Left" Height="22" Margin="114,21,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="64" RenderTransformOrigin="0.178,0.306"/>
             <Label Content="x" HorizontalAlignment="Left" Margin="0,17,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.838,-0.961"/>
             <Label Content="y" HorizontalAlignment="Left" Margin="93,17,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.838,-0.961"/>
+            <Label Content="inputs" HorizontalAlignment="Left" Height="26" Margin="0,48,0,0" VerticalAlignment="Top" Width="68"/>
+            <Rectangle Name="Go_Up" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="0,72,0,0" Stroke="Black" VerticalAlignment="Top" Width="264"/>
+            <Rectangle Name="Go_Down" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="0,97,0,0" Stroke="Black" VerticalAlignment="Top" Width="264"/>
+            <Rectangle Name="Go_Left" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="0,122,0,0" Stroke="Black" VerticalAlignment="Top" Width="264"/>
+            <Rectangle Name="Go_Right" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="0,147,0,0" Stroke="Black" VerticalAlignment="Top" Width="264"/>
+            <Button Content="" HorizontalAlignment="Left" Margin="58,74,0,0" VerticalAlignment="Top" Width="74" Click="GoUp_Button_Click"/>
+            <Button Content="" HorizontalAlignment="Left" Margin="58,99,0,0" VerticalAlignment="Top" Width="74" Click="GoDown_Button_Click"/>
+            <Button Content="" HorizontalAlignment="Left" Margin="58,124,0,0" VerticalAlignment="Top" Width="74" Click="GoLeft_Button_Click"/>
+            <Button Content="" HorizontalAlignment="Left" Margin="58,149,0,0" VerticalAlignment="Top" Width="74" Click="GoRight_Button_Click"/>
+            <Label Content="Go Up" HorizontalAlignment="Left" Height="26" Margin="0,71,0,0" VerticalAlignment="Top" Width="68"/>
+            <Label Content="Go Down" HorizontalAlignment="Left" Height="26" Margin="0,96,0,0" VerticalAlignment="Top" Width="68"/>
+            <Label Content="Go Left" HorizontalAlignment="Left" Height="26" Margin="0,121,0,0" VerticalAlignment="Top" Width="68"/>
+            <Label Content="Go Right" HorizontalAlignment="Left" Height="26" Margin="0,146,0,0" VerticalAlignment="Top" Width="68"/>
         </Grid>
     </Grid>
 

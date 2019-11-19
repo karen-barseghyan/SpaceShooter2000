@@ -29,10 +29,10 @@ namespace SpaceShoote_wpf
             
         }
 
-        int height, width;
+        public int height, width;
         WriteableBitmap writeableBmp;
         GameWorld world;
-
+        List<Rectangle> InputDisplays;
 
         // initializing Viewport and writable bitmap
         private void Viewport_Loaded(object sender, RoutedEventArgs e)
@@ -46,6 +46,11 @@ namespace SpaceShoote_wpf
             CreateWorld();
             world.StartTimer();
             CompositionTarget.Rendering += CompositionTarget_Rendering;
+            InputDisplays = new List<Rectangle>();
+            InputDisplays.Add(Go_Up);
+            InputDisplays.Add(Go_Down);
+            InputDisplays.Add(Go_Left);
+            InputDisplays.Add(Go_Right);
 
             DebugLine.Text += "Viewport loaded\n";
         }
@@ -54,10 +59,13 @@ namespace SpaceShoote_wpf
         // main game loop
         private void CompositionTarget_Rendering(object sender, EventArgs e)
         {
+            foreach (Rectangle b in InputDisplays)
+                b.Fill = new SolidColorBrush(Color.FromRgb(244, 244, 245));
             world.GameTick();
 
             writeableBmp.Clear(Colors.BlueViolet);
             
+
             foreach (GameObject o in world.gameObjects)
             {
                 o.Draw(writeableBmp);
@@ -69,7 +77,7 @@ namespace SpaceShoote_wpf
         {
             world = new GameWorld();  
 
-            var player = new Player(this);
+            var player = new Player(this, world);
             DebugLine.Text += "loading settings";
             //await LoadSettings(player);
             world.AddObject(player);
@@ -87,6 +95,37 @@ namespace SpaceShoote_wpf
         {
             PlayerPosX.Text = pos.X.ToString();
             PlayerPosY.Text = pos.Y.ToString();
+        }
+
+        public void LightUpInput(string name)
+        {
+            foreach (Rectangle b in InputDisplays)
+            {
+                if (b.Name == name)
+                {
+                    b.Fill = new SolidColorBrush(Color.FromRgb(0, 163, 255));
+                }
+            }
+        }
+
+        private void GoUp_Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void GoDown_Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void GoLeft_Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void GoRight_Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
         public void DebugWrite(string text)

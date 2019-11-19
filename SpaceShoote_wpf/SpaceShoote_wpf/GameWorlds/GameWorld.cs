@@ -56,5 +56,10 @@ namespace SpaceShoote_wpf.GameWorlds
 
             previousGameTick = GameTimer.Elapsed;
         }
+
+        public int GameTime()
+        {
+            return (int)GameTimer.Elapsed.TotalMilliseconds;
+        }
     }
 }
