@@ -5,9 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SpaceShoote_wpf"
         mc:Ignorable="d"
-        Title="SpaceShooter2000" Height="820" Width="600">
-    <Grid Name="ViewPortCointainer">
-        <Image Name="Viewport" Loaded="Viewport_Loaded"></Image>
-        <TextBox HorizontalAlignment="Left" Height="84" Margin="0,695,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="582" Name="DebugLine" Loaded="DebugLine_Loaded"/>
+        Title="SpaceShooter2000" Height="820" Width="1000">
+    <Grid>
+        <Grid Name="ViewPortCointainer" Margin="0,0,400,0">
+            <Image Name="Viewport" Loaded="Viewport_Loaded"></Image>
+        </Grid>
+        <Grid Margin="600,0,0,0">
+            <TextBox HorizontalAlignment="Left" Height="559" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="400" Name="DebugLine" Loaded="DebugLine_Loaded" RenderTransformOrigin="0.5,0.5" Margin="0,0,-8,0">
+            </TextBox>
+            <TextBox Name="PlayerPosX" HorizontalAlignment="Left" Height="22" Margin="21,21,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="64" RenderTransformOrigin="0.178,0.306"/>
+            <TextBox Name="PlayerPosY" HorizontalAlignment="Left" Height="22" Margin="114,21,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="64" RenderTransformOrigin="0.178,0.306"/>
+            <Label Content="x" HorizontalAlignment="Left" Margin="0,17,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.838,-0.961"/>
+            <Label Content="y" HorizontalAlignment="Left" Margin="93,17,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.838,-0.961"/>
+        </Grid>
     </Grid>
+
 </Window>

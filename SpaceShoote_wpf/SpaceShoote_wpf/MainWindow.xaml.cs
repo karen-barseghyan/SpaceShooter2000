@@ -26,29 +26,32 @@ namespace SpaceShoote_wpf
         public MainWindow()
         {
             InitializeComponent();
+            
         }
 
         int height, width;
         WriteableBitmap writeableBmp;
         GameWorld world;
 
+
+        // initializing Viewport and writable bitmap
         private void Viewport_Loaded(object sender, RoutedEventArgs e)
         {
             width = (int)this.ViewPortCointainer.ActualWidth;
             height = (int)this.ViewPortCointainer.ActualHeight;
 
             writeableBmp = BitmapFactory.New(width, height);
-
+            Viewport.Cursor = Cursors.None;
             Viewport.Source = writeableBmp;
             CreateWorld();
             world.StartTimer();
             CompositionTarget.Rendering += CompositionTarget_Rendering;
 
             DebugLine.Text += "Viewport loaded\n";
-            
-            
         }
 
+
+        // main game loop
         private void CompositionTarget_Rendering(object sender, EventArgs e)
         {
             world.GameTick();
@@ -61,42 +64,34 @@ namespace SpaceShoote_wpf
             }
         }
 
+        // initializing game world
         private void CreateWorld()
         {
-            world = new GameWorld();
+            world = new GameWorld();  
 
-            var ball = new Ball()
-            {
-                Position = new System.Numerics.Vector2(100, 100),
-                Velocity = new System.Numerics.Vector2(0, 100),
-                radius = 10
-            };
             var player = new Player(this);
-
-            world.AddObject(ball);
+            DebugLine.Text += "loading settings";
+            //await LoadSettings(player);
             world.AddObject(player);
         }
 
+        // Textbox used for debugging
         private void DebugLine_Loaded(object sender, RoutedEventArgs e)
         {
             DebugLine.Text += "loaded\n";
-            /*
-            DebugLine.Text += Directory.GetCurrentDirectory() + "\n";
-            string loc = Directory.GetCurrentDirectory();
-            string[] directories = Directory.GetDirectories(".");
-            foreach (string dir in directories)
-                DebugLine.Text += dir + "\n";
-            string[] files = Directory.GetFiles(".");
-            foreach (string file in files)
-                DebugLine.Text += file + "\n";
-            */
             DebugLine.ScrollToEnd();
 
         }
 
+        public void DebugPlayerPos(System.Numerics.Vector2 pos)
+        {
+            PlayerPosX.Text = pos.X.ToString();
+            PlayerPosY.Text = pos.Y.ToString();
+        }
+
         public void DebugWrite(string text)
         {
-            DebugLine.Text = text + "\n";
+            DebugLine.Text += text + "\n";
             DebugLine.ScrollToEnd();
         }
     }

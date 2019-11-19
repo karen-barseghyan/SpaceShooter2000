@@ -10,23 +10,29 @@ namespace SpaceShoote_wpf.GameWorlds
 {
     public class GameWorld
     {
+        // list of objects in game world
         public List<GameObject> gameObjects { get; }
 
+        // game timer
+        // used for controlling timed events
         public Stopwatch GameTimer { get; }
+        // time of last game tick (frame)
+        public TimeSpan previousGameTick;
 
+        // game world Constructor
         public GameWorld()
         {
             gameObjects = new List<GameObject>();
             GameTimer = new Stopwatch();
         }
 
+        // Function used for adding objects to list of game objects in game world
         public void AddObject(GameObject o)
         {
             gameObjects.Add(o);
         }
 
-        public TimeSpan previousGameTick;
-
+        //returns time since last tick (frame) in miliseconds
         public float deltatime
         {
             get
@@ -34,12 +40,15 @@ namespace SpaceShoote_wpf.GameWorlds
                 return (float)(GameTimer.Elapsed - previousGameTick).TotalMilliseconds;
             }
         }
-
+        //initialize game timer
         public void StartTimer()
         {
             GameTimer.Start();
         }
 
+        //tick function of game wolrd
+        // runs every tick (frame
+        // calls tick function of every object in game world
         public void GameTick()
         {
             foreach (var o in gameObjects)

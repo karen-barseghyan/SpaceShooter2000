@@ -71,6 +71,7 @@
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\Player.cs" />
     <Compile Include="GameWorlds\GameWorld.cs" />
+    <Compile Include="Inputs.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -148,6 +149,9 @@
     <Resource Include="graphics\projectiles\alien_shot.png" />
     <Resource Include="graphics\projectiles\player_shot.png" />
     <Resource Include="graphics\ui\font_spreadsheet_x11x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="config.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
