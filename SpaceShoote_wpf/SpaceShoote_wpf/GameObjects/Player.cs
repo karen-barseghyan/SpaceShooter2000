@@ -140,28 +140,28 @@ namespace SpaceShoote_wpf.GameObjects
                 useMouse = true;
             }
 
-            if (Keyboard.IsKeyDown(goLeft1))
+            if (Keyboard.IsKeyDown(goLeft1) || Keyboard.IsKeyDown(goLeft2))
             {
                 x += -horizontalSpeed;
                 useMouse = false;
                 mainWindow.LightUpInput("Go_Left");
             }
                 
-            if (Keyboard.IsKeyDown(goRight1))
+            if (Keyboard.IsKeyDown(goRight1) || Keyboard.IsKeyDown(goRight2))
             {
                 x += horizontalSpeed;
                 useMouse = false;
                 mainWindow.LightUpInput("Go_Right");
             }
                
-            if (Keyboard.IsKeyDown(goUp1))
+            if (Keyboard.IsKeyDown(goUp1) || Keyboard.IsKeyDown(goUp2))
             {
                 y += -verticalSpeed;
                 useMouse = false;
                 mainWindow.LightUpInput("Go_Up");
             }
                 
-            if (Keyboard.IsKeyDown(goDown1))
+            if (Keyboard.IsKeyDown(goDown1) || Keyboard.IsKeyDown(goDown2))
             {
                 y += verticalSpeed;
                 useMouse = false;
