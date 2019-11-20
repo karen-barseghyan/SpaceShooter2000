@@ -52,6 +52,7 @@ namespace SpaceShoote_wpf.GameObjects
         bool useMouse;
         Vector2 mousePreviousPos;
         Vector2 newMousePos;
+        float mouseSensitivity;
 
         float verticalSpeed { get; set; }
         float horizontalSpeed { get; set; }
@@ -68,10 +69,10 @@ namespace SpaceShoote_wpf.GameObjects
             spriteSizeY = 64;
             spriteCycle = 0;
 
-            verticalSpeed = 400;
-            horizontalSpeed = 400;
+            verticalSpeed = 800;
+            horizontalSpeed = 800;
 
-            hitboxRadius = 20;
+            hitboxRadius = 10;
             transitionDuration = 200;
             inputs = new List<Input>();
             InitializeKeyInputs();
@@ -116,6 +117,7 @@ namespace SpaceShoote_wpf.GameObjects
             inputs.Add(new Input("Slow", slow1));
 
             disableMouse = false;
+            mouseSensitivity = 1;
         }
         
 
@@ -133,8 +135,10 @@ namespace SpaceShoote_wpf.GameObjects
             float y = 0;
             newMousePos = new Vector2((float)Mouse.GetPosition(Application.Current.MainWindow).X, 
                 (float)Mouse.GetPosition(Application.Current.MainWindow).Y);
+            /*
             if (!(newMousePos.X < mainWindow.width && newMousePos.Y > 0 && newMousePos.Y < mainWindow.height))
                 newMousePos = mousePreviousPos;
+            */
             if (newMousePos != mousePreviousPos && mousePreviousPos != null && newMousePos.X > 0)
             {
                 useMouse = true;
@@ -168,23 +172,49 @@ namespace SpaceShoote_wpf.GameObjects
                 mainWindow.LightUpInput("Go_Down");
             }
 
-            if (useMouse)
+            if (useMouse && mousePreviousPos != null && newMousePos != null && mousePreviousPos != newMousePos)
             {
-                Vector2 target = newMousePos - Position;
-                if (target.LengthSquared() > 100)
-                    target = Vector2.Normalize(target) * horizontalSpeed;
-                else
-                    target = Vector2.Zero;
+                Vector2 target = (newMousePos - mousePreviousPos) * mouseSensitivity;
+                if (target.Length() > horizontalSpeed * deltatime / 1000)
+                {
+                    Velocity = Vector2.Normalize(target) * horizontalSpeed;
+                    //mainWindow.DebugWrite("overspeeding!");
+                    Position = Position += Velocity * deltatime / 1000f;
 
-                Velocity = target;
+                } else
+                {
+                    Velocity = target;
+                    Position = Position += Velocity;
+                }
             } else
             {
                 Velocity = new Vector2(x, y);
+                Position = Position += Velocity * deltatime / 1000f;
+
             }
-            Position = Position += Velocity * deltatime / 1000f;
+            if (Position.X - hitboxRadius < 0)
+            {
+                Position = new Vector2(hitboxRadius, Position.Y);
+                Velocity = new Vector2(0, Velocity.Y);
+            }
+            else if (Position.X + hitboxRadius > mainWindow.width)
+            {
+                Position = new Vector2(mainWindow.width - hitboxRadius, Position.Y);
+                Velocity = new Vector2(0, Velocity.Y);
+            }
+            if (Position.Y - hitboxRadius < 0)
+            {
+                Position = new Vector2(Position.X, hitboxRadius);
+                Velocity = new Vector2(Velocity.X, 0);
+            }
+            if (Position.Y + hitboxRadius > mainWindow.height)
+            {
+                Position = new Vector2(Position.X, mainWindow.height - hitboxRadius);
+                Velocity = new Vector2(Velocity.X, 0);
+            }
 
             mousePreviousPos = newMousePos;
-            mainWindow.DebugPlayerPos(Velocity);
+            mainWindow.DebugPlayerPos(Position);
         }
 
         //draw function of player
@@ -256,8 +286,15 @@ namespace SpaceShoote_wpf.GameObjects
             Rect sourceRect = new Rect(tiltoffset*spriteSizeX, 0, spriteSizeX, spriteSizeY);
             Rect destRect = new Rect((int)Position.X - spriteSizeX/2, (int)Position.Y-spriteSizeY/2, spriteSizeX, spriteSizeY);
             surface.Blit(destRect, spriteSheet, sourceRect);
-            if (newMousePos.X > 0 && newMousePos.X < mainWindow.width && newMousePos.Y > 0 && newMousePos.Y < mainWindow.height)
+
+
+            if (newMousePos.X > 0 && newMousePos.X < mainWindow.width && newMousePos.Y > 0 && newMousePos.Y < mainWindow.height && useMouse)
                 surface.DrawEllipseCentered((int)newMousePos.X, (int)newMousePos.Y, 8, 8, Colors.Red);
+            if (true)
+            {
+                surface.FillEllipseCentered((int)Position.X, (int)Position.Y, (int)hitboxRadius, (int)hitboxRadius, Colors.Red);
+            }
+
             spriteCycle++;
             if (spriteCycle > 7)
                 spriteCycle = 0;
