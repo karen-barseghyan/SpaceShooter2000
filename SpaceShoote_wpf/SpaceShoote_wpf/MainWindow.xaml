@@ -11,25 +11,61 @@
             <Image Name="Viewport" Loaded="Viewport_Loaded"></Image>
         </Grid>
         <Grid Margin="600,0,0,0">
-            <TextBox HorizontalAlignment="Left" Height="274" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="400" Name="DebugLine" Loaded="DebugLine_Loaded" RenderTransformOrigin="0.5,0.5" Margin="0,0,-8,0">
+            <TextBox HorizontalAlignment="Left" Height="274" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="400" Name="DebugLine" Loaded="DebugLine_Loaded" RenderTransformOrigin="0.5,0.5" Margin="0,0,-8,0" IsEnabled="False">
             </TextBox>
-            <TextBox Name="PlayerPosX" HorizontalAlignment="Left" Height="22" Margin="21,21,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="64" RenderTransformOrigin="0.178,0.306"/>
-            <TextBox Name="PlayerPosY" HorizontalAlignment="Left" Height="22" Margin="114,21,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="64" RenderTransformOrigin="0.178,0.306"/>
-            <Label Content="x" HorizontalAlignment="Left" Margin="0,17,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.838,-0.961"/>
-            <Label Content="y" HorizontalAlignment="Left" Margin="93,17,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.838,-0.961"/>
+            <TextBox Name="PlayerPosX" HorizontalAlignment="Left" Height="22" Margin="21,3,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="64" RenderTransformOrigin="0.178,0.306" IsEnabled="False"/>
+            <TextBox Name="PlayerPosY" HorizontalAlignment="Left" Height="22" Margin="106,3,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="64" RenderTransformOrigin="0.178,0.306" IsEnabled="False"/>
+            <Label Content="x" HorizontalAlignment="Left" Margin="0,-1,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.838,-0.961"/>
+            <Label Content="y" HorizontalAlignment="Left" Margin="90,-1,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.838,-0.961"/>
+
+
+
             <Label Content="inputs" HorizontalAlignment="Left" Height="26" Margin="0,48,0,0" VerticalAlignment="Top" Width="68"/>
-            <Rectangle Name="Go_Up" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="0,72,0,0" Stroke="Black" VerticalAlignment="Top" Width="264"/>
-            <Rectangle Name="Go_Down" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="0,97,0,0" Stroke="Black" VerticalAlignment="Top" Width="264"/>
-            <Rectangle Name="Go_Left" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="0,122,0,0" Stroke="Black" VerticalAlignment="Top" Width="264"/>
-            <Rectangle Name="Go_Right" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="0,147,0,0" Stroke="Black" VerticalAlignment="Top" Width="264"/>
-            <Button Content="" HorizontalAlignment="Left" Margin="58,74,0,0" VerticalAlignment="Top" Width="74" Click="GoUp_Button_Click"/>
-            <Button Content="" HorizontalAlignment="Left" Margin="58,99,0,0" VerticalAlignment="Top" Width="74" Click="GoDown_Button_Click"/>
-            <Button Content="" HorizontalAlignment="Left" Margin="58,124,0,0" VerticalAlignment="Top" Width="74" Click="GoLeft_Button_Click"/>
-            <Button Content="" HorizontalAlignment="Left" Margin="58,149,0,0" VerticalAlignment="Top" Width="74" Click="GoRight_Button_Click"/>
+            <Rectangle Name="Go_Up" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="0,72,0,0" Stroke="Black" VerticalAlignment="Top" Width="215"/>
+            <Rectangle Name="Go_Down" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="0,97,0,0" Stroke="Black" VerticalAlignment="Top" Width="215"/>
+            <Rectangle Name="Go_Left" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="0,122,0,0" Stroke="Black" VerticalAlignment="Top" Width="215"/>
+            <Rectangle Name="Go_Right" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="0,147,0,0" Stroke="Black" VerticalAlignment="Top" Width="215"/>
+            <Button Content="[Asign]" HorizontalAlignment="Left" Margin="58,74,0,0" VerticalAlignment="Top" Width="74" Name="Go_Up_bt1" Click="GoUp_Button_Click"/>
+            <Button Content="[Asign]" HorizontalAlignment="Left" Margin="58,99,0,0" VerticalAlignment="Top" Width="74" Name="Go_Down_bt1" Click="GoDown_Button_Click"/>
+            <Button Content="[Asign]" HorizontalAlignment="Left" Margin="58,124,0,0" VerticalAlignment="Top" Width="74" Name="Go_Left_bt1" Click="GoLeft_Button_Click"/>
+            <Button Content="[Asign]" HorizontalAlignment="Left" Margin="58,149,0,0" VerticalAlignment="Top" Width="74" Name="Go_Right_bt1" Click="GoRight_Button_Click"/>
+            <Button Content="[Asign]" HorizontalAlignment="Left" Margin="137,74,0,0" VerticalAlignment="Top" Width="74" Name="Go_Up_bt2" Click="GoUp_Button2_Click"/>
+            <Button Content="[Asign]" HorizontalAlignment="Left" Margin="137,99,0,0" VerticalAlignment="Top" Width="74" Name="Go_Down_bt2" Click="GoDown_Button2_Click"/>
+            <Button Content="[Asign]" HorizontalAlignment="Left" Margin="137,124,0,0" VerticalAlignment="Top" Width="74" Name="Go_Left_bt2" Click="GoLeft_Button2_Click"/>
+            <Button Content="[Asign]" HorizontalAlignment="Left" Margin="137,149,0,0" VerticalAlignment="Top" Width="74" Name="Go_Right_bt2" Click="GoRight_Button2_Click"/>
             <Label Content="Go Up" HorizontalAlignment="Left" Height="26" Margin="0,71,0,0" VerticalAlignment="Top" Width="68"/>
             <Label Content="Go Down" HorizontalAlignment="Left" Height="26" Margin="0,96,0,0" VerticalAlignment="Top" Width="68"/>
             <Label Content="Go Left" HorizontalAlignment="Left" Height="26" Margin="0,121,0,0" VerticalAlignment="Top" Width="68"/>
             <Label Content="Go Right" HorizontalAlignment="Left" Height="26" Margin="0,146,0,0" VerticalAlignment="Top" Width="68"/>
+
+            <Rectangle x:Name="Shoot" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="0,179,0,0" Stroke="Black" VerticalAlignment="Top" Width="215"/>
+            <Label Content="Shoot" HorizontalAlignment="Left" Height="26" Margin="0,179,0,0" VerticalAlignment="Top" Width="68"/>
+            <Button Content="[Asign]" HorizontalAlignment="Left" Margin="58,181,0,0" VerticalAlignment="Top" Width="74" x:Name="Shoot_bt1" Click="Shoot_bt1_Click"/>
+
+            <Button Content="[Asign]" HorizontalAlignment="Left" Margin="137,181,0,0" VerticalAlignment="Top" Width="74" x:Name="Shoot_bt3" Click="Shoot_bt3_Click"/>
+
+            <Rectangle x:Name="Shoot2" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="0,204,0,0" Stroke="Black" VerticalAlignment="Top" Width="215"/>
+            <Label Content="Shoot 2" HorizontalAlignment="Left" Height="26" Margin="0,203,0,0" VerticalAlignment="Top" Width="68"/>
+            <Button Content="[Asign]" HorizontalAlignment="Left" Margin="58,206,0,0" VerticalAlignment="Top" Width="74" x:Name="Shoot2_bt1" Click="Shoot2_bt1_Click"/>
+            <Button Content="[Asign]" HorizontalAlignment="Left" Margin="137,206,0,0" VerticalAlignment="Top" Width="74" x:Name="Shoot2_bt2" Click="Shoot2_bt2_Click"/>
+
+            <Rectangle x:Name="Slow" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="0,229,0,0" Stroke="Black" VerticalAlignment="Top" Width="215"/>
+            <Label Content="Slow" HorizontalAlignment="Left" Height="26" Margin="2,228,0,0" VerticalAlignment="Top" Width="68"/>
+            <Button Content="[Asign]" HorizontalAlignment="Left" Margin="58,231,0,0" VerticalAlignment="Top" Width="74" x:Name="Slow_bt" Click="Slow_bt_Click"/>
+
+            <Rectangle x:Name="Bomb" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="24" Margin="0,254,0,0" Stroke="Black" VerticalAlignment="Top" Width="215"/>
+            <Label Content="Bomb" HorizontalAlignment="Left" Height="26" Margin="0,253,0,0" VerticalAlignment="Top" Width="68"/>
+            <Button Content="[Asign]" HorizontalAlignment="Left" Margin="58,256,0,0" VerticalAlignment="Top" Width="74" x:Name="Bomb_bt" Click="Bomb_bt_Click"/>
+
+            <Button Content="Pause" Name="PauseBt" HorizontalAlignment="Left" Margin="137,446,0,0" VerticalAlignment="Top" Width="111" Click="PauseBt_Click" Height="39" RenderTransformOrigin="0.766,-0.179"/>
+            <Label Content="y" HorizontalAlignment="Left" Margin="0,17,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.838,-0.961"/>
+            <Label Content="y" HorizontalAlignment="Left" Margin="90,22,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.838,-0.961"/>
+            <TextBox x:Name="PlayerVX" HorizontalAlignment="Left" Height="22" Margin="21,22,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="64" RenderTransformOrigin="0.178,0.306" IsEnabled="False"/>
+            <TextBox x:Name="PlayerVY" HorizontalAlignment="Left" Height="22" Margin="106,22,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="64" RenderTransformOrigin="0.178,0.306" IsEnabled="False"/>
+            <Label Content="FPS" HorizontalAlignment="Left" Margin="242,0,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.838,-0.961"/>
+            <TextBox x:Name="FPS_Counter" HorizontalAlignment="Left" Height="22" Margin="271,3,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="64" RenderTransformOrigin="0.178,0.306" IsEnabled="False"/>
+            <Label Content="object count" HorizontalAlignment="Left" Margin="195,22,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.838,-0.961"/>
+            <TextBox x:Name="Object_Counter" HorizontalAlignment="Left" Height="22" Margin="271,26,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="64" RenderTransformOrigin="0.178,0.306" IsEnabled="False"/>
         </Grid>
     </Grid>
 

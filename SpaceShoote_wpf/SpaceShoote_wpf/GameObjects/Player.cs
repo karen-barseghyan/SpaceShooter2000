@@ -12,24 +12,8 @@ using System.Windows.Media.Imaging;
 
 namespace SpaceShoote_wpf.GameObjects
 {
-    class Player : GameObject
+    class Player : Ship
     {
-        //main window reference
-        // used for debugging
-        MainWindow mainWindow;
-
-        // gameworld reference
-        GameWorld gameWorld;
-        // sprite variables
-        WriteableBitmap spriteSheet;
-        int spriteSizeX;
-        int spriteSizeY;
-        int spriteCycle;
-        int tiltoffset;
-        int transitionDuration;
-        int transitionTo;
-        TimeSpan transitionTime;
-        //input variables
         public List<Input> inputs;
         
         Key goLeft1;
@@ -47,17 +31,12 @@ namespace SpaceShoote_wpf.GameObjects
         Key slow1;
         MouseAction shoot1mouse;
         MouseAction shoot2mouse;
-        bool disableMouse;
         
         bool useMouse;
         Vector2 mousePreviousPos;
         Vector2 newMousePos;
         float mouseSensitivity;
-
-        float verticalSpeed { get; set; }
-        float horizontalSpeed { get; set; }
-
-        float hitboxRadius { get; set; }
+        int mouse_mode; // 0 - no mouse, 1 - mouse mode 1, 2 - mouse mode 2
 
         //player constructor with main window as parameter for reference
         public Player(MainWindow mainwindow, GameWorld world)  
@@ -71,11 +50,12 @@ namespace SpaceShoote_wpf.GameObjects
 
             verticalSpeed = 800;
             horizontalSpeed = 800;
-
+            mouse_mode = 1;
             hitboxRadius = 10;
             transitionDuration = 200;
             inputs = new List<Input>();
             InitializeKeyInputs();
+            showHitbox = false;
             
             spriteSheet = BitmapFactory.FromResource("graphics/player/ship.png");
         }
@@ -115,8 +95,6 @@ namespace SpaceShoote_wpf.GameObjects
 
             slow1 = Key.LeftShift;
             inputs.Add(new Input("Slow", slow1));
-
-            disableMouse = false;
             mouseSensitivity = 1;
         }
         
@@ -133,17 +111,28 @@ namespace SpaceShoote_wpf.GameObjects
         {
             float x = 0;
             float y = 0;
-            newMousePos = new Vector2((float)Mouse.GetPosition(Application.Current.MainWindow).X, 
-                (float)Mouse.GetPosition(Application.Current.MainWindow).Y);
-            /*
-            if (!(newMousePos.X < mainWindow.width && newMousePos.Y > 0 && newMousePos.Y < mainWindow.height))
+
+            //capture mouse only if mouse mode 2 is used
+            if (mouse_mode == 2)
+            {
+                Application.Current.MainWindow.CaptureMouse();
+                newMousePos = new Vector2((float)Mouse.GetPosition(Application.Current.MainWindow).X, (float)Mouse.GetPosition(Application.Current.MainWindow).Y);
+                Application.Current.MainWindow.ReleaseMouseCapture();
+            } else
+                newMousePos = new Vector2((float)Mouse.GetPosition(Application.Current.MainWindow).X, (float)Mouse.GetPosition(Application.Current.MainWindow).Y);
+
+
+            // doesn't update cursor position if it would be outside of game window
+            if (!(newMousePos.X < mainWindow.width && newMousePos.Y > 0 && newMousePos.Y < mainWindow.height) && mouse_mode == 1)
                 newMousePos = mousePreviousPos;
-            */
+            
+            // makes game use mouse logic for movement rather than keybord if mouse movement was detected
             if (newMousePos != mousePreviousPos && mousePreviousPos != null && newMousePos.X > 0)
             {
                 useMouse = true;
             }
 
+            // movement actions
             if (Keyboard.IsKeyDown(goLeft1) || Keyboard.IsKeyDown(goLeft2))
             {
                 x += -horizontalSpeed;
@@ -172,7 +161,50 @@ namespace SpaceShoote_wpf.GameObjects
                 mainWindow.LightUpInput("Go_Down");
             }
 
-            if (useMouse && mousePreviousPos != null && newMousePos != null && mousePreviousPos != newMousePos)
+            // shoot actions
+
+            if (Keyboard.IsKeyDown(shoot1) )
+            {
+                mainWindow.LightUpInput("Shoot");
+            }
+
+            if (Keyboard.IsKeyDown(shoot2))
+            {
+                mainWindow.LightUpInput("Shoot2");
+            }
+
+            // misc actions
+
+            if (Keyboard.IsKeyDown(slow1))
+            {
+                mainWindow.LightUpInput("Slow");
+            }
+            if (Keyboard.IsKeyDown(bomb))
+            {
+                mainWindow.LightUpInput("Bomb");
+            }
+
+            if (Keyboard.IsKeyDown(pause))
+            {
+                gameWorld.Pause();
+                mainWindow.PauseBt.Content = "Unpause";
+            }
+
+            // determines velocity for player depending on cursor position
+            // two modes aviable:
+            // mouse mode 1: ship will fly towards cursor even if mouse is not being moved as long it is in a diffirent position
+            // mouse mode 2: ship will move when mouse is moved in the same direction. Doesn't move if mouse isn't being moved as well
+            if (useMouse && newMousePos != null && mouse_mode == 1)
+            {
+                Vector2 target = newMousePos - Position;
+                if (target.LengthSquared() > 20)
+                    target = Vector2.Normalize(target) * horizontalSpeed;
+                else
+                    target = Vector2.Zero;
+                Velocity = target;
+                Position = Position += Velocity * deltatime / 1000f;
+            }
+            else if (useMouse && mousePreviousPos != null && newMousePos != null && mousePreviousPos != newMousePos && mouse_mode == 2)
             {
                 Vector2 target = (newMousePos - mousePreviousPos) * mouseSensitivity;
                 if (target.Length() > horizontalSpeed * deltatime / 1000)
@@ -181,17 +213,20 @@ namespace SpaceShoote_wpf.GameObjects
                     //mainWindow.DebugWrite("overspeeding!");
                     Position = Position += Velocity * deltatime / 1000f;
 
-                } else
+                }
+                else
                 {
                     Velocity = target;
                     Position = Position += Velocity;
                 }
+                
             } else
             {
                 Velocity = new Vector2(x, y);
                 Position = Position += Velocity * deltatime / 1000f;
-
             }
+
+            //restrict player movement within window
             if (Position.X - hitboxRadius < 0)
             {
                 Position = new Vector2(hitboxRadius, Position.Y);
@@ -212,9 +247,11 @@ namespace SpaceShoote_wpf.GameObjects
                 Position = new Vector2(Position.X, mainWindow.height - hitboxRadius);
                 Velocity = new Vector2(Velocity.X, 0);
             }
-
+            //saves current mouse position for use next frame
             mousePreviousPos = newMousePos;
+            //debugging info
             mainWindow.DebugPlayerPos(Position);
+            mainWindow.DebugPlayerV(Velocity);
         }
 
         //draw function of player
@@ -226,14 +263,16 @@ namespace SpaceShoote_wpf.GameObjects
             {
                 spriteoffset = 1;
             }
-            if (Velocity.Y > 10)
+            if (Velocity.Y > 0)
             {
+                //description below
                 Rect sourceRect2 = new Rect((2 + spriteoffset) * spriteSizeX, spriteSizeY, spriteSizeX, spriteSizeY);
                 Rect destRect2 = new Rect((int)Position.X - spriteSizeX / 2, (int)Position.Y - spriteSizeY / 2, spriteSizeX, spriteSizeY);
                 surface.Blit(destRect2, spriteSheet, sourceRect2);
             }
-            if (Velocity.Y <= 10)
+            if (Velocity.Y <= 0)
             {
+                //description below
                 Rect sourceRect1 = new Rect(spriteoffset*spriteSizeX, spriteSizeY, spriteSizeX, spriteSizeY);
                 Rect destRect1 = new Rect((int)Position.X - spriteSizeX / 2, (int)Position.Y - spriteSizeY / 2, spriteSizeX, spriteSizeY);
                 surface.Blit(destRect1, spriteSheet, sourceRect1);
@@ -282,19 +321,22 @@ namespace SpaceShoote_wpf.GameObjects
             {
                 tiltoffset = transitionTo;
             }
-
+            // rectangle to crop from the sprite sheet
             Rect sourceRect = new Rect(tiltoffset*spriteSizeX, 0, spriteSizeX, spriteSizeY);
+            // destination where to apply cropped image from the sprite sheet
             Rect destRect = new Rect((int)Position.X - spriteSizeX/2, (int)Position.Y-spriteSizeY/2, spriteSizeX, spriteSizeY);
+            // apply cropped image to writablebitmap
             surface.Blit(destRect, spriteSheet, sourceRect);
 
-
+            // draws cursor
             if (newMousePos.X > 0 && newMousePos.X < mainWindow.width && newMousePos.Y > 0 && newMousePos.Y < mainWindow.height && useMouse)
                 surface.DrawEllipseCentered((int)newMousePos.X, (int)newMousePos.Y, 8, 8, Colors.Red);
-            if (true)
+            // draws player hitbox
+            if (showHitbox)
             {
                 surface.FillEllipseCentered((int)Position.X, (int)Position.Y, (int)hitboxRadius, (int)hitboxRadius, Colors.Red);
             }
-
+            //inreases sprite cycle to 7 and then resets to 0 and repeats
             spriteCycle++;
             if (spriteCycle > 7)
                 spriteCycle = 0;

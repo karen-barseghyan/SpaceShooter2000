@@ -51,6 +51,10 @@ namespace SpaceShoote_wpf
             InputDisplays.Add(Go_Down);
             InputDisplays.Add(Go_Left);
             InputDisplays.Add(Go_Right);
+            InputDisplays.Add(Shoot);
+            InputDisplays.Add(Shoot2);
+            InputDisplays.Add(Slow);
+            InputDisplays.Add(Bomb);
 
             DebugLine.Text += "Viewport loaded\n";
         }
@@ -63,6 +67,7 @@ namespace SpaceShoote_wpf
                 b.Fill = new SolidColorBrush(Color.FromRgb(244, 244, 245));
             world.GameTick();
 
+
             writeableBmp.Clear(Colors.BlueViolet);
             
 
@@ -70,6 +75,8 @@ namespace SpaceShoote_wpf
             {
                 o.Draw(writeableBmp);
             }
+            Object_Counter.Text = world.gameObjects.Count.ToString();
+            FPS_Counter.Text = world.GetFPS().ToString();
         }
 
         // initializing game world
@@ -95,6 +102,11 @@ namespace SpaceShoote_wpf
         {
             PlayerPosX.Text = pos.X.ToString();
             PlayerPosY.Text = pos.Y.ToString();
+        }
+        public void DebugPlayerV(System.Numerics.Vector2 v)
+        {
+            PlayerVX.Text = v.X.ToString();
+            PlayerVY.Text = v.Y.ToString();
         }
 
         public void LightUpInput(string name)
@@ -124,6 +136,73 @@ namespace SpaceShoote_wpf
         }
 
         private void GoRight_Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void GoUp_Button2_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void GoDown_Button2_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void GoLeft_Button2_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void GoRight_Button2_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Shoot_bt1_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Shoot_bt2_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Shoot_bt3_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Shoot2_bt1_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Shoot2_bt2_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void PauseBt_Click(object sender, RoutedEventArgs e)
+        {
+            if (world.pause)
+            {
+                world.UnPause();
+                PauseBt.Content = "Pause";
+            } else
+            {
+                world.Pause();
+                PauseBt.Content = "Unpause";
+            }
+        }
+
+        private void Bomb_bt_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Slow_bt_Click(object sender, RoutedEventArgs e)
         {
 
         }

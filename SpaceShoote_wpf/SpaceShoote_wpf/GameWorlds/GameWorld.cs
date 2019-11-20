@@ -19,6 +19,13 @@ namespace SpaceShoote_wpf.GameWorlds
         // time of last game tick (frame)
         public TimeSpan previousGameTick;
 
+        //puses the game cycle
+        public bool pause;
+
+        int framecounter;
+        int previousSecondFrameCount;
+        TimeSpan PreviousSecond;
+
         // game world Constructor
         public GameWorld()
         {
@@ -44,17 +51,49 @@ namespace SpaceShoote_wpf.GameWorlds
         public void StartTimer()
         {
             GameTimer.Start();
+            pause = false;
+            framecounter = 0;
+            previousSecondFrameCount = 0;
+            PreviousSecond = GameTimer.Elapsed;
         }
 
         //tick function of game wolrd
         // runs every tick (frame
         // calls tick function of every object in game world
         public void GameTick()
-        {
-            foreach (var o in gameObjects)
-                o.Tick(deltatime);
+        {   
+            if (!pause)
+            {
+                if ((GameTimer.Elapsed - PreviousSecond).TotalMilliseconds > 1000)
+                {
+                    previousSecondFrameCount = framecounter;
+                    framecounter = 0;
+                    PreviousSecond = GameTimer.Elapsed;
+                }
+                foreach (var o in gameObjects)
+                    o.Tick(deltatime);
 
-            previousGameTick = GameTimer.Elapsed;
+                previousGameTick = GameTimer.Elapsed;
+                framecounter++;
+            }
+        }
+
+        public int GetFPS()
+        {
+            return previousSecondFrameCount;
+        }
+
+        //pauses the game
+        public void Pause()
+        {
+            GameTimer.Stop();
+            pause = true;
+        }
+        //unpauses the game
+        public void UnPause()
+        {
+            GameTimer.Start();
+            pause = false;
         }
 
         public int GameTime()
