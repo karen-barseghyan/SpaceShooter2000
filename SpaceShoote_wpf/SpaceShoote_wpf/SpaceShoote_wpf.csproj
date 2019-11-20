@@ -70,6 +70,7 @@
     <Compile Include="GameObjects\Ball.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\Player.cs" />
+    <Compile Include="GameObjects\Ship.cs" />
     <Compile Include="GameWorlds\GameWorld.cs" />
     <Compile Include="Inputs.cs" />
     <Compile Include="MainWindow.xaml.cs">
