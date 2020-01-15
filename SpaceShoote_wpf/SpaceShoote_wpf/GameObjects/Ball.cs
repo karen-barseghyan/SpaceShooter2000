@@ -17,10 +17,9 @@ namespace SpaceShoote_wpf.GameObjects
             Position = Position += Velocity * deltatime / 1000f;
         }
 
-        public override void Draw(WriteableBitmap surface)
+        public override void Draw(WriteableBitmap surface, float deltatime)
         {
             surface.FillEllipse((int)Position.X, (int)Position.Y, (int)(Position.X + radius), (int)(Position.Y + radius), Colors.Blue);
-            base.Draw(surface);
         }
     }
 }

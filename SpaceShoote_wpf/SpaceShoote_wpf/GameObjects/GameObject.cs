@@ -23,7 +23,7 @@ namespace SpaceShoote_wpf.GameObjects
         }
 
         // Draws game objects (...)
-        public virtual void Draw(WriteableBitmap surface)
+        public virtual void Draw(WriteableBitmap surface, float deltatime)
         {
 
         }

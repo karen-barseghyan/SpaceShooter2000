@@ -13,9 +13,7 @@ using System.Windows.Media.Imaging;
 namespace SpaceShoote_wpf.GameObjects
 {
     class Player : Ship
-    {
-        public List<Input> inputs;
-        
+    {        
         Key goLeft1;
         Key goLeft2;
         Key goRight1;
@@ -44,57 +42,47 @@ namespace SpaceShoote_wpf.GameObjects
             gameWorld = world;
             Position = new System.Numerics.Vector2(100, 100);
             mainWindow = mainwindow;
-            spriteSizeX = 64;
-            spriteSizeY = 64;
+            spriteSizeX = 32;
+            spriteSizeY = 32;
+            scaleX = 1.5f;
+            scaleY = 1.5f;
             spriteCycle = 0;
 
             verticalSpeed = 800;
             horizontalSpeed = 800;
+            slowFactor = 0.5f;
             mouse_mode = 1;
             hitboxRadius = 10;
             transitionDuration = 200;
-            inputs = new List<Input>();
             InitializeKeyInputs();
-            showHitbox = false;
+            showHitbox = true;
             
-            spriteSheet = BitmapFactory.FromResource("graphics/player/ship.png");
+            spriteSheet = BitmapFactory.FromResource("graphics/player/ship_spreadsheet_x32x32.png");
         }
         
         private void InitializeKeyInputs()
         {
             goLeft1 = Key.A;
             goLeft2 = Key.Left;
-            inputs.Add(new Input("Go Left", goLeft1, goLeft2));
 
             goRight1 = Key.D;
             goRight2 = Key.Right;
-            inputs.Add(new Input("Go Right", goRight1, goRight2));
 
             goUp1 = Key.W;
             goUp2 = Key.Up;
-            inputs.Add(new Input("Go Up", goUp1, goUp2));
 
             goDown1 = Key.S;
             goDown2 = Key.Down;
-            inputs.Add(new Input("Go Down", goDown1, goDown2));
 
-            shoot1 = Key.Space;
-            shoot2 = Key.E;
+            shoot1 = Key.E;
+            shoot2 = Key.F;
             shoot1mouse = MouseAction.LeftClick;
-            inputs.Add(new Input("Shoot", shoot1, shoot2, shoot1mouse));
-
             shoot2mouse = MouseAction.RightClick;
-            inputs.Add(new Input("Alt Shoot", shoot2mouse));
             
-
-            bomb = Key.B;
-            inputs.Add(new Input("Bomb", bomb));
-
+            bomb = Key.Space;
             pause = Key.Escape;
-            inputs.Add(new Input("Pause", pause));
 
             slow1 = Key.LeftShift;
-            inputs.Add(new Input("Slow", slow1));
             mouseSensitivity = 1;
         }
         
@@ -255,7 +243,7 @@ namespace SpaceShoote_wpf.GameObjects
         }
 
         //draw function of player
-        public override void Draw(WriteableBitmap surface)
+        public override void Draw(WriteableBitmap surface, float deltatime)
         {
             // Flames animation
             int spriteoffset = 0;
@@ -267,14 +255,14 @@ namespace SpaceShoote_wpf.GameObjects
             {
                 //description below
                 Rect sourceRect2 = new Rect((2 + spriteoffset) * spriteSizeX, spriteSizeY, spriteSizeX, spriteSizeY);
-                Rect destRect2 = new Rect((int)Position.X - spriteSizeX / 2, (int)Position.Y - spriteSizeY / 2, spriteSizeX, spriteSizeY);
+                Rect destRect2 = new Rect((int)Position.X - spriteSizeX * scaleX / 2, (int)Position.Y - spriteSizeY * scaleY / 2, spriteSizeX * scaleX, spriteSizeY * scaleY);
                 surface.Blit(destRect2, spriteSheet, sourceRect2);
             }
             if (Velocity.Y <= 0)
             {
                 //description below
                 Rect sourceRect1 = new Rect(spriteoffset*spriteSizeX, spriteSizeY, spriteSizeX, spriteSizeY);
-                Rect destRect1 = new Rect((int)Position.X - spriteSizeX / 2, (int)Position.Y - spriteSizeY / 2, spriteSizeX, spriteSizeY);
+                Rect destRect1 = new Rect((int)Position.X - spriteSizeX * scaleX / 2, (int)Position.Y - spriteSizeY * scaleY / 2, spriteSizeX * scaleX, spriteSizeY * scaleY);
                 surface.Blit(destRect1, spriteSheet, sourceRect1);
             }
 
@@ -324,7 +312,7 @@ namespace SpaceShoote_wpf.GameObjects
             // rectangle to crop from the sprite sheet
             Rect sourceRect = new Rect(tiltoffset*spriteSizeX, 0, spriteSizeX, spriteSizeY);
             // destination where to apply cropped image from the sprite sheet
-            Rect destRect = new Rect((int)Position.X - spriteSizeX/2, (int)Position.Y-spriteSizeY/2, spriteSizeX, spriteSizeY);
+            Rect destRect = new Rect((int)Position.X - spriteSizeX * scaleX/2, (int)Position.Y- spriteSizeY * scaleY / 2, spriteSizeX * scaleX, spriteSizeY * scaleY);
             // apply cropped image to writablebitmap
             surface.Blit(destRect, spriteSheet, sourceRect);
 
@@ -337,7 +325,7 @@ namespace SpaceShoote_wpf.GameObjects
                 surface.FillEllipseCentered((int)Position.X, (int)Position.Y, (int)hitboxRadius, (int)hitboxRadius, Colors.Red);
             }
             //inreases sprite cycle to 7 and then resets to 0 and repeats
-            spriteCycle++;
+            spriteCycle += deltatime*2;
             if (spriteCycle > 7)
                 spriteCycle = 0;
         }

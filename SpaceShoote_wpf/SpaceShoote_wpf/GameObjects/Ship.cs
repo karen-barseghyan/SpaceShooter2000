@@ -18,7 +18,9 @@ namespace SpaceShoote_wpf.GameObjects
         public WriteableBitmap spriteSheet;
         public int spriteSizeX;
         public int spriteSizeY;
-        public int spriteCycle;
+        public float scaleX;
+        public float scaleY;
+        public float spriteCycle;
         public int tiltoffset;
         public int transitionDuration;
         public int transitionTo;
@@ -28,6 +30,7 @@ namespace SpaceShoote_wpf.GameObjects
 
         public float verticalSpeed { get; set; }
         public float horizontalSpeed { get; set; }
+        public float slowFactor { get; set; }
 
         public float hitboxRadius { get; set; }
 

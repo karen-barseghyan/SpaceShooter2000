@@ -34,7 +34,7 @@ namespace SpaceShoote_wpf
         GameWorld world;
         List<Rectangle> InputDisplays;
 
-        // initializing Viewport and writable bitmap
+        /// initializing Viewport and writable bitmap
         private void Viewport_Loaded(object sender, RoutedEventArgs e)
         {
             width = (int)this.ViewPortCointainer.ActualWidth;
@@ -46,6 +46,7 @@ namespace SpaceShoote_wpf
             CreateWorld();
             world.StartTimer();
             CompositionTarget.Rendering += CompositionTarget_Rendering;
+
             InputDisplays = new List<Rectangle>();
             InputDisplays.Add(Go_Up);
             InputDisplays.Add(Go_Down);
@@ -60,26 +61,25 @@ namespace SpaceShoote_wpf
         }
 
 
-        // main game loop
+        /// main game loop
+        /// calls every frame (same as monitor refresh rate)
         private void CompositionTarget_Rendering(object sender, EventArgs e)
         {
             foreach (Rectangle b in InputDisplays)
                 b.Fill = new SolidColorBrush(Color.FromRgb(244, 244, 245));
             world.GameTick();
 
-
             writeableBmp.Clear(Colors.BlueViolet);
-            
 
             foreach (GameObject o in world.gameObjects)
             {
-                o.Draw(writeableBmp);
+                o.Draw(writeableBmp, world.deltatime);
             }
             Object_Counter.Text = world.gameObjects.Count.ToString();
             FPS_Counter.Text = world.GetFPS().ToString();
         }
-
-        // initializing game world
+        
+        /// initializing game world
         private void CreateWorld()
         {
             world = new GameWorld();  
@@ -90,7 +90,7 @@ namespace SpaceShoote_wpf
             world.AddObject(player);
         }
 
-        // Textbox used for debugging
+        /// Textbox used for debugging
         private void DebugLine_Loaded(object sender, RoutedEventArgs e)
         {
             DebugLine.Text += "loaded\n";
