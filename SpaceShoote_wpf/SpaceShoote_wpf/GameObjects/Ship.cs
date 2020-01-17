@@ -4,39 +4,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace SpaceShoote_wpf.GameObjects
 {
-    class Ship : GameObject
+    public class Ship : GameObject
     {
-        public MainWindow mainWindow;
+        public bool canShoot = true;
+        public float fireRate = 0.5f;
+        private TimeSpan canShootNext;
 
-        // gameworld reference
-        public GameWorld gameWorld;
-        // sprite variables
-        public WriteableBitmap spriteSheet;
-        public int spriteSizeX;
-        public int spriteSizeY;
-        public float scaleX;
-        public float scaleY;
-        public float spriteCycle;
-        public int tiltoffset;
-        public int transitionDuration;
-        public int transitionTo;
-        public TimeSpan transitionTime;
-        //input variables
-        public bool showHitbox;
-
-        public float verticalSpeed { get; set; }
-        public float horizontalSpeed { get; set; }
-        public float slowFactor { get; set; }
-
-        public float hitboxRadius { get; set; }
+        public override void Tick()
+        {
+            base.Tick();
+            if (!canShoot)
+            {
+                if (gameWorld.GameTimer.Elapsed > canShootNext)
+                    canShoot = true;
+            }
+        }
 
         public virtual void Shoot(int type)
         {
-
+            
+            if (canShoot)
+            {
+                canShoot = false;
+                mainWindow.DebugWrite("pew");
+                canShootNext = TimeSpan.FromMilliseconds(gameWorld.GameTime() + fireRate*1000);
+            }
         }
     }
 }

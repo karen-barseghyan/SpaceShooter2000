@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -67,13 +68,14 @@ namespace SpaceShoote_wpf
         {
             foreach (Rectangle b in InputDisplays)
                 b.Fill = new SolidColorBrush(Color.FromRgb(244, 244, 245));
-            world.GameTick();
 
+            //await Task.Run(new Action(world.GameTick));
+            world.GameTick();
             writeableBmp.Clear(Colors.BlueViolet);
 
             foreach (GameObject o in world.gameObjects)
             {
-                o.Draw(writeableBmp, world.deltatime);
+                o.Draw(writeableBmp);
             }
             Object_Counter.Text = world.gameObjects.Count.ToString();
             FPS_Counter.Text = world.GetFPS().ToString();
@@ -82,7 +84,7 @@ namespace SpaceShoote_wpf
         /// initializing game world
         private void CreateWorld()
         {
-            world = new GameWorld();  
+            world = new GameWorld(this);  
 
             var player = new Player(this, world);
             DebugLine.Text += "loading settings";
@@ -96,6 +98,11 @@ namespace SpaceShoote_wpf
             DebugLine.Text += "loaded\n";
             DebugLine.ScrollToEnd();
 
+        }
+
+        public void DebugPlayerLife(int life)
+        {
+            Player_Life.Text = life.ToString();
         }
 
         public void DebugPlayerPos(System.Numerics.Vector2 pos)

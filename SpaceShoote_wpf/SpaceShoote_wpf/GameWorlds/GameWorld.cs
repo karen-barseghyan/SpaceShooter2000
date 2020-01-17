@@ -10,6 +10,7 @@ namespace SpaceShoote_wpf.GameWorlds
 {
     public class GameWorld
     {
+        public MainWindow mainWindow;
         // list of objects in game world
         public List<GameObject> gameObjects { get; }
 
@@ -19,6 +20,10 @@ namespace SpaceShoote_wpf.GameWorlds
         // time of last game tick (frame)
         public TimeSpan previousGameTick;
 
+        public GameWave currentWave;
+        public int wavesCleared = 0;
+        public int score = 0;
+        Random random = new Random();
         //puses the game cycle
         public bool pause;
 
@@ -27,8 +32,9 @@ namespace SpaceShoote_wpf.GameWorlds
         TimeSpan PreviousSecond;
 
         // game world Constructor
-        public GameWorld()
+        public GameWorld(MainWindow window)
         {
+            mainWindow = window;
             gameObjects = new List<GameObject>();
             GameTimer = new Stopwatch();
         }
@@ -55,27 +61,76 @@ namespace SpaceShoote_wpf.GameWorlds
             framecounter = 0;
             previousSecondFrameCount = 0;
             PreviousSecond = GameTimer.Elapsed;
+
+            currentWave = new GameWave(mainWindow, this, 0);
         }
 
         //tick function of game wolrd
         // runs every tick (frame
         // calls tick function of every object in game world
-        public void GameTick()
+        public async void GameTick()
         {   
             if (!pause)
             {
+                // start if frane
                 if ((GameTimer.Elapsed - PreviousSecond).TotalMilliseconds > 1000)
                 {
                     previousSecondFrameCount = framecounter;
                     framecounter = 0;
                     PreviousSecond = GameTimer.Elapsed;
                 }
+                
+                 
+                // do stuff
+                if (currentWave != null)
+                {
+                    if (currentWave.IsWaveOver())
+                    {
+                        wavesCleared++;
+                        score += currentWave.WaveClearScore;
+                        currentWave.GenerateWave(random.Next(2, 5));
+                    }
+                    else
+                    {
+                        if (GameTime() > currentWave.nextEnemy.TotalMilliseconds && currentWave.enemies.Count > 0)
+                        {
+                            gameObjects.Add(currentWave.GetNextEnemy());
+                        }
+                    }
+                }
+                
+                
+                // things happen and things move
                 foreach (var o in gameObjects)
-                    o.Tick(deltatime);
-
+                    o.Tick();
+                var allTasks = new List<Task>();
+                foreach (var o in gameObjects)
+                {
+                    //o.Move();
+                    var t = new Task(o.Move);
+                    allTasks.Add(t);
+                    t.Start();
+                    await Task.Run(new Action(o.Move));
+                }
+                await Task.WhenAll(allTasks);
+                for (int i = 0; i < gameObjects.Count; i++)
+                {
+                    gameObjects[i].CleanUp();
+                }
+                // end of frame
                 previousGameTick = GameTimer.Elapsed;
                 framecounter++;
             }
+        }
+
+        public bool AnyObjectsFromGroup(int group)
+        {
+            foreach (GameObject o in gameObjects)
+            {
+                if (o.group == group)
+                    return true;
+            }
+            return false;
         }
 
         public int GetFPS()

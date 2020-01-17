@@ -66,6 +66,8 @@
             <TextBox x:Name="FPS_Counter" HorizontalAlignment="Left" Height="22" Margin="271,3,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="64" RenderTransformOrigin="0.178,0.306" IsEnabled="False"/>
             <Label Content="object count" HorizontalAlignment="Left" Margin="195,22,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.838,-0.961"/>
             <TextBox x:Name="Object_Counter" HorizontalAlignment="Left" Height="22" Margin="271,26,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="64" RenderTransformOrigin="0.178,0.306" IsEnabled="False"/>
+            <Label Content="HP" HorizontalAlignment="Left" Margin="21,313,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.838,-0.961"/>
+            <TextBox x:Name="Player_Life" HorizontalAlignment="Left" Height="22" Margin="58,317,0,0" TextWrapping="Wrap" Text="1000" VerticalAlignment="Top" Width="64" RenderTransformOrigin="0.178,0.306" IsEnabled="False"/>
         </Grid>
     </Grid>
 
