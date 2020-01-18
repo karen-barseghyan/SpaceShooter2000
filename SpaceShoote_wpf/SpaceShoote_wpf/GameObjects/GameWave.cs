@@ -68,7 +68,7 @@ namespace SpaceShoote_wpf.GameObjects
             } 
             
         }
-
+        //
         public bool IsWaveOver()
         {
             if (gameWorld.GameTime() > timeLimit.TotalMilliseconds)
