@@ -60,7 +60,7 @@ namespace SpaceShoote_wpf
 
             DebugLine.Text += "Viewport loaded\n";
         }
-
+        
 
         /// main game loop
         /// calls every frame (same as monitor refresh rate)
@@ -71,7 +71,7 @@ namespace SpaceShoote_wpf
 
             //await Task.Run(new Action(world.GameTick));
             world.GameTick();
-            writeableBmp.Clear(Colors.BlueViolet);
+            writeableBmp.Clear(Colors.Black);
 
             foreach (GameObject o in world.gameObjects)
             {
@@ -87,8 +87,12 @@ namespace SpaceShoote_wpf
             world = new GameWorld(this);  
 
             var player = new Player(this, world);
+            var backgroundlayer1 = new BackgroundLayer1(this, world);
+            var backgroundlayer2 = new BackgroundLayer2(this, world);
             DebugLine.Text += "loading settings";
             //await LoadSettings(player);
+            world.AddObject(backgroundlayer1);
+            world.AddObject(backgroundlayer2);
             world.AddObject(player);
         }
 
