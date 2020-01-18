@@ -15,6 +15,7 @@ namespace SpaceShoote_wpf.GameObjects
         public bool canShoot = true;
         public float fireRate = 0.5f;
         private TimeSpan canShootNext;
+        public List<SpawnData> Projectiles;
 
         public override void Tick()
         {
@@ -33,6 +34,8 @@ namespace SpaceShoote_wpf.GameObjects
             {
                 canShoot = false;
                 mainWindow.DebugWrite("pew");
+              //  PlayerShot playshot = new PlayerShot(mainWindow, gameWorld);
+             //   Projectiles.Add(new SpawnData(playshot, 100));
                 canShootNext = TimeSpan.FromMilliseconds(gameWorld.GameTime() + fireRate*1000);
             }
         }
