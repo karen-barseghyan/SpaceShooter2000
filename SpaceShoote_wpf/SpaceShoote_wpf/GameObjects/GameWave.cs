@@ -17,7 +17,7 @@ namespace SpaceShoote_wpf.GameObjects
         public TimeSpan timeLimit;
         public int WaveGroup;
         public int WaveClearScore = 100;
-        public bool clearedEnemiesSkip = true;
+        public bool clearedEnemiesSkip = true; //ends wave if all enemies are defeated
 
         public TimeSpan nextEnemy;
         public TimeSpan nextObject;
@@ -47,6 +47,9 @@ namespace SpaceShoote_wpf.GameObjects
             otherObjects = new List<SpawnData>();
             nextEnemy = TimeSpan.FromMilliseconds(0);
             nextObject = TimeSpan.FromMilliseconds(0);
+            //add more cases (enemy spawn patterns) (leave 0 as empty wave)
+            // next wave will have seed (Random 2-5) each time
+            
             switch (seed) {
                 case 0:
                     {
@@ -56,13 +59,20 @@ namespace SpaceShoote_wpf.GameObjects
                     }
                 default:
                     {
+                        // add limit to how long will the wave last until it moves on to the next one
                         timeLimit = TimeSpan.FromMilliseconds(gameWorld.GameTime() + 3000);
+                        //if boss wave, add a long time limit and clearedEnemiesSkip = true;
+                        
                         mainWindow.DebugWrite(timeLimit.TotalMilliseconds.ToString());
+                        //prepare enemies
                         Enemy enemy1 = new Enemy(mainWindow, gameWorld);
                         enemy1.group = WaveGroup;
                         enemy1.Velocity = new Vector2(200, 200);
                         enemy1.Scale = new Vector2(2, 2);
+                        //add enemies to the list (enemy, miliseconds until spawning NEXT enemy (if not last enemy in the list)
                         enemies.Add(new SpawnData(enemy1, 500));
+                        // works same with "otherObjects". Use that for Background / Asteroid etc. objects they use a seperate list
+                        // all enemies, but not all objects have to be removed to clear wave
                         break;
                     }
             } 
@@ -74,7 +84,7 @@ namespace SpaceShoote_wpf.GameObjects
             if (gameWorld.GameTime() > timeLimit.TotalMilliseconds)
                 return true;
             if (!gameWorld.AnyObjectsFromGroup(WaveGroup) && enemies.Count == 0 && clearedEnemiesSkip)
-                return true;
+                return true;// give clear bonus only here
             return false;
         }
 
