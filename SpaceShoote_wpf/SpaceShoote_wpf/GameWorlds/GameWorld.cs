@@ -104,7 +104,9 @@ namespace SpaceShoote_wpf.GameWorlds
                 foreach (var o in gameObjects)
                     o.Tick();
                 var allTasks = new List<Task>();
-                foreach (var o in gameObjects)
+
+                //tu crashuje
+                foreach (var o in gameObjects.ToList())
                 {
                     //o.Move();
                     var t = new Task(o.Move);
@@ -121,6 +123,8 @@ namespace SpaceShoote_wpf.GameWorlds
                 previousGameTick = GameTimer.Elapsed;
                 framecounter++;
             }
+
+
         }
 
         public bool AnyObjectsFromGroup(int group)
