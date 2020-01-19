@@ -101,7 +101,7 @@ namespace SpaceShoote_wpf.GameWorlds
                 
                 
                 // things happen and things move
-                foreach (var o in gameObjects)
+                foreach (var o in gameObjects.ToList())
                     o.Tick();
                 var allTasks = new List<Task>();
 
