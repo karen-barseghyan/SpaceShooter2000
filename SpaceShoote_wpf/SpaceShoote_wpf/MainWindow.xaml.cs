@@ -89,11 +89,13 @@ namespace SpaceShoote_wpf
             var player = new Player(this, world);
             var backgroundlayer1 = new BackgroundLayer1(this, world);
             var backgroundlayer2 = new BackgroundLayer2(this, world);
+            var health = new Health(this, world);
             DebugLine.Text += "loading settings";
             //await LoadSettings(player);
             world.AddObject(backgroundlayer1);
             world.AddObject(backgroundlayer2);
             world.AddObject(player);
+            world.AddObject(health);
         }
 
         /// Textbox used for debugging

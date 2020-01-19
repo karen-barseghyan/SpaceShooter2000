@@ -67,6 +67,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="GameObjects\Background.cs" />
     <Compile Include="GameObjects\Ball.cs" />
     <Compile Include="GameObjects\Enemy.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
@@ -104,7 +105,9 @@
     <None Include="graphics\player\WhatToPutHere" />
     <None Include="graphics\powerups\WhatToPutHere" />
     <None Include="graphics\projectiles\WhatToPutHere" />
+    <Resource Include="graphics\ui\PressStart2P.ttf" />
     <None Include="graphics\ui\WhatToPutHere" />
+    <Resource Include="graphics\ui\Xenon2.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -156,6 +159,13 @@
     <Resource Include="graphics\aliens\skitter_spreadsheet_x16x16.png" />
     <Resource Include="graphics\aliens\spiker_spreadsheet_x23x26.png" />
     <Resource Include="graphics\aliens\wasp_spreadsheet_x32x32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="graphics\ui\background_stars_layer0.png" />
+    <Resource Include="graphics\ui\background_stars_layer1.png" />
+    <Resource Include="graphics\ui\background_stars_layer2.png" />
+    <Resource Include="graphics\ui\background_stars_layer3.png" />
+    <Resource Include="graphics\ui\layertester.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
