@@ -49,7 +49,6 @@ namespace SpaceShoote_wpf.GameObjects
             nextObject = TimeSpan.FromMilliseconds(0);
             //add more cases (enemy spawn patterns) (leave 0 as empty wave)
             // next wave will have seed (Random 2-5) each time
-            
             switch (seed) {
                 case 0:
                     {
@@ -65,51 +64,71 @@ namespace SpaceShoote_wpf.GameObjects
                         
                         mainWindow.DebugWrite(timeLimit.TotalMilliseconds.ToString());
                         //prepare enemies
-                        Enemy enemy1 = new Enemy(mainWindow, gameWorld);
+                        Enemy1 enemy1 = new Enemy1(mainWindow, gameWorld);
                         enemy1.group = WaveGroup;
                         enemy1.Velocity = new Vector2(0, 0);
                         enemy1.Scale = new Vector2(2, 2);
 
                         Enemy2 enemy2 = new Enemy2(mainWindow, gameWorld);
                         enemy2.group = WaveGroup;
-                        enemy2.Velocity = new Vector2(0, 100);
+                        enemy2.Velocity = new Vector2(0, 0);
                         enemy2.Scale = new Vector2(2, 2);
 
                         Enemy3 enemy3 = new Enemy3(mainWindow, gameWorld);
                         enemy3.group = WaveGroup;
-                        enemy3.Velocity = new Vector2(0, 100);
+                        enemy3.Velocity = new Vector2(0, 0);
                         enemy3.Scale = new Vector2(2, 2);
 
                         Enemy4 enemy4 = new Enemy4(mainWindow, gameWorld);
                         enemy4.group = WaveGroup;
-                        enemy4.Velocity = new Vector2(0, 100);
+                        enemy4.Velocity = new Vector2(0, 0);
                         enemy4.Scale = new Vector2(2, 2);
 
                         Enemy5 enemy5 = new Enemy5(mainWindow, gameWorld);
                         enemy5.group = WaveGroup;
-                        enemy5.Velocity = new Vector2(0, 100);
+                        enemy5.Velocity = new Vector2(0, 0);
                         enemy5.Scale = new Vector2(2, 2);
 
                         Enemy6 enemy6 = new Enemy6(mainWindow, gameWorld);
                         enemy6.group = WaveGroup;
-                        enemy6.Velocity = new Vector2(0, 100);
+                        enemy6.Velocity = new Vector2(0, 0);
                         enemy6.Scale = new Vector2(2, 2);
 
                         Enemy7 enemy7 = new Enemy7(mainWindow, gameWorld);
                         enemy7.group = WaveGroup;
-                        enemy7.Velocity = new Vector2(0, 100);
+                        enemy7.Velocity = new Vector2(0, 0);
                         enemy7.Scale = new Vector2(2, 2);
-                      
+
+                        Enemy8 enemy8 = new Enemy8(mainWindow, gameWorld);
+                        enemy8.group = WaveGroup;
+                        enemy8.Velocity = new Vector2(0, 0);
+                        enemy8.Scale = new Vector2(2, 2);
+
+                        Enemy9 enemy9 = new Enemy9(mainWindow, gameWorld);
+                        enemy9.group = WaveGroup;
+                        enemy9.Velocity = new Vector2(0, 0);
+                        enemy9.Scale = new Vector2(2, 2);
+
+
+                        Boss boss = new Boss(mainWindow, gameWorld);
+                        boss.group = WaveGroup;
+                        boss.Velocity = new Vector2(0, 0);
+                        boss.Scale = new Vector2(2, 2);
+
 
                         //add enemies to the list (enemy, miliseconds until spawning NEXT enemy (if not last enemy in the list)
-                        enemies.Add(new SpawnData(enemy1, 100));
-                        enemies.Add(new SpawnData(enemy2, 100));
-                        enemies.Add(new SpawnData(enemy3, 100));
-                        enemies.Add(new SpawnData(enemy4, 100));
-                        enemies.Add(new SpawnData(enemy5, 100));
-                        enemies.Add(new SpawnData(enemy6, 100));
-                        enemies.Add(new SpawnData(enemy7, 100));
-                  
+                      //  enemies.Add(new SpawnData(boss, 0));
+                        enemies.Add(new SpawnData(enemy1, 0));
+                       enemies.Add(new SpawnData(enemy2, 0));
+                        enemies.Add(new SpawnData(enemy3, 0));
+                        enemies.Add(new SpawnData(enemy4, 0));
+                        enemies.Add(new SpawnData(enemy5, 0));
+                        enemies.Add(new SpawnData(enemy7, 0));
+                        enemies.Add(new SpawnData(enemy8, 0));
+                        enemies.Add(new SpawnData(enemy9, 0));
+
+
+                      
 
                         // works same with "otherObjects". Use that for Background / Asteroid etc. objects they use a seperate list
                         // all enemies, but not all objects have to be removed to clear wave

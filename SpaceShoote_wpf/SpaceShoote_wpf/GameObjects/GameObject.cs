@@ -100,7 +100,7 @@ namespace SpaceShoote_wpf.GameObjects
             
             if (checkCollisions)
             {
-                foreach (GameObject o in gameWorld.gameObjects)
+                foreach (GameObject o in gameWorld.gameObjects.ToList())
                 {
                     if (CheckCollision(Position, hitboxRadius, tag))
                     {
