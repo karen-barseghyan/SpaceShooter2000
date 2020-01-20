@@ -26,13 +26,12 @@ namespace SpaceShoote_wpf.GameObjects
             spriteSizeY = 32;
             
             spriteCycle = 1;
-          
+    
             slowFactor = 0.5f;
             hitboxRadius = 10;
             transitionDuration = 200;
             showHitbox = false;
 
-           // Speed = new System.Numerics.Vector2(0, -1000);
 
             spriteSheet = BitmapFactory.FromResource("graphics/aliens/megabeetle_spreadsheet_x32x32.png");
             
@@ -45,8 +44,8 @@ namespace SpaceShoote_wpf.GameObjects
         {
             //   Position = Position -= Speed * 2 / 1000f;
 
-            Position.Y = Position.Y + 5f;
-
+            //  Position.Y = Position.Y + 5f;
+            Velocity.Y = 200;
             if (Position.Y >= 200)
             {
                 //Speed = new System.Numerics.Vector2(1000, -1000);
@@ -68,12 +67,12 @@ namespace SpaceShoote_wpf.GameObjects
                
                 if (goleft == true && goright == false)
                 {
-                    Position.X = Position.X - 5f;
+                    Velocity.X = -200;
                 }
 
                 if (goleft == false && goright == true)
                 {
-                    Position.X = Position.X + 5f;
+                    Velocity.X = 200;
                 }
 
             }
@@ -120,7 +119,12 @@ namespace SpaceShoote_wpf.GameObjects
 
             if (stop == false)
             {
-                Position.Y = Position.Y + 3f;
+                Velocity.Y = 150;
+            }
+
+            if (stop == true)
+            {
+                Velocity.Y = 0;
             }
 
 
@@ -146,12 +150,12 @@ namespace SpaceShoote_wpf.GameObjects
 
                 if (goleft1 == true && goright1 == false)
                 {
-                    Position.X = Position.X - 10f;
+                    Velocity.X = -300;
                 }
 
                 if (goleft1 == false && goright1 == true)
                 {
-                    Position.X = Position.X + 10f;
+                    Velocity.X = 300;
                 }
 
             }
@@ -190,7 +194,7 @@ namespace SpaceShoote_wpf.GameObjects
         {
             //   Position = Position -= Speed * 2 / 1000f;
 
-            Position.Y = Position.Y + 2f;
+            Velocity.Y = 50;
 
             if (Position.Y >= 100)
             {
@@ -213,12 +217,12 @@ namespace SpaceShoote_wpf.GameObjects
 
                 if (goleft2 == true && goright2 == false)
                 {
-                    Position.X = Position.X - 5f;
+                    Velocity.X = -400;
                 }
 
                 if (goleft2 == false && goright2 == true)
                 {
-                    Position.X = Position.X + 5f;
+                    Velocity.X = 400;
                 }
 
             }
@@ -245,7 +249,7 @@ namespace SpaceShoote_wpf.GameObjects
             transitionDuration = 200;
             showHitbox = false;
 
-            Speed = new System.Numerics.Vector2(300, 300);
+           // Speed = new System.Numerics.Vector2(300, 300);
 
             spriteSheet = BitmapFactory.FromResource("graphics/aliens/skitter_spreadsheet_x16x16.png");
         }
@@ -258,12 +262,12 @@ namespace SpaceShoote_wpf.GameObjects
             //   Position = Position -= Speed * 2 / 1000f;
             if (godown == true)
             {
-                Position.Y = Position.Y + 3f;
+                Velocity.Y = 300;
             }
 
             if (goup == true)
             {
-                Position.Y = Position.Y - 3f;
+                Velocity.Y = -300;
             }
 
             if (Position.Y>= 100 && Position.Y <= 105)
@@ -300,12 +304,12 @@ namespace SpaceShoote_wpf.GameObjects
 
                 if (goleft3 == true && goright3 == false)
                 {
-                    Position.X = Position.X - 5f;
+                    Velocity.X = -200;
                 }
 
                 if (goleft3 == false && goright3 == true)
                 {
-                    Position.X = Position.X + 5f;
+                    Velocity.X = 200;
                 }
 
             }
@@ -346,7 +350,7 @@ namespace SpaceShoote_wpf.GameObjects
         {
             //   Position = Position -= Speed * 2 / 1000f;
 
-            Position.Y = Position.Y + 1f;
+            Velocity.Y = 10;
 
             if (Position.Y >= 200)
             {
@@ -369,12 +373,12 @@ namespace SpaceShoote_wpf.GameObjects
 
                 if (goleft == true && goright == false)
                 {
-                    Position.X = Position.X - 5f;
+                    Velocity.X = -1000;
                 }
 
                 if (goleft == false && goright == true)
                 {
-                    Position.X = Position.X + 5f;
+                    Velocity.X = 1000;
                 }
 
             }
@@ -391,7 +395,7 @@ namespace SpaceShoote_wpf.GameObjects
             mainWindow = mainwindow;
             gameWorld = world;
             var rand = new Random();
-            Position = new System.Numerics.Vector2(rand.Next(500), -100);
+            Position = new System.Numerics.Vector2(rand.Next(100), -100);
             spriteSizeX = 12;
             spriteSizeY = 11;
 
@@ -414,7 +418,7 @@ namespace SpaceShoote_wpf.GameObjects
         {
             //   Position = Position -= Speed * 2 / 1000f;
 
-            Position.Y = Position.Y + 10f;
+            Velocity.Y = 400;
 
             if (Position.Y >= 200)
             {
@@ -437,12 +441,12 @@ namespace SpaceShoote_wpf.GameObjects
 
                 if (goleft == true && goright == false)
                 {
-                    Position.X = Position.X - 5f;
+                    Velocity.X = -100;
                 }
 
                 if (goleft == false && goright == true)
                 {
-                    Position.X = Position.X + 5f;
+                    Velocity.X = 100;
                 }
 
             }
@@ -480,7 +484,7 @@ namespace SpaceShoote_wpf.GameObjects
         {
             //   Position = Position -= Speed * 2 / 1000f;
 
-            Position.Y = Position.Y + 3f;
+            Velocity.Y = 100;
 
             if (Position.Y >= 0)
             {
@@ -503,12 +507,12 @@ namespace SpaceShoote_wpf.GameObjects
 
                 if (goleft2 == true && goright2 == false)
                 {
-                    Position.X = Position.X - 5f;
+                    Velocity.X = -400;
                 }
 
                 if (goleft2 == false && goright2 == true)
                 {
-                    Position.X = Position.X + 5f;
+                    Velocity.X = 100;
                 }
 
             }
@@ -548,12 +552,12 @@ namespace SpaceShoote_wpf.GameObjects
             //   Position = Position -= Speed * 2 / 1000f;
             if (godown == true)
             {
-                Position.Y = Position.Y + 8f;
+                Velocity.Y = 350;
             }
 
             if (goup == true)
             {
-                Position.Y = Position.Y - 8f;
+                Velocity.Y = -350;
             }
 
             if (Position.Y >= 100 && Position.Y <= 105)
@@ -590,12 +594,12 @@ namespace SpaceShoote_wpf.GameObjects
 
                 if (goleft3 == true && goright3 == false)
                 {
-                    Position.X = Position.X - 10f;
+                    Velocity.X = -350;
                 }
 
                 if (goleft3 == false && goright3 == true)
                 {
-                    Position.X = Position.X + 10f;
+                    Velocity.X = 350;
                 }
 
             }
@@ -640,9 +644,13 @@ namespace SpaceShoote_wpf.GameObjects
 
             if (stop == false)
             {
-                Position.Y = Position.Y + 10f;
+                Velocity.Y = 1000;
             }
 
+            if (stop == true)
+            {
+                Velocity.Y = 0;
+            }
 
             if (Position.Y >= 300)
             {
@@ -666,12 +674,12 @@ namespace SpaceShoote_wpf.GameObjects
 
                 if (goleft1 == true && goright1 == false)
                 {
-                    Position.X = Position.X - 2f;
+                    Velocity.X = -50;
                 }
 
                 if (goleft1 == false && goright1 == true)
                 {
-                    Position.X = Position.X + 2f;
+                    Velocity.X = 50;
                 }
 
             }
@@ -714,7 +722,12 @@ namespace SpaceShoote_wpf.GameObjects
 
             if (stop == false)
             {
-                Position.Y = Position.Y + 3f;
+                Velocity.Y = 10;
+            }
+
+            if (stop == true)
+            {
+                Velocity.Y = 0;
             }
 
 
@@ -740,12 +753,12 @@ namespace SpaceShoote_wpf.GameObjects
 
                 if (goleft1 == true && goright1 == false)
                 {
-                    Position.X = Position.X - 1f;
+                    Velocity.X = -10;
                 }
 
                 if (goleft1 == false && goright1 == true)
                 {
-                    Position.X = Position.X + 1f;
+                    Velocity.X = 10;
                 }
 
             }
