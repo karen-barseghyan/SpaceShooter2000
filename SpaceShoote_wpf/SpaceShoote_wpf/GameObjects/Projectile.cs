@@ -2,44 +2,60 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
 namespace SpaceShoote_wpf.GameObjects
 {
-    //MegaBeetle
-    public class PlayerShot : Ship
+    public class Projectile : GameObject
     {
-        private Ship ship;
-        private GameWorld world;
-
-        public PlayerShot(MainWindow mainwindow, GameWorld world)
+        public Projectile(MainWindow mainwindow, GameWorld world)
         {
             mainWindow = mainwindow;
             gameWorld = world;
-            Position = new System.Numerics.Vector2(100, 100);
-            spriteSizeX = 10;
-            spriteSizeY = 14;
+            points = 0;
 
+            spriteSizeX = 12;
+            spriteSizeY = 12;
             spriteCycle = 1;
-
-            slowFactor = 0.5f;
-            hitboxRadius = 5;
-            transitionDuration = 200;
-            showHitbox = true;
-
-            Speed = new System.Numerics.Vector2(500, 500);
-
-            spriteSheet = BitmapFactory.FromResource("graphics/projectiles/projectile2_spreadsheet_x10x14.png");
-
+            hitboxRadius = 10;
+            showHitbox = false;
+            oneHit = true;
+            collisionMask = new string[] { "enemy", "enemy projectile" };
+            Velocity = new Vector2(0, 800);
+            spriteSheet = BitmapFactory.FromResource("graphics/projectiles/projectile5_spreadsheet_x11x11.png");
         }
 
-        public PlayerShot(Ship ship, GameWorld world)
+        public Projectile Copy(Vector2 position)
         {
-            this.ship = ship;
-            this.world = world;
+            Projectile p = new Projectile(mainWindow, gameWorld);
+            p.gameWorld = gameWorld;
+            p.parent = parent;
+            p.mainWindow = mainWindow;
+            p.spriteSheet = spriteSheet;
+            p.spriteSizeX = spriteSizeX;
+            p.spriteSizeY = spriteSizeY;
+            p.Scale = Scale;
+            p.spriteCycle = 0;
+            p.animoffset = 0;
+            p.transitionDuration = transitionDuration;
+            p.slowFactor = slowFactor;
+            p.boundToWindow = boundToWindow;
+            p.hitboxRadius = hitboxRadius;
+
+            p.Position = position;
+
+            p.Velocity = Velocity;
+            p.showHitbox = showHitbox;
+            p.checkCollisions = checkCollisions;
+            p.tag = tag;
+            p.collisionMask = collisionMask;
+            p.collisionDamage = collisionDamage;
+            p.oneHit = oneHit; 
+            p.life = life;
+            return p;
         }
     }
-
 }

@@ -21,7 +21,7 @@ namespace SpaceShoote_wpf
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
-    /// </summary>https://www.twitch.tv/d irectory/following
+    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -34,6 +34,7 @@ namespace SpaceShoote_wpf
         WriteableBitmap writeableBmp;
         GameWorld world;
         List<Rectangle> InputDisplays;
+        public Player player;
 
         /// initializing Viewport and writable bitmap
         private void Viewport_Loaded(object sender, RoutedEventArgs e)
@@ -72,7 +73,7 @@ namespace SpaceShoote_wpf
             //await Task.Run(new Action(world.GameTick));
             world.GameTick();
             writeableBmp.Clear(Colors.Black);
-
+            
             foreach (GameObject o in world.gameObjects)
             {
                 o.Draw(writeableBmp);
@@ -86,7 +87,7 @@ namespace SpaceShoote_wpf
         {
             world = new GameWorld(this);  
 
-            var player = new Player(this, world);
+            player = new Player(this, world);
             var backgroundlayer1 = new BackgroundLayer1(this, world);
             var backgroundlayer2 = new BackgroundLayer2(this, world);
             var health = new Health(this, world);
@@ -106,9 +107,14 @@ namespace SpaceShoote_wpf
 
         }
 
-        public void DebugPlayerLife(int life)
+        public void DebugPlayerLife(float life)
         {
-            Player_Life.Text = life.ToString();
+            Player_Life.Text = ((int)life).ToString();
+        }
+
+        public void DebugPlayerScore(int score)
+        {
+            Player_Score.Text = (score).ToString();
         }
 
         public void DebugPlayerPos(System.Numerics.Vector2 pos)

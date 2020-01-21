@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -68,7 +69,7 @@ namespace SpaceShoote_wpf.GameWorlds
         //tick function of game wolrd
         // runs every tick (frame
         // calls tick function of every object in game world
-        public async void GameTick()
+        public void GameTick()
         {   
             if (!pause)
             {
@@ -88,7 +89,8 @@ namespace SpaceShoote_wpf.GameWorlds
                     {
                         wavesCleared++;
                         score += currentWave.WaveClearScore;
-                        currentWave.GenerateWave(random.Next(2, 5));
+                        //currentWave.GenerateWave(random.Next(10, 10));
+                        currentWave.GenerateWave(10);
                     }
                     else
                     {
@@ -101,20 +103,30 @@ namespace SpaceShoote_wpf.GameWorlds
                 
                 
                 // things happen and things move
-                foreach (var o in gameObjects.ToList())
-                    o.Tick();
-                var allTasks = new List<Task>();
+                //foreach (var o in gameObjects.ToList())
+                //    o.Tick();
+                //var allTasks = new List<Task>();
+
+                int max = 100;
+                if (gameObjects.Count < max)
+                    max = gameObjects.Count;
+                for (int i = 0; i < max; i++)
+                {
+                    gameObjects[i].Tick();
+                }
 
                 //tu crashuje
                 foreach (var o in gameObjects.ToList())
                 {
-                    //o.Move();
-                    var t = new Task(o.Move);
-                    allTasks.Add(t);
-                    t.Start();
-                    await Task.Run(new Action(o.Move));
+                    o.Move();
+                    //var t = new Task(o.Move);
+                    //allTasks.Add(t);
+                    //t.Start();
+                    //await Task.Run(new Action(o.Move));
                 }
-                await Task.WhenAll(allTasks);
+                
+                //await Task.WhenAll(allTasks);
+                
                 for (int i = 0; i < gameObjects.Count; i++)
                 {
                     gameObjects[i].CleanUp();

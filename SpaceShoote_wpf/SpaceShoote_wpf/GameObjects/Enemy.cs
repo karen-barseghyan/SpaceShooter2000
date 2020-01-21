@@ -10,51 +10,37 @@ using System.Windows.Media.Imaging;
 namespace SpaceShoote_wpf.GameObjects
 {
            
-    //MegaBeetle
     public class Enemy1 : Ship
     {
-        public int points = 10;
+ 
 
         public Enemy1(MainWindow mainwindow, GameWorld world)
         {
- 
             mainWindow = mainwindow;
             gameWorld = world;
+            points = 30;
+            life = 100;
             var rand = new Random();
             Position = new System.Numerics.Vector2(rand.Next(500), -100);
             spriteSizeX = 32;
-            spriteSizeY = 32;
-            
-            spriteCycle = 1;
-          
+            spriteSizeY = 32;           
+            spriteCycle = 1;  
             slowFactor = 0.5f;
             hitboxRadius = 10;
             transitionDuration = 200;
             showHitbox = false;
-
-           // Speed = new System.Numerics.Vector2(0, -1000);
-
-            spriteSheet = BitmapFactory.FromResource("graphics/aliens/megabeetle_spreadsheet_x32x32.png");
-            
+            spriteSheet = BitmapFactory.FromResource("graphics/aliens/megabeetle_spreadsheet_x32x32.png");           
         }
-
         bool goleft = false;
         bool goright = true;
-
         public override void Tick()
         {
-            //   Position = Position -= Speed * 2 / 1000f;
-
-            Position.Y = Position.Y + 5f;
-
+            base.Tick();
+            Velocity.Y = 200;
             if (Position.Y >= 200)
             {
-                //Speed = new System.Numerics.Vector2(1000, -1000);
-                //   showHitbox = true;
-               // Position.Y = Position.Y + 5f;
                 if (Position.X > 30 && Position.X < 60)
                 {
-                    //  Position.X = Position.X + 5f;
                      goright = true;
                      goleft = false;
                 }
@@ -65,15 +51,14 @@ namespace SpaceShoote_wpf.GameObjects
                     goleft = true;
                 }
 
-               
                 if (goleft == true && goright == false)
                 {
-                    Position.X = Position.X - 5f;
+                    Velocity.X = -200;
                 }
 
                 if (goleft == false && goright == true)
                 {
-                    Position.X = Position.X + 5f;
+                    Velocity.X = 200;
                 }
 
             }
@@ -84,55 +69,60 @@ namespace SpaceShoote_wpf.GameObjects
 
 
     public class Enemy2 : Ship
-    {
-        public int points = 10;
-
+    {  
         public Enemy2(MainWindow mainwindow, GameWorld world)
         {
             mainWindow = mainwindow;
             gameWorld = world;
+            points = 20;
+            life = 100;
             var rand2 = new Random();
             float offset = 3.5f;
             Position = new System.Numerics.Vector2(rand2.Next(100)*offset, -100);
             spriteSizeX = 32;
             spriteSizeY = 32;
-
             spriteCycle = 1;
-
             slowFactor = 0.5f;
             hitboxRadius = 10;
             transitionDuration = 200;
             showHitbox = false;
-
-          //  Speed = new System.Numerics.Vector2(300, 300);
-
             spriteSheet = BitmapFactory.FromResource("graphics/aliens/wasp_spreadsheet_x32x32.png");
+
+            fireRate1 = 0.8f;
+
+            projectile = new Projectile(mainWindow, gameWorld);
+
+            projectile.Velocity = new Vector2(0, 300);
+            projectile.spriteSheet = BitmapFactory.FromResource("graphics/projectiles/projectile5_spreadsheet_x11x11.png");
+            projectile.spriteSizeX = 12;
+            projectile.spriteSizeY = 12;
+            projectile.Scale = new Vector2(2, 2);
+            projectile.collisionMask = new string[] { "enemy", "enemy projectile" };
+            projectile.collisionDamage = 100;
+            projectile.tag = "enemy projectile";
         }
-
-
         bool goleft1 = false;
         bool goright1 = true;
-        bool stop = false;
-     
+        bool stop = false;  
         public override void Tick()
         {
-            //   Position = Position -= Speed * 2 / 1000f;
-
+            base.Tick();
+            Shoot(0);
             if (stop == false)
             {
-                Position.Y = Position.Y + 3f;
+                Velocity.Y = 150;
             }
 
+            if (stop == true)
+            {
+                Velocity.Y = 0;
+            }
 
             if (Position.Y >= 100)
             {
                 stop = true;
-                //Speed = new System.Numerics.Vector2(1000, -1000);
-                //   showHitbox = true;
-                // Position.Y = Position.Y + 5f;
                 if (Position.X > 30 && Position.X < 60)
                 {
-                    //  Position.X = Position.X + 5f;
                     goright1 = true;
                     goleft1 = false;
                 }
@@ -143,15 +133,14 @@ namespace SpaceShoote_wpf.GameObjects
                     goleft1 = true;
                 }
 
-
                 if (goleft1 == true && goright1 == false)
                 {
-                    Position.X = Position.X - 10f;
+                    Velocity.X = -300;
                 }
 
                 if (goleft1 == false && goright1 == true)
                 {
-                    Position.X = Position.X + 10f;
+                    Velocity.X = 300;
                 }
 
             }
@@ -162,25 +151,20 @@ namespace SpaceShoote_wpf.GameObjects
 
     public class Enemy3 : Ship
     {
-        public int points = 10;
-
         public Enemy3(MainWindow mainwindow, GameWorld world)
         {
             mainWindow = mainwindow;
             gameWorld = world;
+            points = 10;
+            life = 50;
             Position = new System.Numerics.Vector2(300, -100);
             spriteSizeX = 16;
             spriteSizeY = 16;
-
             spriteCycle = 1;
-
             slowFactor = 0.5f;
             hitboxRadius = 5;
             transitionDuration = 200;
             showHitbox = false;
-
-            //   Speed = new System.Numerics.Vector2(300, 300);
-
             spriteSheet = BitmapFactory.FromResource("graphics/aliens/beetle_spreadsheet_x16x16.png");
         }
 
@@ -188,18 +172,12 @@ namespace SpaceShoote_wpf.GameObjects
         bool goright2 = true;
         public override void Tick()
         {
-            //   Position = Position -= Speed * 2 / 1000f;
-
-            Position.Y = Position.Y + 2f;
-
+            base.Tick();
+            Velocity.Y = 50;
             if (Position.Y >= 100)
             {
-                //Speed = new System.Numerics.Vector2(1000, -1000);
-                //   showHitbox = true;
-                // Position.Y = Position.Y + 5f;
                 if (Position.X > 30 && Position.X < 60)
                 {
-                    //  Position.X = Position.X + 5f;
                     goright2 = true;
                     goleft2 = false;
                 }
@@ -210,15 +188,14 @@ namespace SpaceShoote_wpf.GameObjects
                     goleft2 = true;
                 }
 
-
                 if (goleft2 == true && goright2 == false)
                 {
-                    Position.X = Position.X - 5f;
+                    Velocity.X = -400;
                 }
 
                 if (goleft2 == false && goright2 == true)
                 {
-                    Position.X = Position.X + 5f;
+                    Velocity.X = 400;
                 }
 
             }
@@ -228,25 +205,21 @@ namespace SpaceShoote_wpf.GameObjects
 
     public class Enemy4 : Ship
     {
-        public int points = 10;
 
         public Enemy4(MainWindow mainwindow, GameWorld world)
         {
             mainWindow = mainwindow;
             gameWorld = world;
+            points = 10;
+            life = 50;
             Position = new System.Numerics.Vector2(100, -100);
             spriteSizeX = 16;
             spriteSizeY = 16;
-
             spriteCycle = 1;
-
             slowFactor = 0.5f;
             hitboxRadius = 10;
             transitionDuration = 200;
             showHitbox = false;
-
-            Speed = new System.Numerics.Vector2(300, 300);
-
             spriteSheet = BitmapFactory.FromResource("graphics/aliens/skitter_spreadsheet_x16x16.png");
         }
         bool goright3 = true;
@@ -255,19 +228,20 @@ namespace SpaceShoote_wpf.GameObjects
         bool goup = false;
         public override void Tick()
         {
-            //   Position = Position -= Speed * 2 / 1000f;
+            base.Tick();
             if (godown == true)
             {
-                Position.Y = Position.Y + 3f;
+                Velocity.Y = 300;
             }
 
             if (goup == true)
             {
-                Position.Y = Position.Y - 3f;
+                Velocity.Y = -300;
             }
 
             if (Position.Y>= 100 && Position.Y <= 105)
             {
+                //shoot
                 godown = true;
                 goup = false;
             }
@@ -281,12 +255,8 @@ namespace SpaceShoote_wpf.GameObjects
 
             if (Position.Y >= 100 && Position.Y <=500)
             {
-                //Speed = new System.Numerics.Vector2(1000, -1000);
-                //   showHitbox = true;
-                // Position.Y = Position.Y + 5f;
                 if (Position.X > 30 && Position.X < 60)
                 {
-                    //  Position.X = Position.X + 5f;
                     goright3 = true;
                     goleft3 = false;
                 }
@@ -300,12 +270,12 @@ namespace SpaceShoote_wpf.GameObjects
 
                 if (goleft3 == true && goright3 == false)
                 {
-                    Position.X = Position.X - 5f;
+                    Velocity.X = -200;
                 }
 
                 if (goleft3 == false && goright3 == true)
                 {
-                    Position.X = Position.X + 5f;
+                    Velocity.X = 200;
                 }
 
             }
@@ -315,27 +285,22 @@ namespace SpaceShoote_wpf.GameObjects
 
     public class Enemy5 : Ship
     {
-        public int points = 10;
-
         public Enemy5(MainWindow mainwindow, GameWorld world)
         {
             mainWindow = mainwindow;
             gameWorld = world;
+            points = 5;
+            life = 50;
             float offset = 3.5f;
             var rand2 = new Random();
             Position = new System.Numerics.Vector2(rand2.Next(100) * offset, -100);
             spriteSizeX = 16;
             spriteSizeY = 16;
-
             spriteCycle = 1;
-
             slowFactor = 0.5f;
             hitboxRadius = 5;
             transitionDuration = 200;
             showHitbox = false;
-
-          //  Speed = new System.Numerics.Vector2(300, 300);
-
             spriteSheet = BitmapFactory.FromResource("graphics/aliens/disc_spreadsheet_x16x16.png");
         }
 
@@ -344,18 +309,13 @@ namespace SpaceShoote_wpf.GameObjects
 
         public override void Tick()
         {
-            //   Position = Position -= Speed * 2 / 1000f;
+            base.Tick();
+            Velocity.Y = 40;
 
-            Position.Y = Position.Y + 1f;
-
-            if (Position.Y >= 200)
+            if (Position.Y >= 30)
             {
-                //Speed = new System.Numerics.Vector2(1000, -1000);
-                //   showHitbox = true;
-                // Position.Y = Position.Y + 5f;
                 if (Position.X > 30 && Position.X < 60)
                 {
-                    //  Position.X = Position.X + 5f;
                     goright = true;
                     goleft = false;
                 }
@@ -369,12 +329,12 @@ namespace SpaceShoote_wpf.GameObjects
 
                 if (goleft == true && goright == false)
                 {
-                    Position.X = Position.X - 5f;
+                    Velocity.X = -500;
                 }
 
                 if (goleft == false && goright == true)
                 {
-                    Position.X = Position.X + 5f;
+                    Velocity.X = 500;
                 }
 
             }
@@ -384,26 +344,22 @@ namespace SpaceShoote_wpf.GameObjects
 
     public class Enemy6 : Ship
     {
-        public int points = 10;
-
         public Enemy6(MainWindow mainwindow, GameWorld world)
         {
             mainWindow = mainwindow;
             gameWorld = world;
+            points = 5;
+            life = 10;
             var rand = new Random();
-            Position = new System.Numerics.Vector2(rand.Next(500), -100);
+            Position = new System.Numerics.Vector2(rand.Next(100), -100);
             spriteSizeX = 12;
             spriteSizeY = 11;
-
             spriteCycle = 1;
-
             slowFactor = 0.5f;
             hitboxRadius = 5;
             transitionDuration = 200;
             showHitbox = false;
-
             Speed = new System.Numerics.Vector2(300, 300);
-
             spriteSheet = BitmapFactory.FromResource("graphics/aliens/eye_spreadsheet_x16x16.png");
         }
 
@@ -412,18 +368,13 @@ namespace SpaceShoote_wpf.GameObjects
 
         public override void Tick()
         {
-            //   Position = Position -= Speed * 2 / 1000f;
-
-            Position.Y = Position.Y + 10f;
+            base.Tick();
+            Velocity.Y = 400;
 
             if (Position.Y >= 200)
             {
-                //Speed = new System.Numerics.Vector2(1000, -1000);
-                //   showHitbox = true;
-                // Position.Y = Position.Y + 5f;
                 if (Position.X > 30 && Position.X < 60)
                 {
-                    //  Position.X = Position.X + 5f;
                     goright = true;
                     goleft = false;
                 }
@@ -437,12 +388,12 @@ namespace SpaceShoote_wpf.GameObjects
 
                 if (goleft == true && goright == false)
                 {
-                    Position.X = Position.X - 5f;
+                    Velocity.X = -100;
                 }
 
                 if (goleft == false && goright == true)
                 {
-                    Position.X = Position.X + 5f;
+                    Velocity.X = 100;
                 }
 
             }
@@ -452,25 +403,21 @@ namespace SpaceShoote_wpf.GameObjects
 
     public class Enemy7 : Ship
     {
-        public int points = 10;
 
         public Enemy7(MainWindow mainwindow, GameWorld world)
         {
             mainWindow = mainwindow;
             gameWorld = world;
+            points = 15;
+            life = 10;
             Position = new System.Numerics.Vector2(300, -100);
             spriteSizeX = 12;
             spriteSizeY = 10;
-
             spriteCycle = 1;
-
             slowFactor = 0.5f;
             hitboxRadius = 5;
             transitionDuration = 200;
             showHitbox = false;
-
-            //   Speed = new System.Numerics.Vector2(300, 300);
-
             spriteSheet = BitmapFactory.FromResource("graphics/aliens/drone2_spreadsheet_x12x10.png");
         }
 
@@ -478,18 +425,12 @@ namespace SpaceShoote_wpf.GameObjects
         bool goright2 = true;
         public override void Tick()
         {
-            //   Position = Position -= Speed * 2 / 1000f;
-
-            Position.Y = Position.Y + 3f;
-
+            base.Tick();
+            Velocity.Y = 100;
             if (Position.Y >= 0)
             {
-                //Speed = new System.Numerics.Vector2(1000, -1000);
-                //   showHitbox = true;
-                // Position.Y = Position.Y + 5f;
                 if (Position.X > 0 && Position.X < 20)
                 {
-                    //  Position.X = Position.X + 5f;
                     goright2 = true;
                     goleft2 = false;
                 }
@@ -503,12 +444,12 @@ namespace SpaceShoote_wpf.GameObjects
 
                 if (goleft2 == true && goright2 == false)
                 {
-                    Position.X = Position.X - 5f;
+                    Velocity.X = -400;
                 }
 
                 if (goleft2 == false && goright2 == true)
                 {
-                    Position.X = Position.X + 5f;
+                    Velocity.X = 100;
                 }
 
             }
@@ -518,25 +459,21 @@ namespace SpaceShoote_wpf.GameObjects
 
     public class Enemy8 : Ship
     {
-        public int points = 10;
-
         public Enemy8(MainWindow mainwindow, GameWorld world)
         {
             mainWindow = mainwindow;
             gameWorld = world;
+            points = 10;
+            life = 50;
             Position = new System.Numerics.Vector2(100, -100);
             spriteSizeX = 16;
             spriteSizeY = 16;
-
             spriteCycle = 1;
-
             slowFactor = 0.5f;
             hitboxRadius = 10;
             transitionDuration = 200;
             showHitbox = false;
-
             Speed = new System.Numerics.Vector2(300, 300);
-
             spriteSheet = BitmapFactory.FromResource("graphics/aliens/fish_spreadsheet_x16x16.png");
         }
         bool goright3 = true;
@@ -545,15 +482,15 @@ namespace SpaceShoote_wpf.GameObjects
         bool goup = false;
         public override void Tick()
         {
-            //   Position = Position -= Speed * 2 / 1000f;
+            base.Tick();
             if (godown == true)
             {
-                Position.Y = Position.Y + 8f;
+                Velocity.Y = 350;
             }
 
             if (goup == true)
             {
-                Position.Y = Position.Y - 8f;
+                Velocity.Y = -350;
             }
 
             if (Position.Y >= 100 && Position.Y <= 105)
@@ -571,12 +508,8 @@ namespace SpaceShoote_wpf.GameObjects
 
             if (Position.Y >= 100 && Position.Y <= 600)
             {
-                //Speed = new System.Numerics.Vector2(1000, -1000);
-                //   showHitbox = true;
-                // Position.Y = Position.Y + 5f;
                 if (Position.X > 30 && Position.X < 60)
                 {
-                    //  Position.X = Position.X + 5f;
                     goright3 = true;
                     goleft3 = false;
                 }
@@ -590,12 +523,12 @@ namespace SpaceShoote_wpf.GameObjects
 
                 if (goleft3 == true && goright3 == false)
                 {
-                    Position.X = Position.X - 10f;
+                    Velocity.X = -350;
                 }
 
                 if (goleft3 == false && goright3 == true)
                 {
-                    Position.X = Position.X + 10f;
+                    Velocity.X = 350;
                 }
 
             }
@@ -605,27 +538,22 @@ namespace SpaceShoote_wpf.GameObjects
 
     public class Enemy9 : Ship
     {
-        public int points = 10;
-
         public Enemy9(MainWindow mainwindow, GameWorld world)
         {
             mainWindow = mainwindow;
             gameWorld = world;
+            points = 40;
+            life = 500;
             var rand2 = new Random();
             float offset = 3.5f;
             Position = new System.Numerics.Vector2(rand2.Next(100) * offset, -100);
             spriteSizeX = 26;
             spriteSizeY = 30;
-
             spriteCycle = 1;
-
             slowFactor = 0.5f;
             hitboxRadius = 10;
             transitionDuration = 200;
             showHitbox = false;
-
-            //  Speed = new System.Numerics.Vector2(300, 300);
-
             spriteSheet = BitmapFactory.FromResource("graphics/aliens/brain_spreadsheet_x26x30.png");
         }
 
@@ -636,23 +564,22 @@ namespace SpaceShoote_wpf.GameObjects
 
         public override void Tick()
         {
-            //   Position = Position -= Speed * 2 / 1000f;
-
+            base.Tick();
             if (stop == false)
             {
-                Position.Y = Position.Y + 10f;
+                Velocity.Y = 1000;
             }
 
+            if (stop == true)
+            {
+                Velocity.Y = 0;
+            }
 
             if (Position.Y >= 300)
             {
                 stop = true;
-                //Speed = new System.Numerics.Vector2(1000, -1000);
-                //   showHitbox = true;
-                // Position.Y = Position.Y + 5f;
                 if (Position.X > 30 && Position.X < 60)
                 {
-                    //  Position.X = Position.X + 5f;
                     goright1 = true;
                     goleft1 = false;
                 }
@@ -666,12 +593,12 @@ namespace SpaceShoote_wpf.GameObjects
 
                 if (goleft1 == true && goright1 == false)
                 {
-                    Position.X = Position.X - 2f;
+                    Velocity.X = -50;
                 }
 
                 if (goleft1 == false && goright1 == true)
                 {
-                    Position.X = Position.X + 2f;
+                    Velocity.X = 50;
                 }
 
             }
@@ -682,25 +609,24 @@ namespace SpaceShoote_wpf.GameObjects
 
     public class Boss : Ship
     {
-        public int points = 10;
-
         public Boss(MainWindow mainwindow, GameWorld world)
         {
             mainWindow = mainwindow;
             gameWorld = world;
-            Position = new System.Numerics.Vector2(250, -100);
+            points = 500;
+            life = 5000;
+            Position = new System.Numerics.Vector2(250, -250);
             spriteSizeX = 92;
             spriteSizeY = 114;
-
             spriteCycle = 1;
-
             slowFactor = 0.5f;
-            hitboxRadius = 4;
+            hitboxRadius = 40;
             transitionDuration = 200;
+            collisionDamage = 1000;
+            tag = "enemy";
             showHitbox = false;
-
-            //Speed = new System.Numerics.Vector2(300, 300);
-
+            boundToWindow = false;
+            deleteOffcreen = false;
             spriteSheet = BitmapFactory.FromResource("graphics/aliens/boss_snail_spreadsheet_x92x114.png");
         }
 
@@ -710,23 +636,23 @@ namespace SpaceShoote_wpf.GameObjects
 
         public override void Tick()
         {
-            //   Position = Position -= Speed * 2 / 1000f;
-
+            base.Tick();
             if (stop == false)
             {
-                Position.Y = Position.Y + 3f;
+                Velocity.Y = 30;
+            }
+
+            if (stop == true)
+            {
+                Velocity.Y = 0;
             }
 
 
             if (Position.Y >= 100)
             {
                 stop = true;
-                //Speed = new System.Numerics.Vector2(1000, -1000);
-                //   showHitbox = true;
-                // Position.Y = Position.Y + 5f;
                 if (Position.X > 30 && Position.X < 60)
                 {
-                    //  Position.X = Position.X + 5f;
                     goright1 = true;
                     goleft1 = false;
                 }
@@ -740,18 +666,14 @@ namespace SpaceShoote_wpf.GameObjects
 
                 if (goleft1 == true && goright1 == false)
                 {
-                    Position.X = Position.X - 1f;
+                    Velocity.X = -10;
                 }
 
                 if (goleft1 == false && goright1 == true)
                 {
-                    Position.X = Position.X + 1f;
+                    Velocity.X = 10;
                 }
-
             }
-
-
         }
     }
-
 }

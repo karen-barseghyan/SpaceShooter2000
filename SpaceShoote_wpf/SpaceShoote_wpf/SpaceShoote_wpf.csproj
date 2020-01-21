@@ -167,5 +167,17 @@
     <Resource Include="graphics\ui\background_stars_layer3.png" />
     <Resource Include="graphics\ui\layertester.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="graphics\projectiles\projectile1_spreadsheet_x12x12.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="graphics\projectiles\projectile2_spreadsheet_x10x14.png" />
+    <Resource Include="graphics\projectiles\projectile3_spreadsheet_x11x11.png" />
+    <Resource Include="graphics\projectiles\projectile4_spreadsheet_x11x11.png" />
+    <Resource Include="graphics\projectiles\projectile5_spreadsheet_x11x11.png" />
+    <Resource Include="graphics\projectiles\projectile6_spreadsheet_x11x13.png" />
+    <Resource Include="graphics\projectiles\rocket_spreadsheet_x8x16.png" />
+    <Resource Include="graphics\projectiles\shot_x16x17.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

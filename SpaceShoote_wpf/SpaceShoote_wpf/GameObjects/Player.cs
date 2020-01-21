@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 
 namespace SpaceShoote_wpf.GameObjects
 {
-    class Player : Ship
+    public class Player : Ship
     {
         Key goLeft1;
         Key goLeft2;
@@ -47,6 +47,8 @@ namespace SpaceShoote_wpf.GameObjects
             Scale.Y = 1.5f;
             spriteCycle = 0;
 
+            tag = "player";
+            collisionMask = new string[] { "player projectile", "player"};
             life = 1000;
 
             Speed = new Vector2(800, 800);
@@ -54,10 +56,40 @@ namespace SpaceShoote_wpf.GameObjects
             mouse_mode = 1;
             hitboxRadius = 10;
             transitionDuration = 200;
-            showHitbox = true;
+            showHitbox = false;
             boundToWindow = true;
             
             spriteSheet = BitmapFactory.FromResource("graphics/player/ship_spreadsheet_x32x32.png");
+
+            // PROJECTILE 1
+            fireRate1 = 0.1f;
+
+            projectile = new Projectile(mainWindow, gameWorld);
+
+            projectile.Velocity = new Vector2(0, -800);
+            projectile.spriteSheet = BitmapFactory.FromResource("graphics/projectiles/projectile1_spreadsheet_x12x12.png");
+            projectile.spriteSizeX = 12;
+            projectile.spriteSizeY = 12;
+            projectile.Scale = new Vector2(2, 2);
+            projectile.collisionMask = new string[] { "player", "player projectile" };
+            projectile.collisionDamage = 50;
+            projectile.tag = "player projectile";
+
+            // PROJECTILE 2
+            fireRate2 = 1f;
+            projectile1 = new Projectile(mainWindow, gameWorld);
+            projectile1.Velocity = new Vector2(0, -600);
+            projectile1.spriteSheet = BitmapFactory.FromResource("graphics/projectiles/projectile2_spreadsheet_x10x14.png");
+            projectile1.spriteSizeX = 10;
+            projectile1.spriteSizeY = 14;
+            projectile1.Scale = new Vector2(5, 5);
+            projectile1.hitboxRadius = 12;
+            projectile1.collisionMask = new string[] { "player", "player projectile" };
+            projectile1.tag = "player projectile";
+            projectile1.collisionDamage = 100000;
+            projectile1.life = 10;
+            projectile1.oneHit = false; // it deals damage over time
+
             InitializeKeyInputs();
         }
         
@@ -193,7 +225,7 @@ namespace SpaceShoote_wpf.GameObjects
             mainWindow.DebugPlayerPos(Position);
             mainWindow.DebugPlayerV(Velocity);
             mainWindow.DebugPlayerLife(life);
-
+            mainWindow.DebugPlayerScore(gameWorld.score);
             base.Tick();
         }
 
