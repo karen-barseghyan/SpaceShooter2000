@@ -68,8 +68,8 @@
             <TextBox x:Name="Object_Counter" HorizontalAlignment="Left" Height="22" Margin="271,26,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="64" RenderTransformOrigin="0.178,0.306" IsEnabled="False"/>
             <Label Content="HP" HorizontalAlignment="Left" Margin="21,313,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.838,-0.961"/>
             <TextBox x:Name="Player_Life" HorizontalAlignment="Left" Height="22" Margin="58,317,0,0" TextWrapping="Wrap" Text="1000" VerticalAlignment="Top" Width="64" RenderTransformOrigin="0.178,0.306" IsEnabled="False"/>
-            <Label Content="Score" HorizontalAlignment="Left" Margin="21,355,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.838,-0.961"/>
-            <TextBox x:Name="Player_Score" HorizontalAlignment="Left" Height="22" Margin="58,355,0,0" TextWrapping="Wrap" Text="1000" VerticalAlignment="Top" Width="64" RenderTransformOrigin="0.178,0.306" IsEnabled="False"/>
+            <Label Content="Score" HorizontalAlignment="Left" Margin="10,354,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.838,-0.961"/>
+            <TextBox x:Name="Player_Score" HorizontalAlignment="Left" Height="22" Margin="58,358,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="64" RenderTransformOrigin="0.178,0.306" IsEnabled="False"/>
         </Grid>
     </Grid>
 

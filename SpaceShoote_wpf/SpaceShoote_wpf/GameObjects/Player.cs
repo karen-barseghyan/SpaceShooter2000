@@ -56,7 +56,7 @@ namespace SpaceShoote_wpf.GameObjects
             mouse_mode = 1;
             hitboxRadius = 10;
             transitionDuration = 200;
-            showHitbox = false;
+            showHitbox = true;
             boundToWindow = true;
             
             spriteSheet = BitmapFactory.FromResource("graphics/player/ship_spreadsheet_x32x32.png");
@@ -71,8 +71,8 @@ namespace SpaceShoote_wpf.GameObjects
             projectile.spriteSizeX = 12;
             projectile.spriteSizeY = 12;
             projectile.Scale = new Vector2(2, 2);
-            projectile.collisionMask = new string[] { "player", "player projectile" };
-            projectile.collisionDamage = 50;
+            projectile.collisionMask = new string[] { "player", "player projectile", "enemy projectile" };
+            projectile.collisionDamage = 20;
             projectile.tag = "player projectile";
 
             // PROJECTILE 2
@@ -84,10 +84,10 @@ namespace SpaceShoote_wpf.GameObjects
             projectile1.spriteSizeY = 14;
             projectile1.Scale = new Vector2(5, 5);
             projectile1.hitboxRadius = 12;
-            projectile1.collisionMask = new string[] { "player", "player projectile" };
+            projectile1.collisionMask = new string[] { "player", "player projectile" }; // collides with enemy projectiles
             projectile1.tag = "player projectile";
-            projectile1.collisionDamage = 100000;
-            projectile1.life = 10;
+            projectile1.collisionDamage = 500;
+            projectile1.life = 100;
             projectile1.oneHit = false; // it deals damage over time
 
             InitializeKeyInputs();
@@ -224,8 +224,9 @@ namespace SpaceShoote_wpf.GameObjects
             //debugging info
             mainWindow.DebugPlayerPos(Position);
             mainWindow.DebugPlayerV(Velocity);
-            mainWindow.DebugPlayerLife(life);
+            mainWindow.DebugPlayerLife((int)life);
             mainWindow.DebugPlayerScore(gameWorld.score);
+
             base.Tick();
         }
 

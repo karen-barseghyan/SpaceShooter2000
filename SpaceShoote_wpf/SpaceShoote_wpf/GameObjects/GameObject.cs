@@ -33,7 +33,6 @@ namespace SpaceShoote_wpf.GameObjects
         public Vector2 Speed = new Vector2(0, 0);
         public float slowFactor = 0;
         public bool boundToWindow = false;
-        public bool deleteOffcreen = true;
         //hitbox / other variables
         public float hitboxRadius = 10;
         public Vector2 Position = new Vector2(0, 0);
@@ -44,11 +43,12 @@ namespace SpaceShoote_wpf.GameObjects
         public string tag = "enemy";
         public string[] collisionMask = { "enemy", "enemy projectile" }; // by tag
         public int group;
-        public int collisionDamage = 100;
+        public int collisionDamage = 500;
         public bool oneHit = false; //if oneHit, doesn't multiply damage by deltatime
         public float life = 100;
         public int points = 10;
         private bool markedForDeletion = false;
+        public bool deleteOffscreen = true;
 
         // time since last time running this function 
         public virtual void Tick()
@@ -119,8 +119,8 @@ namespace SpaceShoote_wpf.GameObjects
                             {
                                 if (o.oneHit)
                                 {
-                                    o.life = 0;
                                     life -= o.collisionDamage;
+                                    o.life = 0;
                                 }
                                 else
                                     life -= o.collisionDamage * gameWorld.deltatime / 1000;
@@ -156,7 +156,7 @@ namespace SpaceShoote_wpf.GameObjects
             }
 
             // delete the object if it goes too far offscreen
-            if ((Position.X > mainWindow.width + 100 || Position.X < -100 || Position.Y > mainWindow.height + 100 || Position.Y < -100) && deleteOffcreen)
+            if ((Position.X > mainWindow.width + 100 || Position.X < -100 || Position.Y > mainWindow.height + 100 || Position.Y < -100) && deleteOffscreen)
                 markedForDeletion = true;
         }
 

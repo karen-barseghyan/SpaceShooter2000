@@ -89,8 +89,8 @@ namespace SpaceShoote_wpf.GameWorlds
                     {
                         wavesCleared++;
                         score += currentWave.WaveClearScore;
-                        //currentWave.GenerateWave(random.Next(10, 10));
-                        currentWave.GenerateWave(10);
+                        currentWave.GenerateWave(random.Next(1, 10));
+                        //currentWave.GenerateWave(10);
                     }
                     else
                     {

@@ -103,6 +103,7 @@
     <None Include="graphics\aliens\WhatToPutHere" />
     <None Include="graphics\GraphicSource" />
     <None Include="graphics\player\WhatToPutHere" />
+    <None Include="graphics\powerups\AnimationInstructions" />
     <None Include="graphics\powerups\WhatToPutHere" />
     <None Include="graphics\projectiles\WhatToPutHere" />
     <Resource Include="graphics\ui\PressStart2P.ttf" />
@@ -118,24 +119,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="graphics\aliens\brain_spreadsheet_x26x30.png" />
-    <Resource Include="graphics\aliens\disc_spreadsheet_x16x16.png" />
-    <Resource Include="graphics\aliens\eye_tentacle_spreadsheet_x16x16.png" />
-    <Resource Include="graphics\aliens\spikeball_spreadsheet_x15x15.png" />
-    <Resource Include="graphics\aliens\tentactle_spreadsheet_x12x32.png" />
-    <Resource Include="graphics\player\ship_spreadsheet_x32x32.png" />
-    <Resource Include="graphics\powerups\all_power_spreadsheet_x16x16.png" />
-    <Resource Include="graphics\powerups\firerate_power_spreadsheet_x15x15.png" />
-    <Resource Include="graphics\powerups\flankshot_spreadsheet_x16x15.png" />
-    <Resource Include="graphics\powerups\horse_power_spreadsheet_x16x16.png" />
-    <Resource Include="graphics\powerups\life_spreadsheet_x10x9.png" />
-    <Resource Include="graphics\powerups\mystery_power_spreadsheet_x12x16.png" />
-    <Resource Include="graphics\powerups\powerup_container_spreadsheet_x16x16.png" />
-    <Resource Include="graphics\powerups\powerup_power_spreadsheet_x15x15.png" />
-    <Resource Include="graphics\powerups\powerup_speed_spreadsheet_x15x15.png" />
-    <Resource Include="graphics\ui\font_spreadsheet_x11x16.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="config.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -143,12 +126,15 @@
     <Resource Include="graphics\aliens\beetle_spreadsheet_x16x16.png" />
     <Resource Include="graphics\aliens\boss_snail_spreadsheet_x92x114.png" />
     <Resource Include="graphics\aliens\boss_zeppelin_spreadsheet_x92x140.png" />
+    <Resource Include="graphics\aliens\brain_spreadsheet_x26x30.png" />
     <Resource Include="graphics\aliens\cellbubbler_spreadsheet_x24x25.png" />
     <Resource Include="graphics\aliens\coralshoot_spreadsheet_x32x32.png" />
+    <Resource Include="graphics\aliens\disc_spreadsheet_x16x16.png" />
     <Resource Include="graphics\aliens\drone1_spreadsheet_x12x11.png" />
     <Resource Include="graphics\aliens\drone2_spreadsheet_x12x10.png" />
     <Resource Include="graphics\aliens\enemyrotator_spreadsheet_x21x27.png" />
     <Resource Include="graphics\aliens\eye_spreadsheet_x16x16.png" />
+    <Resource Include="graphics\aliens\eye_tentacle_spreadsheet_x16x16.png" />
     <Resource Include="graphics\aliens\fish_spreadsheet_x16x16.png" />
     <Resource Include="graphics\aliens\frogger1_spreadsheet_x12x14.png" />
     <Resource Include="graphics\aliens\frogger2_spreadsheet_x12x14.png" />
@@ -157,20 +143,23 @@
     <Resource Include="graphics\aliens\megabeetle_spreadsheet_x32x32.png" />
     <Resource Include="graphics\aliens\motherbase_spreadsheet_x143x81.png" />
     <Resource Include="graphics\aliens\skitter_spreadsheet_x16x16.png" />
+    <Resource Include="graphics\aliens\spikeball_spreadsheet_x15x15.png" />
     <Resource Include="graphics\aliens\spiker_spreadsheet_x23x26.png" />
+    <Resource Include="graphics\aliens\tentactle_spreadsheet_x12x32.png" />
     <Resource Include="graphics\aliens\wasp_spreadsheet_x32x32.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="graphics\ui\background_stars_layer0.png" />
-    <Resource Include="graphics\ui\background_stars_layer1.png" />
-    <Resource Include="graphics\ui\background_stars_layer2.png" />
-    <Resource Include="graphics\ui\background_stars_layer3.png" />
-    <Resource Include="graphics\ui\layertester.png" />
-  </ItemGroup>
-  <ItemGroup>
+    <Resource Include="graphics\player\ship_spreadsheet_x32x32.png" />
+    <Resource Include="graphics\powerups\all_power_spreadsheet_x16x16.png" />
+    <Resource Include="graphics\powerups\firerate_power_spreadsheet_x15x15.png" />
+    <Resource Include="graphics\powerups\flankshot_spreadsheet_x16x15.png" />
+    <Resource Include="graphics\powerups\horse_power_spreadsheet_x16x16.png" />
+    <Resource Include="graphics\powerups\life_spreadsheet_x10x9.png" />
+    <Resource Include="graphics\powerups\mystery_power_spreadsheet_x12x16.png" />
+    <Resource Include="graphics\powerups\powerups_spreadsheet_x24x28.png" />
+    <Resource Include="graphics\powerups\powerup_container_spreadsheet_x16x16.png" />
+    <Resource Include="graphics\powerups\powerup_power_spreadsheet_x15x15.png" />
+    <Resource Include="graphics\powerups\powerup_speed_spreadsheet_x15x15.png" />
+    <Resource Include="graphics\powerups\sideshoot_spreadsheet_x16x32.png" />
     <Resource Include="graphics\projectiles\projectile1_spreadsheet_x12x12.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="graphics\projectiles\projectile2_spreadsheet_x10x14.png" />
     <Resource Include="graphics\projectiles\projectile3_spreadsheet_x11x11.png" />
     <Resource Include="graphics\projectiles\projectile4_spreadsheet_x11x11.png" />
@@ -178,6 +167,12 @@
     <Resource Include="graphics\projectiles\projectile6_spreadsheet_x11x13.png" />
     <Resource Include="graphics\projectiles\rocket_spreadsheet_x8x16.png" />
     <Resource Include="graphics\projectiles\shot_x16x17.png" />
+    <Resource Include="graphics\ui\background_stars_layer0.png" />
+    <Resource Include="graphics\ui\background_stars_layer1.png" />
+    <Resource Include="graphics\ui\background_stars_layer2.png" />
+    <Resource Include="graphics\ui\background_stars_layer3.png" />
+    <Resource Include="graphics\ui\font_spreadsheet_x11x16.png" />
+    <Resource Include="graphics\ui\layertester.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
