@@ -14,27 +14,6 @@ namespace SpaceShoote_wpf.GameObjects
 {
     public class Player : Ship
     {
-        Key goLeft1;
-        Key goLeft2;
-        Key goRight1;
-        Key goRight2;
-        Key goUp1;
-        Key goUp2;
-        Key goDown1;
-        Key goDown2;
-        Key shoot1;
-        Key shoot2;
-        Key bomb;
-        Key pause;
-        Key slow1;
-        MouseAction shoot1mouse;
-        MouseAction shoot2mouse;
-        
-        bool useMouse;
-        Vector2 mousePreviousPos;
-        Vector2 newMousePos;
-        int mouse_mode; // 0 - no mouse, 1 - mouse mode 1, 2 - mouse mode 2
-
         int flameSpriteCount = 2;
         float flameTransitionDuration = 100;
         TimeSpan flameTransitionTime = TimeSpan.FromMilliseconds(0);
@@ -57,7 +36,6 @@ namespace SpaceShoote_wpf.GameObjects
 
             Speed = new Vector2(800, 800);
             slowFactor = 0.5f;
-            mouse_mode = 1;
             hitboxRadius = 10;
             transitionDuration = 200;
             showHitbox = false;
@@ -97,35 +75,7 @@ namespace SpaceShoote_wpf.GameObjects
             projectile1.collisionDamage = 500;
             projectile1.life = 100;
             projectile1.oneHit = false; // it deals damage over time
-
-            InitializeKeyInputs();
         }
-        
-        private void InitializeKeyInputs()
-        {
-            goLeft1 = Key.A;
-            goLeft2 = Key.Left;
-
-            goRight1 = Key.D;
-            goRight2 = Key.Right;
-
-            goUp1 = Key.W;
-            goUp2 = Key.Up;
-
-            goDown1 = Key.S;
-            goDown2 = Key.Down;
-
-            shoot1 = Key.E;
-            shoot2 = Key.F;
-            shoot1mouse = MouseAction.LeftClick;
-            shoot2mouse = MouseAction.RightClick;
-            
-            bomb = Key.Space;
-            pause = Key.Escape;
-
-            slow1 = Key.LeftShift;
-        }
-        
 
         //player constructor with main window for reference and starting position
         public Player(MainWindow mainwindow, float posx, float posy)
@@ -137,98 +87,40 @@ namespace SpaceShoote_wpf.GameObjects
         // tick function of player, runs every frame
         public override void Tick()
         {
-            float x = 0;
-            float y = 0;
 
-            //newMousePos = mainWindow.mousePos;
-            newMousePos = new Vector2((float)Mouse.GetPosition(Application.Current.MainWindow).X, (float)Mouse.GetPosition(Application.Current.MainWindow).Y);
-
-            // doesn't update cursor position if it would be outside of game window
-            if (!(newMousePos.X < mainWindow.width && newMousePos.Y > 0 && newMousePos.Y < mainWindow.height) && mouse_mode == 1)
-                newMousePos = mousePreviousPos;
-            
-            // makes game use mouse logic for movement rather than keybord if mouse movement was detected
-            if (newMousePos != mousePreviousPos && mousePreviousPos != null && newMousePos.X > 0)
-            {
-                useMouse = true;
-            }
-
-            // movement actions
-            if (Keyboard.IsKeyDown(goLeft1) || Keyboard.IsKeyDown(goLeft2))
-            {
-                x += -Speed.X;
-                useMouse = false;
-                mainWindow.LightUpInput("Go_Left");
-            }
-                
-            if (Keyboard.IsKeyDown(goRight1) || Keyboard.IsKeyDown(goRight2))
-            {
-                x += Speed.X;
-                useMouse = false;
-                mainWindow.LightUpInput("Go_Right");
-            }
-               
-            if (Keyboard.IsKeyDown(goUp1) || Keyboard.IsKeyDown(goUp2))
-            {
-                y += -Speed.Y;
-                useMouse = false;
-                mainWindow.LightUpInput("Go_Up");
-            }
-                
-            if (Keyboard.IsKeyDown(goDown1) || Keyboard.IsKeyDown(goDown2))
-            {
-                y += Speed.Y;
-                useMouse = false;
-                mainWindow.LightUpInput("Go_Down");
-            }
-
-            // shoot actions
-
-            if (Keyboard.IsKeyDown(shoot1) || Mouse.LeftButton == MouseButtonState.Pressed)
-            {
-                mainWindow.LightUpInput("Shoot");
-                Shoot(0);
-            }
-
-            if (Keyboard.IsKeyDown(shoot2) || Mouse.RightButton == MouseButtonState.Pressed)
-            {
-                mainWindow.LightUpInput("Shoot2");
-                Shoot(1);
-            }
-
-            // misc actions
-
-            if (Keyboard.IsKeyDown(slow1))
-            {
-                mainWindow.LightUpInput("Slow");
-            }
-            if (Keyboard.IsKeyDown(bomb))
-            {
-                mainWindow.LightUpInput("Bomb");
-            }
-
-            if (Keyboard.IsKeyDown(pause))
-            {
-                gameWorld.Pause();
-                mainWindow.PauseBt.Content = "Unpause";
-            }
 
             // determines velocity for player depending on cursor position
             // ship will fly towards cursor even if mouse is not being moved as long it is in a diffirent position
-            if (useMouse && newMousePos != null)
+            
+            if (mainWindow.inputs.useMouse && mainWindow.inputs.newMousePos != null)
             {
-                Vector2 target = newMousePos - Position;
+                Vector2 target = mainWindow.inputs.newMousePos - Position;
                 if (target.LengthSquared() > 40)
                     target = Vector2.Normalize(target) * Speed.X;
                 else
                     target = Vector2.Zero;
                 Velocity = target;
+            } else if (mainWindow.inputs.move != Vector2.Zero)
+            {
+                Velocity = Vector2.Normalize(mainWindow.inputs.move) * Speed;
+                if (mainWindow.inputs.slow)
+                {
+                    Velocity *= slowFactor;
+                    //showHitbox = true;
+                } //else
+                    //showHitbox = false;
             } else
             {
-                Velocity = new Vector2(x, y);
+                Velocity = Vector2.Zero;
             }
-            //saves current mouse position for use next frame
-            mousePreviousPos = newMousePos;
+            
+
+
+            if (mainWindow.inputs.shoot1)
+                Shoot(0);
+            if (mainWindow.inputs.shoot2)
+                Shoot(1);
+
             //debugging info
             mainWindow.DebugPlayerPos(Position);
             mainWindow.DebugPlayerV(Velocity);
@@ -243,8 +135,8 @@ namespace SpaceShoote_wpf.GameObjects
         public override void Draw(WriteableBitmap surface)
         {
             // draws cursor
-            if (newMousePos.X > 0 && newMousePos.X < mainWindow.width && newMousePos.Y > 0 && newMousePos.Y < mainWindow.height && useMouse)
-                surface.FillEllipseCentered((int)newMousePos.X, (int)newMousePos.Y, 2, 2, Colors.White);
+            if (mainWindow.inputs.newMousePos.X > 0 && mainWindow.inputs.newMousePos.X < mainWindow.width && mainWindow.inputs.newMousePos.Y > 0 && mainWindow.inputs.newMousePos.Y < mainWindow.height && mainWindow.inputs.useMouse)
+                surface.FillEllipseCentered((int)mainWindow.inputs.newMousePos.X, (int)mainWindow.inputs.newMousePos.Y, 2, 2, Colors.White);
 
             // Flames animation
 
@@ -252,7 +144,7 @@ namespace SpaceShoote_wpf.GameObjects
             {
                 flameTransitionTime = TimeSpan.FromMilliseconds(gameWorld.GameTime() + flameTransitionDuration);
                 spriteCycle += 1;
-                if (spriteCycle > spriteCount)
+                if (spriteCycle > flameSpriteCount)
                 {
                     spriteCycle = 0;
                 }
@@ -328,6 +220,13 @@ namespace SpaceShoote_wpf.GameObjects
             {
                 surface.FillEllipseCentered((int)Position.X, (int)Position.Y, (int)hitboxRadius, (int)hitboxRadius, Colors.Red);
             }
+        }
+
+        protected override void Die()
+        {
+            base.Die();
+            mainWindow.gameState = 4;
+            mainWindow.showGameOver = TimeSpan.FromMilliseconds(gameWorld.GameTime() + 1000);
         }
     }
 }

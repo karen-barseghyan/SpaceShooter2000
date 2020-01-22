@@ -178,5 +178,21 @@
   <ItemGroup>
     <Resource Include="graphics\projectiles\explosion_spreadsheet_x30x30.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="graphics\ui\PointsENG.png" />
+    <Resource Include="graphics\ui\PointsPL.png" />
+    <Resource Include="graphics\ui\PressENG.png" />
+    <Resource Include="graphics\ui\PressPL.png" />
+    <Resource Include="graphics\ui\TitleEng.png" />
+    <Resource Include="graphics\ui\TitlePL.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="graphics\ui\PauseENG.png" />
+    <Resource Include="graphics\ui\PausePL.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="graphics\ui\GameOverENG.png" />
+    <Resource Include="graphics\ui\GameOverPL.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -45,8 +45,6 @@ namespace SpaceShoote_wpf.GameObjects
         // tick function of player, runs every frame
         public override void Tick()
         {
-            float x = 0;
-            float y = 0;
             Position = Position -= Speed * 20 / 1000f;
             
             if (Position.Y > 643)
@@ -107,8 +105,6 @@ namespace SpaceShoote_wpf.GameObjects
         // tick function of player, runs every frame
         public override void Tick()
         {
-            float x = 0;
-            float y = 0;
             Position = Position -= Speed * 20 / 1000f;
 
             if (Position.Y > 643)
@@ -167,6 +163,29 @@ namespace SpaceShoote_wpf.GameObjects
                 Vector3 c = Vector3.Lerp(endColor, startColor, percent / 1000);
                 color = Color.FromRgb((byte)c.X, (byte)c.Y, (byte)c.Z);
                 surface.FillRectangle((int)Position.X, (int)Position.Y, (int)Position.X + spriteSizeX, (int)Position.Y + spriteSizeY, color);
+            }
+        }
+    }
+
+    public class TextImage : GameObject
+    {
+        public string language = "ENG";
+        public string name = "Press";
+        public TextImage(MainWindow mainwindow, GameWorld world, string text)
+        {
+            gameWorld = world;
+            mainWindow = mainwindow;
+            showHitbox = false;
+            transitionDuration = 0;
+
+            name = text;
+            try
+            {
+                spriteSheet = BitmapFactory.FromResource("graphics/ui/" + name + language + ".png");
+            }
+            catch (Exception e)
+            {
+                spriteSheet = BitmapFactory.FromResource("graphics/ui/font_spreadsheet_x11x16.png");
             }
         }
     }

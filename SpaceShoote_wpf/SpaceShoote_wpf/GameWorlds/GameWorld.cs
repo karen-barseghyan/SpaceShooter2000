@@ -60,15 +60,19 @@ namespace SpaceShoote_wpf.GameWorlds
             }
         }
         //initialize game timer
-        public void StartTimer()
+        public void StartTimer(bool real)
         {
+            
             GameTimer.Start();
             pause = false;
             framecounter = 0;
             previousSecondFrameCount = 0;
             PreviousSecond = GameTimer.Elapsed;
 
-            currentWave = new GameWave(mainWindow, this, 0);
+            if (real)
+            {
+                currentWave = new GameWave(mainWindow, this, 0);
+            }
         }
 
         //tick function of game wolrd
@@ -90,13 +94,17 @@ namespace SpaceShoote_wpf.GameWorlds
                 // do stuff
                 if (currentWave != null)
                 {
-                    //mainWindow.waveTimer.percent = 
-                    mainWindow.waveTimer.percent = ((float)(currentWave.timeLimit.TotalMilliseconds - GameTime()) / currentWave.duration) * 1000;
+                    if (mainWindow.waveTimer != null)
+                        mainWindow.waveTimer.percent = ((float)(currentWave.timeLimit.TotalMilliseconds - GameTime()) / currentWave.duration / currentWave.difficultyFactor) * 1000;
 
                     if (currentWave.IsWaveOver())
                     {
                         wavesCleared++;
+                        if (currentWave.difficultyFactor > 0.2f)
+                            currentWave.difficultyFactor -= 0.01f;
+                        
                         currentWave.GenerateWave(random.Next(1, 11));
+                        mainWindow.DebugWrite(currentWave.difficultyFactor.ToString());
                         //currentWave.GenerateWave(10);
 
                         //set thing
@@ -110,16 +118,20 @@ namespace SpaceShoote_wpf.GameWorlds
                     }
                 } else
                 {
-                    mainWindow.waveTimer.percent = 0;
+                    if (mainWindow.waveTimer != null)
+                        mainWindow.waveTimer.percent = 0;
                 }
 
-
-                if (currentBoss != null)
+                if (mainWindow.bossHealth != null)
                 {
-                    mainWindow.bossHealth.percent = currentBoss.life / 5;
-                } else
-                {
-                    mainWindow.bossHealth.percent = 0;
+                    if (currentBoss != null)
+                    {
+                        mainWindow.bossHealth.percent = currentBoss.life / 5;
+                    }
+                    else
+                    {
+                        mainWindow.bossHealth.percent = 0;
+                    }
                 }
 
 
@@ -137,6 +149,8 @@ namespace SpaceShoote_wpf.GameWorlds
                 }
 
                 //tu crashuje
+                //List<Task> allTasks = new List<Task>();
+
                 foreach (var o in gameObjects.ToList())
                 {
                     o.Move();
@@ -156,8 +170,6 @@ namespace SpaceShoote_wpf.GameWorlds
                 previousGameTick = GameTimer.Elapsed;
                 framecounter++;
             }
-
-
         }
 
         public bool AnyObjectsFromGroup(int group)
@@ -179,6 +191,7 @@ namespace SpaceShoote_wpf.GameWorlds
         public void Pause()
         {
             GameTimer.Stop();
+            mainWindow.gameState = 2;
             pause = true;
         }
         //unpauses the game
@@ -186,6 +199,7 @@ namespace SpaceShoote_wpf.GameWorlds
         {
             GameTimer.Start();
             pause = false;
+            mainWindow.gameState = 1;
         }
 
         public int GameTime()

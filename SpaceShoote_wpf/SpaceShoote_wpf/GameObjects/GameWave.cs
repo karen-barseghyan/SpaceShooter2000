@@ -412,7 +412,7 @@ namespace SpaceShoote_wpf.GameObjects
             if (!gameWorld.AnyObjectsFromGroup(WaveGroup) && enemies.Count == 0 && clearedEnemiesSkip)
             {
                 // give clear bonus only here
-                int bonus = WaveClearScore + (int)(timeLimit.TotalMilliseconds - gameWorld.GameTime()/2/difficultyFactor);
+                int bonus = WaveClearScore + (int)(timeLimit.TotalMilliseconds - gameWorld.GameTime()/10/difficultyFactor/difficultyFactor);
                 mainWindow.DebugWrite("all enemies defeated! Wave clear bonus: +" + bonus + "pts!");
                 gameWorld.score += bonus;
                 return true;
