@@ -35,6 +35,10 @@ namespace SpaceShoote_wpf.GameObjects
         Vector2 newMousePos;
         int mouse_mode; // 0 - no mouse, 1 - mouse mode 1, 2 - mouse mode 2
 
+        int flameSpriteCount = 2;
+        float flameTransitionDuration = 100;
+        TimeSpan flameTransitionTime = TimeSpan.FromMilliseconds(0);
+
         //player constructor with main window as parameter for reference
         public Player(MainWindow mainwindow, GameWorld world)  
         {
@@ -56,7 +60,7 @@ namespace SpaceShoote_wpf.GameObjects
             mouse_mode = 1;
             hitboxRadius = 10;
             transitionDuration = 200;
-            showHitbox = true;
+            showHitbox = false;
             boundToWindow = true;
             
             spriteSheet = BitmapFactory.FromResource("graphics/player/ship_spreadsheet_x32x32.png");
@@ -232,24 +236,33 @@ namespace SpaceShoote_wpf.GameObjects
 
         public override void Draw(WriteableBitmap surface)
         {
-            //base.Draw(surface);
+            // draws cursor
+            if (newMousePos.X > 0 && newMousePos.X < mainWindow.width && newMousePos.Y > 0 && newMousePos.Y < mainWindow.height && useMouse)
+                surface.FillEllipseCentered((int)newMousePos.X, (int)newMousePos.Y, 2, 2, Colors.White);
+
             // Flames animation
-            int spriteoffset = 0;
-            if (spriteCycle > 3)
+
+            if (gameWorld.GameTimer.ElapsedMilliseconds > flameTransitionTime.TotalMilliseconds)
             {
-                spriteoffset = 1;
+                flameTransitionTime = TimeSpan.FromMilliseconds(gameWorld.GameTime() + flameTransitionDuration);
+                spriteCycle += 1;
+                if (spriteCycle > spriteCount)
+                {
+                    spriteCycle = 0;
+                }
             }
+
             if (Velocity.Y > 0)
             {
                 //description below
-                Rect sourceRect2 = new Rect((2 + spriteoffset) * spriteSizeX, spriteSizeY, spriteSizeX, spriteSizeY);
+                Rect sourceRect2 = new Rect((2 + spriteCycle) * spriteSizeX, spriteSizeY, spriteSizeX, spriteSizeY);
                 Rect destRect2 = new Rect((int)Position.X - spriteSizeX * Scale.X / 2, (int)Position.Y - spriteSizeY * Scale.Y / 2, spriteSizeX * Scale.X, spriteSizeY * Scale.Y);
                 surface.Blit(destRect2, spriteSheet, sourceRect2);
             }
             if (Velocity.Y <= 0)
             {
                 //description below
-                Rect sourceRect1 = new Rect(spriteoffset * spriteSizeX, spriteSizeY, spriteSizeX, spriteSizeY);
+                Rect sourceRect1 = new Rect(spriteCycle * spriteSizeX, spriteSizeY, spriteSizeX, spriteSizeY);
                 Rect destRect1 = new Rect((int)Position.X - spriteSizeX * Scale.X / 2, (int)Position.Y - spriteSizeY * Scale.Y / 2, spriteSizeX * Scale.X, spriteSizeY * Scale.Y);
                 surface.Blit(destRect1, spriteSheet, sourceRect1);
             }
@@ -309,12 +322,6 @@ namespace SpaceShoote_wpf.GameObjects
             {
                 surface.FillEllipseCentered((int)Position.X, (int)Position.Y, (int)hitboxRadius, (int)hitboxRadius, Colors.Red);
             }
-
-            // draws cursor
-            //base.Draw(surface);
-
-            if (newMousePos.X > 0 && newMousePos.X < mainWindow.width && newMousePos.Y > 0 && newMousePos.Y < mainWindow.height && useMouse)
-                surface.DrawEllipseCentered((int)newMousePos.X, (int)newMousePos.Y, 8, 8, Colors.Red);
         }
     }
 }

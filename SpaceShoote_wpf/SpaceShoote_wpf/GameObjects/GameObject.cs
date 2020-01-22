@@ -14,31 +14,32 @@ namespace SpaceShoote_wpf.GameObjects
     public abstract class GameObject
     {
         public List<GameObject> children = new List<GameObject>();
-        
+
         // parent reference
-        public GameWorld gameWorld;
-        public GameObject parent;
-        public MainWindow mainWindow;
+        protected GameWorld gameWorld;
+        protected GameObject parent;
+        protected MainWindow mainWindow;
         // sprite variables
         public WriteableBitmap spriteSheet;
         public int spriteSizeX = 32;
         public int spriteSizeY = 32;
         public Vector2 Scale = new Vector2(1, 1);
-        public float spriteCycle = 0;
-        public int animoffset = 0;
-        public int transitionDuration = 0;
-        public int transitionTo;
-        public TimeSpan transitionTime;
+        protected int spriteCycle = 0;
+        protected int spriteCount = 1;
+        protected int animoffset = 0;
+        protected int transitionDuration = 100;
+        protected int transitionTo;
+        protected TimeSpan transitionTime = TimeSpan.FromMilliseconds(0);
         //movement controll variables
-        public Vector2 Speed = new Vector2(0, 0);
-        public float slowFactor = 0;
-        public bool boundToWindow = false;
+        protected Vector2 Speed = new Vector2(0, 0);
+        protected float slowFactor = 0;
+        protected bool boundToWindow = false;
         //hitbox / other variables
         public float hitboxRadius = 10;
         public Vector2 Position = new Vector2(0, 0);
         public Vector2 Velocity = new Vector2(0, 0);
-        public bool showHitbox = true;
-        public bool checkCollisions = true;
+        protected bool showHitbox = true;
+        protected bool checkCollisions = true;
         //public bool takeDamageFromCollision = true;
         public string tag = "enemy";
         public string[] collisionMask = { "enemy", "enemy projectile" }; // by tag
@@ -48,7 +49,7 @@ namespace SpaceShoote_wpf.GameObjects
         public float life = 100;
         public int points = 10;
         private bool markedForDeletion = false;
-        public bool deleteOffscreen = true;
+        protected bool deleteOffscreen = true;
 
         // time since last time running this function 
         public virtual void Tick()
@@ -60,13 +61,20 @@ namespace SpaceShoote_wpf.GameObjects
         // Draws game objects (...)
         public virtual void Draw(WriteableBitmap surface)
         {
-            if (gameWorld.GameTimer.ElapsedMilliseconds > transitionTime.TotalMilliseconds && animoffset != transitionTo)
+            // timed animation cycle
+            if (gameWorld.GameTimer.ElapsedMilliseconds > transitionTime.TotalMilliseconds)
             {
-                animoffset = transitionTo;
+                transitionTime = TimeSpan.FromMilliseconds(gameWorld.GameTime() + transitionDuration);
+                spriteCycle += 1;
+                if (spriteCycle > spriteCount)
+                {
+                    spriteCycle = 0;
+                }
             }
 
+
             // rectangle to crop from the sprite sheet
-            Rect sourceRect = new Rect(animoffset * spriteSizeX, 0, spriteSizeX, spriteSizeY);
+            Rect sourceRect = new Rect(spriteCycle * spriteSizeX, 0, spriteSizeX, spriteSizeY);
             // destination where to apply cropped image from the sprite sheet
             Rect destRect = new Rect((int)Position.X - spriteSizeX * Scale.X / 2, (int)Position.Y - spriteSizeY * Scale.Y / 2, spriteSizeX * Scale.X, spriteSizeY * Scale.Y);
             // apply cropped image to writablebitmap
@@ -83,7 +91,8 @@ namespace SpaceShoote_wpf.GameObjects
         }
 
         //changes spritesheet index after a delay. selects sprite in first parameter when called and sprite in second paramater after transitionTime time has elapsed
-        public void TransitionTo(int anim1, int anim2)
+        // don't use with cyclical timed animations
+        protected void TransitionTo(int anim1, int anim2)
         {
             animoffset = anim1;
             transitionTo = anim2;
@@ -177,7 +186,7 @@ namespace SpaceShoote_wpf.GameObjects
             return false;
         }
 
-        public virtual void Die()
+        protected virtual void Die()
         {
             markedForDeletion = true;
             gameWorld.score += points;

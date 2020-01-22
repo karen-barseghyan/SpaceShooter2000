@@ -122,13 +122,13 @@ namespace SpaceShoote_wpf.GameObjects
             if (Position.Y >= 100)
             {
                 stop = true;
-                if (Position.X > 30 && Position.X < 60)
+                if (Position.X > 0 && Position.X < 30)
                 {
                     goright1 = true;
                     goleft1 = false;
                 }
 
-                if (Position.X < 500 && Position.X > 450)
+                if (Position.X < 600 && Position.X > 550)
                 {
                     goright1 = false;
                     goleft1 = true;
@@ -177,13 +177,13 @@ namespace SpaceShoote_wpf.GameObjects
             Velocity.Y = 50;
             if (Position.Y >= 100)
             {
-                if (Position.X > 30 && Position.X < 60)
+                if (Position.X > 0 && Position.X < 30)
                 {
                     goright2 = true;
                     goleft2 = false;
                 }
 
-                if (Position.X < 500 && Position.X > 450)
+                if (Position.X < 600 && Position.X > 550)
                 {
                     goright2 = false;
                     goleft2 = true;
@@ -255,13 +255,13 @@ namespace SpaceShoote_wpf.GameObjects
 
             if (Position.Y >= 100 && Position.Y <=500)
             {
-                if (Position.X > 30 && Position.X < 60)
+                if (Position.X > 0 && Position.X < 30)
                 {
                     goright3 = true;
                     goleft3 = false;
                 }
 
-                if (Position.X < 500 && Position.X > 450)
+                if (Position.X < 600 && Position.X > 550)
                 {
                     goright3 = false;
                     goleft3 = true;
@@ -314,13 +314,13 @@ namespace SpaceShoote_wpf.GameObjects
 
             if (Position.Y >= 30)
             {
-                if (Position.X > 30 && Position.X < 60)
+                if (Position.X > 0 && Position.X < 30)
                 {
                     goright = true;
                     goleft = false;
                 }
 
-                if (Position.X < 500 && Position.X > 450)
+                if (Position.X < 600 && Position.X > 550)
                 {
                     goright = false;
                     goleft = true;
@@ -373,13 +373,13 @@ namespace SpaceShoote_wpf.GameObjects
 
             if (Position.Y >= 200)
             {
-                if (Position.X > 30 && Position.X < 60)
+                if (Position.X > 0 && Position.X < 30)
                 {
                     goright = true;
                     goleft = false;
                 }
 
-                if (Position.X < 500 && Position.X > 450)
+                if (Position.X < 600 && Position.X > 550)
                 {
                     goright = false;
                     goleft = true;
@@ -419,6 +419,20 @@ namespace SpaceShoote_wpf.GameObjects
             transitionDuration = 200;
             showHitbox = false;
             spriteSheet = BitmapFactory.FromResource("graphics/aliens/drone2_spreadsheet_x12x10.png");
+
+            fireRate1 = 5f;
+
+            projectile = new Projectile(mainWindow, gameWorld);
+
+            projectile.Velocity = new Vector2(0, 300);
+            projectile.spriteSheet = BitmapFactory.FromResource("graphics/projectiles/projectile6_spreadsheet_x11x13.png");
+            projectile.spriteSizeX = 11;
+            projectile.spriteSizeY = 13;
+            projectile.Scale = new Vector2(1, 1);
+            projectile.collisionMask = new string[] { "enemy", "enemy projectile", "player projectile" };
+            projectile.collisionDamage = 10;
+            projectile.tag = "enemy projectile";
+
         }
 
         bool goleft2 = false;
@@ -426,6 +440,7 @@ namespace SpaceShoote_wpf.GameObjects
         public override void Tick()
         {
             base.Tick();
+            Shoot(0);
             Velocity.Y = 100;
             if (Position.Y >= 0)
             {
@@ -508,13 +523,13 @@ namespace SpaceShoote_wpf.GameObjects
 
             if (Position.Y >= 100 && Position.Y <= 600)
             {
-                if (Position.X > 30 && Position.X < 60)
+                if (Position.X > 0 && Position.X < 30)
                 {
                     goright3 = true;
                     goleft3 = false;
                 }
 
-                if (Position.X < 500 && Position.X > 450)
+                if (Position.X < 600 && Position.X > 550)
                 {
                     goright3 = false;
                     goleft3 = true;
@@ -555,6 +570,20 @@ namespace SpaceShoote_wpf.GameObjects
             transitionDuration = 200;
             showHitbox = false;
             spriteSheet = BitmapFactory.FromResource("graphics/aliens/brain_spreadsheet_x26x30.png");
+
+           
+            fireRate1 = 4f;
+
+            projectile = new Projectile(mainWindow, gameWorld);
+
+            projectile.Velocity = new Vector2(0, 100);
+            projectile.spriteSheet = BitmapFactory.FromResource("graphics/projectiles/projectile4_spreadsheet_x11x11.png");
+            projectile.spriteSizeX = 11;
+            projectile.spriteSizeY = 11;
+            projectile.Scale = new Vector2(2, 2);
+            projectile.collisionMask = new string[] { "enemy", "enemy projectile", "player projectile" };
+            projectile.collisionDamage = 30;
+            projectile.tag = "enemy projectile";
         }
 
 
@@ -565,6 +594,7 @@ namespace SpaceShoote_wpf.GameObjects
         public override void Tick()
         {
             base.Tick();
+            
             if (stop == false)
             {
                 Velocity.Y = 1000;
@@ -573,18 +603,19 @@ namespace SpaceShoote_wpf.GameObjects
             if (stop == true)
             {
                 Velocity.Y = 0;
+                Shoot(0);
             }
 
             if (Position.Y >= 300)
             {
                 stop = true;
-                if (Position.X > 30 && Position.X < 60)
+                if (Position.X > 0 && Position.X < 30)
                 {
                     goright1 = true;
                     goleft1 = false;
                 }
 
-                if (Position.X < 500 && Position.X > 450)
+                if (Position.X < 600 && Position.X > 550)
                 {
                     goright1 = false;
                     goleft1 = true;
@@ -627,6 +658,20 @@ namespace SpaceShoote_wpf.GameObjects
             showHitbox = false;
             deleteOffscreen = false;
             spriteSheet = BitmapFactory.FromResource("graphics/aliens/boss_snail_spreadsheet_x92x114.png");
+
+
+            fireRate1 = 0.2f;
+
+            projectile = new Projectile(mainWindow, gameWorld);
+            var rand = new Random();
+            projectile.Velocity = new Vector2(rand.Next(100)-50, 200);
+            projectile.spriteSheet = BitmapFactory.FromResource("graphics/projectiles/projectile3_spreadsheet_x11x11.png");
+            projectile.spriteSizeX = 11;
+            projectile.spriteSizeY = 11;
+            projectile.Scale = new Vector2(2, 2);
+            projectile.collisionMask = new string[] { "enemy", "enemy projectile", "player projectile" };
+            projectile.collisionDamage = 30;
+            projectile.tag = "enemy projectile";
         }
 
         bool goleft1 = false;
@@ -635,6 +680,9 @@ namespace SpaceShoote_wpf.GameObjects
 
         public override void Tick()
         {
+            Shoot(0);
+            var rand = new Random();
+            projectile.Velocity = new Vector2(rand.Next(200) - 100, 200);
             base.Tick();
             if (stop == false)
             {
