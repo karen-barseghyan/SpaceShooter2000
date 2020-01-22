@@ -69,7 +69,7 @@ namespace SpaceShoote_wpf.GameObjects
             fireRate1 = 0.1f;
 
             projectile = new Projectile(mainWindow, gameWorld);
-
+            
             projectile.Velocity = new Vector2(0, -800);
             projectile.spriteSheet = BitmapFactory.FromResource("graphics/projectiles/projectile1_spreadsheet_x12x12.png");
             projectile.spriteSizeX = 12;
@@ -81,6 +81,7 @@ namespace SpaceShoote_wpf.GameObjects
 
             // PROJECTILE 2
             fireRate2 = 1f;
+            
             projectile1 = new Projectile(mainWindow, gameWorld);
             projectile1.Velocity = new Vector2(0, -600);
             projectile1.spriteSheet = BitmapFactory.FromResource("graphics/projectiles/projectile2_spreadsheet_x10x14.png");
@@ -88,6 +89,7 @@ namespace SpaceShoote_wpf.GameObjects
             projectile1.spriteSizeY = 14;
             projectile1.Scale = new Vector2(5, 5);
             projectile1.hitboxRadius = 12;
+            projectile1.spriteCount = 4;
             projectile1.collisionMask = new string[] { "player", "player projectile" }; // collides with enemy projectiles
             projectile1.tag = "player projectile";
             projectile1.collisionDamage = 500;
@@ -230,6 +232,8 @@ namespace SpaceShoote_wpf.GameObjects
             mainWindow.DebugPlayerV(Velocity);
             mainWindow.DebugPlayerLife((int)life);
             mainWindow.DebugPlayerScore(gameWorld.score);
+
+            mainWindow.playerHealth.percent = life;
 
             base.Tick();
         }

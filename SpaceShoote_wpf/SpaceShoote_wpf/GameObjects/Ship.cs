@@ -38,7 +38,7 @@ namespace SpaceShoote_wpf.GameObjects
             }
         }
 
-        public void Shoot(int type)
+        public virtual void Shoot(int type)
         {
             switch (type)
             {

@@ -35,7 +35,9 @@ namespace SpaceShoote_wpf
         GameWorld world;
         List<Rectangle> InputDisplays;
         public Player player;
-
+        public Bar playerHealth;
+        public Bar bossHealth;
+        public Bar waveTimer;
         /// initializing Viewport and writable bitmap
         private void Viewport_Loaded(object sender, RoutedEventArgs e)
         {
@@ -78,6 +80,9 @@ namespace SpaceShoote_wpf
             {
                 o.Draw(writeableBmp);
             }
+            bossHealth.Draw(writeableBmp);
+            playerHealth.Draw(writeableBmp);
+            waveTimer.Draw(writeableBmp);
             Object_Counter.Text = world.gameObjects.Count.ToString();
             FPS_Counter.Text = world.GetFPS().ToString();
         }
@@ -90,13 +95,20 @@ namespace SpaceShoote_wpf
             player = new Player(this, world);
             var backgroundlayer1 = new BackgroundLayer1(this, world);
             var backgroundlayer2 = new BackgroundLayer2(this, world);
-            var health = new Health(this, world);
-            DebugLine.Text += "loading settings";
-            //await LoadSettings(player);
+            playerHealth = new Bar(this, world);
+
+            bossHealth = new Bar(this, world);
+            bossHealth.Position = new Vector2(0, bossHealth.spriteSizeY);
+            bossHealth.startColor = new Vector3(255, 80, 50);
+
+            waveTimer = new Bar(this, world);
+            waveTimer.Position = new Vector2(0, 0);
+            waveTimer.startColor = new Vector3(200, 200, 200);
+            waveTimer.endColor = new Vector3(255, 100, 0);
+
             world.AddObject(backgroundlayer1);
             world.AddObject(backgroundlayer2);
             world.AddObject(player);
-            world.AddObject(health);
         }
 
         /// Textbox used for debugging

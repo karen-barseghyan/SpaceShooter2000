@@ -24,11 +24,14 @@ namespace SpaceShoote_wpf.GameObjects
             Position = new System.Numerics.Vector2(rand.Next(500), -100);
             spriteSizeX = 32;
             spriteSizeY = 32;           
-            spriteCycle = 1;  
+            spriteCycle = 0;
+            spriteCount = 3;
+            transitionDuration = 100;
             slowFactor = 0.5f;
             hitboxRadius = 10;
-            transitionDuration = 200;
+           
             showHitbox = false;
+           
             spriteSheet = BitmapFactory.FromResource("graphics/aliens/megabeetle_spreadsheet_x32x32.png");           
         }
         bool goleft = false;
@@ -81,10 +84,13 @@ namespace SpaceShoote_wpf.GameObjects
             Position = new System.Numerics.Vector2(rand2.Next(100)*offset, -100);
             spriteSizeX = 32;
             spriteSizeY = 32;
-            spriteCycle = 1;
+            spriteCycle = 0;
+            spriteCount = 2;
+            transitionDuration = 100;
             slowFactor = 0.5f;
             hitboxRadius = 10;
-            transitionDuration = 200;
+     
+            
             showHitbox = false;
             spriteSheet = BitmapFactory.FromResource("graphics/aliens/wasp_spreadsheet_x32x32.png");
 
@@ -95,8 +101,8 @@ namespace SpaceShoote_wpf.GameObjects
 
             projectile.Velocity = new Vector2(0, 300);
             projectile.spriteSheet = BitmapFactory.FromResource("graphics/projectiles/projectile5_spreadsheet_x11x11.png");
-            projectile.spriteSizeX = 12;
-            projectile.spriteSizeY = 12;
+            projectile.spriteSizeX = 11;
+            projectile.spriteSizeY = 11;
             projectile.Scale = new Vector2(2, 2);
             projectile.collisionMask = new string[] { "enemy", "enemy projectile", "player projectile" };
             projectile.collisionDamage = 10;
@@ -161,10 +167,11 @@ namespace SpaceShoote_wpf.GameObjects
             Position = new System.Numerics.Vector2(300, -100);
             spriteSizeX = 16;
             spriteSizeY = 16;
-            spriteCycle = 1;
+            spriteCycle = 0;
+            spriteCount = 2;
             slowFactor = 0.5f;
             hitboxRadius = 5;
-            transitionDuration = 200;
+            transitionDuration = 100;
             showHitbox = false;
             spriteSheet = BitmapFactory.FromResource("graphics/aliens/beetle_spreadsheet_x16x16.png");
         }
@@ -216,12 +223,26 @@ namespace SpaceShoote_wpf.GameObjects
             Position = new System.Numerics.Vector2(100, -100);
             spriteSizeX = 16;
             spriteSizeY = 16;
-            spriteCycle = 1;
+            spriteCycle = 0;
+            spriteCount = 3;
             slowFactor = 0.5f;
             hitboxRadius = 10;
-            transitionDuration = 200;
+            transitionDuration = 100;
             showHitbox = false;
             spriteSheet = BitmapFactory.FromResource("graphics/aliens/skitter_spreadsheet_x16x16.png");
+
+            fireRate1 = 1f;
+
+            projectile = new Projectile(mainWindow, gameWorld);
+
+            projectile.Velocity = new Vector2(0, 400);
+            projectile.spriteSheet = BitmapFactory.FromResource("graphics/projectiles/projectile4_spreadsheet_x11x11.png");
+            projectile.spriteSizeX = 11;
+            projectile.spriteSizeY = 11;
+            projectile.Scale = new Vector2(1.5f, 1.5f);
+            projectile.collisionMask = new string[] { "enemy", "enemy projectile", "player projectile" };
+            projectile.collisionDamage = 20;
+            projectile.tag = "enemy projectile";
         }
         bool goright3 = true;
         bool goleft3 = false;
@@ -244,6 +265,7 @@ namespace SpaceShoote_wpf.GameObjects
             {
                 godown = true;
                 goup = false;
+                Shoot(0);
             }
 
             if (Position.Y >= 501)
@@ -296,10 +318,11 @@ namespace SpaceShoote_wpf.GameObjects
             Position = new System.Numerics.Vector2(rand2.Next(100) * offset, -100);
             spriteSizeX = 16;
             spriteSizeY = 16;
-            spriteCycle = 1;
+            spriteCycle = 0;
+            spriteCount = 8;
             slowFactor = 0.5f;
             hitboxRadius = 5;
-            transitionDuration = 200;
+            transitionDuration = 100;
             showHitbox = false;
             spriteSheet = BitmapFactory.FromResource("graphics/aliens/disc_spreadsheet_x16x16.png");
         }
@@ -354,10 +377,11 @@ namespace SpaceShoote_wpf.GameObjects
             Position = new System.Numerics.Vector2(rand.Next(100), -100);
             spriteSizeX = 12;
             spriteSizeY = 11;
-            spriteCycle = 1;
+            spriteCycle = 0;
+            spriteCount = 5;
             slowFactor = 0.5f;
             hitboxRadius = 5;
-            transitionDuration = 200;
+            transitionDuration = 100;
             showHitbox = false;
             Speed = new System.Numerics.Vector2(300, 300);
             spriteSheet = BitmapFactory.FromResource("graphics/aliens/eye_spreadsheet_x16x16.png");
@@ -413,10 +437,11 @@ namespace SpaceShoote_wpf.GameObjects
             Position = new System.Numerics.Vector2(300, -100);
             spriteSizeX = 12;
             spriteSizeY = 10;
-            spriteCycle = 1;
+            spriteCycle = 0;
+            spriteCount = 5;
             slowFactor = 0.5f;
             hitboxRadius = 5;
-            transitionDuration = 200;
+            transitionDuration = 100;
             showHitbox = false;
             spriteSheet = BitmapFactory.FromResource("graphics/aliens/drone2_spreadsheet_x12x10.png");
 
@@ -483,10 +508,11 @@ namespace SpaceShoote_wpf.GameObjects
             Position = new System.Numerics.Vector2(100, -100);
             spriteSizeX = 16;
             spriteSizeY = 16;
-            spriteCycle = 1;
+            spriteCycle = 0;
+            spriteCount = 3;
             slowFactor = 0.5f;
             hitboxRadius = 10;
-            transitionDuration = 200;
+            transitionDuration = 100;
             showHitbox = false;
             Speed = new System.Numerics.Vector2(300, 300);
             spriteSheet = BitmapFactory.FromResource("graphics/aliens/fish_spreadsheet_x16x16.png");
@@ -558,13 +584,14 @@ namespace SpaceShoote_wpf.GameObjects
             mainWindow = mainwindow;
             gameWorld = world;
             points = 40;
-            life = 500;
+            life = 1000;
             var rand2 = new Random();
             float offset = 3.5f;
             Position = new System.Numerics.Vector2(rand2.Next(100) * offset, -100);
             spriteSizeX = 26;
             spriteSizeY = 30;
-            spriteCycle = 1;
+            spriteCycle = 0;
+            spriteCount = 3;
             slowFactor = 0.5f;
             hitboxRadius = 10;
             transitionDuration = 200;
@@ -576,16 +603,19 @@ namespace SpaceShoote_wpf.GameObjects
 
             projectile = new Projectile(mainWindow, gameWorld);
 
-            projectile.Velocity = new Vector2(0, 100);
-            projectile.spriteSheet = BitmapFactory.FromResource("graphics/projectiles/projectile4_spreadsheet_x11x11.png");
+            projectile.Velocity = new Vector2(0, 200);
+
+            projectile.spriteSheet = BitmapFactory.FromResource("graphics/projectiles/projectile6_spreadsheet_x11x13.png");
             projectile.spriteSizeX = 11;
-            projectile.spriteSizeY = 11;
+            projectile.spriteSizeY = 13;
             projectile.Scale = new Vector2(2, 2);
             projectile.collisionMask = new string[] { "enemy", "enemy projectile", "player projectile" };
             projectile.collisionDamage = 30;
             projectile.tag = "enemy projectile";
         }
 
+        int projectileBurst = 4;
+        int burstI = 0;
 
         bool goleft1 = false;
         bool goright1 = true;
@@ -603,7 +633,7 @@ namespace SpaceShoote_wpf.GameObjects
             if (stop == true)
             {
                 Velocity.Y = 0;
-                Shoot(0);
+                Shoot(burstI);
             }
 
             if (Position.Y >= 300)
@@ -633,8 +663,30 @@ namespace SpaceShoote_wpf.GameObjects
                 }
 
             }
+        }
+        public override void Shoot(int type)
+        {
+            if (canShoot1)
+            {
+                canShoot1 = false;
+                if (burstI < projectileBurst)
+                {
+                    burstI++;
+                    canShootNext1 = TimeSpan.FromMilliseconds(gameWorld.GameTime() + 100);
+                } else
+                {
+                    burstI = 0;
+                    canShootNext1 = TimeSpan.FromMilliseconds(gameWorld.GameTime() + fireRate1 * 1000);
+                }
+                projectile.Velocity = Vector2.Normalize(mainWindow.player.Position - Position) * 200;
+                Vector2 posA = new Vector2(Position.X - spriteSizeX, Position.Y);
+                Vector2 posB = new Vector2(Position.X + spriteSizeX, Position.Y);
+                Projectile copyA = projectile.Copy(posA);
+                gameWorld.gameObjects.Add(copyA);
 
-
+                Projectile copyB = projectile.Copy(posB);
+                gameWorld.gameObjects.Add(copyB);
+            }
         }
     }
 
@@ -649,9 +701,10 @@ namespace SpaceShoote_wpf.GameObjects
             Position = new System.Numerics.Vector2(250, -250);
             spriteSizeX = 92;
             spriteSizeY = 114;
-            spriteCycle = 1;
+            spriteCycle = 0;
             slowFactor = 0.5f;
             hitboxRadius = 40;
+            spriteCount = 3;
             transitionDuration = 200;
             collisionDamage = 1000;
             boundToWindow = false;
@@ -660,7 +713,9 @@ namespace SpaceShoote_wpf.GameObjects
             spriteSheet = BitmapFactory.FromResource("graphics/aliens/boss_snail_spreadsheet_x92x114.png");
 
 
-            fireRate1 = 0.2f;
+            fireRate1 = 0.01f;
+
+            explosionSize = 10;
 
             projectile = new Projectile(mainWindow, gameWorld);
             var rand = new Random();
@@ -680,7 +735,6 @@ namespace SpaceShoote_wpf.GameObjects
 
         public override void Tick()
         {
-            Shoot(0);
             var rand = new Random();
             projectile.Velocity = new Vector2(rand.Next(200) - 100, 200);
             base.Tick();
@@ -694,6 +748,10 @@ namespace SpaceShoote_wpf.GameObjects
                 Velocity.Y = 0;
             }
 
+            if ((int) Position.X % 10 == 0 && stop == true)
+            {
+                Shoot(0);
+            }
 
             if (Position.Y >= 100)
             {

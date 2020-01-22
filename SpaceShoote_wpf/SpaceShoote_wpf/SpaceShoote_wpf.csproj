@@ -70,6 +70,7 @@
     <Compile Include="GameObjects\Background.cs" />
     <Compile Include="GameObjects\Ball.cs" />
     <Compile Include="GameObjects\Enemy.cs" />
+    <Compile Include="GameObjects\Explosion.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\GameWave.cs" />
     <Compile Include="GameObjects\Player.cs" />
@@ -173,6 +174,9 @@
     <Resource Include="graphics\ui\background_stars_layer3.png" />
     <Resource Include="graphics\ui\font_spreadsheet_x11x16.png" />
     <Resource Include="graphics\ui\layertester.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="graphics\projectiles\explosion_spreadsheet_x30x30.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

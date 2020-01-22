@@ -25,7 +25,7 @@ namespace SpaceShoote_wpf.GameObjects
         public int spriteSizeY = 32;
         public Vector2 Scale = new Vector2(1, 1);
         protected int spriteCycle = 0;
-        protected int spriteCount = 1;
+        public int spriteCount = 1;
         protected int animoffset = 0;
         protected int transitionDuration = 100;
         protected int transitionTo;
@@ -48,7 +48,11 @@ namespace SpaceShoote_wpf.GameObjects
         public bool oneHit = false; //if oneHit, doesn't multiply damage by deltatime
         public float life = 100;
         public int points = 10;
-        private bool markedForDeletion = false;
+
+        protected float explosionSize = 2;
+        protected bool explosionDamage = false;
+
+        protected bool markedForDeletion = false;
         protected bool deleteOffscreen = true;
 
         // time since last time running this function 
@@ -191,6 +195,9 @@ namespace SpaceShoote_wpf.GameObjects
             markedForDeletion = true;
             gameWorld.score += points;
             //explosion
+            
+            Explosion copy = gameWorld.explosionPrefab.Copy(Position, explosionSize, explosionDamage);
+            gameWorld.gameObjects.Add(copy);
         }
 
         public bool CleanUp()

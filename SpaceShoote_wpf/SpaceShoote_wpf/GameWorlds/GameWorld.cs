@@ -22,6 +22,10 @@ namespace SpaceShoote_wpf.GameWorlds
         public TimeSpan previousGameTick;
 
         public GameWave currentWave;
+        public Boss currentBoss;
+
+        public Explosion explosionPrefab;
+
         public int wavesCleared = 0;
         public int score = 0;
         Random random = new Random();
@@ -38,6 +42,7 @@ namespace SpaceShoote_wpf.GameWorlds
             mainWindow = window;
             gameObjects = new List<GameObject>();
             GameTimer = new Stopwatch();
+            explosionPrefab = new Explosion(mainWindow, this);
         }
 
         // Function used for adding objects to list of game objects in game world
@@ -85,12 +90,16 @@ namespace SpaceShoote_wpf.GameWorlds
                 // do stuff
                 if (currentWave != null)
                 {
+                    //mainWindow.waveTimer.percent = 
+                    mainWindow.waveTimer.percent = ((float)(currentWave.timeLimit.TotalMilliseconds - GameTime()) / currentWave.duration) * 1000;
+
                     if (currentWave.IsWaveOver())
                     {
                         wavesCleared++;
-                        score += currentWave.WaveClearScore;
-                        currentWave.GenerateWave(random.Next(1, 10));
+                        currentWave.GenerateWave(random.Next(1, 11));
                         //currentWave.GenerateWave(10);
+
+                        //set thing
                     }
                     else
                     {
@@ -99,9 +108,21 @@ namespace SpaceShoote_wpf.GameWorlds
                             gameObjects.Add(currentWave.GetNextEnemy());
                         }
                     }
+                } else
+                {
+                    mainWindow.waveTimer.percent = 0;
                 }
-                
-                
+
+
+                if (currentBoss != null)
+                {
+                    mainWindow.bossHealth.percent = currentBoss.life / 5;
+                } else
+                {
+                    mainWindow.bossHealth.percent = 0;
+                }
+
+
                 // things happen and things move
                 //foreach (var o in gameObjects.ToList())
                 //    o.Tick();

@@ -16,11 +16,12 @@ namespace SpaceShoote_wpf.GameObjects
             mainWindow = mainwindow;
             gameWorld = world;
             points = 0;
-
+            explosionSize = 1;
             spriteSizeX = 12;
             spriteSizeY = 12;
             spriteCycle = 1;
             hitboxRadius = 10;
+            transitionDuration = 50;
             showHitbox = false;
             oneHit = true;
             collisionMask = new string[] { "enemy", "enemy projectile" };
@@ -38,6 +39,7 @@ namespace SpaceShoote_wpf.GameObjects
             p.spriteSizeX = spriteSizeX;
             p.spriteSizeY = spriteSizeY;
             p.Scale = Scale;
+            p.spriteCount = spriteCount;
             p.spriteCycle = 0;
             p.animoffset = 0;
             p.transitionDuration = transitionDuration;
