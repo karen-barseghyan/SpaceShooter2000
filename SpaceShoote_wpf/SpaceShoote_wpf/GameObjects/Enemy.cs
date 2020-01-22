@@ -598,7 +598,7 @@ namespace SpaceShoote_wpf.GameObjects
             showHitbox = false;
             spriteSheet = BitmapFactory.FromResource("graphics/aliens/brain_spreadsheet_x26x30.png");
 
-           
+            explosionSize = 6;
             fireRate1 = 4f;
 
             projectile = new Projectile(mainWindow, gameWorld);

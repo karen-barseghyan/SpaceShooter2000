@@ -40,13 +40,14 @@ namespace SpaceShoote_wpf
         public TextImage pauseText;
         public TextImage gameOverText;
         public TextImage pressStart;
-        public Inputs inputs;
-
+        public TextImage scoreText;
+        public TextImage scoreNumber;
+        public string language = "ENG";
         public TimeSpan showGameOver;
 
         public int gameState = 0; // 0 before start, 1 playing, 2 pouse, 3 game over, 4 awaiting for game over
 
-        
+        bool pauseHeld = false;
 
         /// initializing Viewport and writable bitmap
         private void Viewport_Loaded(object sender, RoutedEventArgs e)
@@ -64,9 +65,7 @@ namespace SpaceShoote_wpf
             world.StartTimer(false);
             CompositionTarget.Rendering += CompositionTarget_Rendering;
             this.KeyDown += new KeyEventHandler(MainWindow_KeyDown);
-
-            inputs = new Inputs(this);
-            DebugLine.Text += "Viewport loaded\n";
+            //DebugLine.Text += "Viewport loaded\n";
         }
         
         public void StartGame()
@@ -79,11 +78,7 @@ namespace SpaceShoote_wpf
         /// calls every frame (same as monitor refresh rate)
         private void CompositionTarget_Rendering(object sender, EventArgs e)
         {
-            //Collect inputs
-            inputs.CollectInputs();
-
             //await Task.Run(new Action(world.GameTick));
-
             world.GameTick();
 
             writeableBmp.Clear(Colors.Black);
@@ -91,6 +86,22 @@ namespace SpaceShoote_wpf
             foreach (GameObject o in world.gameObjects)
             {
                 o.Draw(writeableBmp);
+            }
+
+            if (Keyboard.IsKeyDown(Key.Escape))
+            {
+                if (!pauseHeld)
+                {
+                    if (!world.pause)
+                        world.Pause();
+                    else
+                        world.UnPause();
+                }
+                pauseHeld = true;
+            }
+            else
+            {
+                pauseHeld = false;
             }
 
             switch (gameState)
@@ -112,6 +123,10 @@ namespace SpaceShoote_wpf
                 case 3:
                     gameOverText.Draw(writeableBmp);
                     pressStart.Draw(writeableBmp);
+
+                    scoreText.Draw(writeableBmp);
+                    scoreNumber.Draw(writeableBmp);
+
                     if (Mouse.LeftButton == MouseButtonState.Pressed || Mouse.LeftButton == MouseButtonState.Pressed)
                     {
                         StartGame();
@@ -124,7 +139,30 @@ namespace SpaceShoote_wpf
                 DebugWrite("game over");
                 if (world.GameTime() > showGameOver.TotalMilliseconds)
                 {
+                    
                     gameState = 3;
+                    gameOverText = new TextImage(this, world, "GameOver");
+                    gameOverText.Position = new Vector2(width / 2, height / 2 - 64);
+                    gameOverText.name = "GameOver";
+                    gameOverText.spriteSizeX = 105;
+                    gameOverText.spriteSizeY = 16;
+                    gameOverText.Scale = new Vector2(4, 4);
+
+                    scoreText = new TextImage(this, world, "Points");
+                    scoreText.name = "Points";
+                    scoreText.spriteSizeX = 71;
+                    scoreText.spriteSizeY = 16;
+                    scoreText.Position = new Vector2(width / 2 - scoreText.spriteSizeX, height / 2);
+                    scoreText.Scale = new Vector2(2, 2);
+
+                    scoreNumber = new TextImage(this, world, world.score, false);
+                    scoreNumber.name = "font_spreadsheet_x11x16.png";
+                    scoreNumber.spriteSizeX = 11;
+                    scoreNumber.spriteSizeY = 16;
+                    scoreNumber.Position = new Vector2(width / 2 + 44, height / 2);
+                    scoreNumber.Scale = new Vector2(2, 2);
+
+                    pressStart.Position = new Vector2(width / 2, height / 2 + 256);
                 }
             }
 
@@ -143,36 +181,28 @@ namespace SpaceShoote_wpf
             world.AddObject(backgroundlayer2);
 
             TextImage title = new TextImage(this, world, "Title");
-            title.Position = new Vector2(width / 2, height / 2 - 32);
+            title.Position = new Vector2(width / 2, height / 2 - 64);
             title.name = "Title";
-            title.language = "ENG";
-            title.spriteSizeX = 188;
+            title.spriteSizeX = 190;
             title.spriteSizeY = 16;
             title.Scale = new Vector2(3, 3);
             world.AddObject(title);
 
 
             pressStart = new TextImage(this, world, "Press");
-            pressStart.Position = new Vector2(width / 2, height / 2  + 32);
+            pressStart.Position = new Vector2(width / 2, height / 2  + 64);
             pressStart.name = "Press";
-            pressStart.spriteSizeX = 239;
-            pressStart.spriteSizeY = 16;
+            pressStart.spriteSizeX = 275;
+            pressStart.spriteSizeY = 47;
             pressStart.Scale = new Vector2(2, 2);
             world.AddObject(pressStart);
 
             pauseText = new TextImage(this, world, "Pause");
-            pauseText.Position = new Vector2(width / 2, height / 2 + 32);
+            pauseText.Position = new Vector2(width / 2, height / 2 + 64);
             pauseText.name = "Pause";
             pauseText.spriteSizeX = 65;
             pauseText.Scale = new Vector2(3, 3);
             pauseText.spriteSizeY = 16;
-
-            gameOverText = new TextImage(this, world, "GameOver");
-            gameOverText.Position = new Vector2(width / 2, height / 2 - 32);
-            gameOverText.name = "GameOver";
-            gameOverText.spriteSizeX = 95;
-            gameOverText.spriteSizeY = 16;
-            gameOverText.Scale = new Vector2(4, 4);
         }
 
         /// initializing game world
@@ -235,177 +265,11 @@ namespace SpaceShoote_wpf
                 StartGame();
         }
 
-        private void PauseBt_Click(object sender, RoutedEventArgs e)
-        {
-            if (world.pause)
-            {
-                world.UnPause();
-                PauseBt.Content = "Pause";
-            } else
-            {
-                world.Pause();
-                PauseBt.Content = "Unpause";
-            }
-        }
-
         public void DebugWrite(string text)
         {
-            //DebugLine.Text += text + "\n";
-            //DebugLine.ScrollToEnd();
+            DebugLine.Text += text + "\n";
+            DebugLine.ScrollToEnd();
         }
-
-        public class Inputs
-        {
-            MainWindow mainWindow;
-
-            Key goLeftKey1;
-            Key goLeftKey2;
-            Key goRightKey1;
-            Key goRightKey2;
-            Key goUpKey1;
-            Key goUpKey2;
-            Key goDownKey1;
-            Key goDownKey2;
-            Key shootKey1;
-            Key shootKey2;
-            Key bombKey;
-            Key pauseKey;
-            Key slowKey1;
-
-            
-            public Vector2 newMousePos;
-            private Vector2 previousMousePos = new Vector2(0, 0);
-            public Vector2 move = new Vector2(0, 0);
-            public bool shoot1 = false;
-            public bool shoot2 = false;
-            public bool slow = false;
-            public bool useMouse = false;
-            private bool pauseHeld = false;
-
-            public Inputs(MainWindow window)
-            {
-                mainWindow = window;
-
-                goLeftKey1 = Key.A;
-                goLeftKey2 = Key.Left;
-
-                goRightKey1 = Key.D;
-                goRightKey2 = Key.Right;
-
-                goUpKey1 = Key.W;
-                goUpKey2 = Key.Up;
-
-                goDownKey1 = Key.S;
-                goDownKey2 = Key.Down;
-
-                shootKey1 = Key.E;
-                shootKey2 = Key.F;
-                //shoot1mouse = MouseAction.LeftClick;
-                //shoot2mouse = MouseAction.RightClick;
-
-                bombKey = Key.Space;
-                pauseKey = Key.Escape;
-
-                slowKey1 = Key.LeftShift;
-            }
-
-            public void CollectInputs()
-            {
-                float x = 0;
-                float y = 0;
-
-                //newMousePos = mainWindow.mousePos;
-                newMousePos = new Vector2((float)Mouse.GetPosition(Application.Current.MainWindow).X, (float)Mouse.GetPosition(Application.Current.MainWindow).Y);
-
-                // doesn't update cursor position if it would be outside of game window
-                if (!(newMousePos.X < mainWindow.width && newMousePos.Y > 0 && newMousePos.Y < mainWindow.height))
-                    newMousePos = previousMousePos;
-
-                // makes game use mouse logic for movement rather than keybord if mouse movement was detected
-                if (newMousePos != previousMousePos && previousMousePos != null && newMousePos.X > 0)
-                {
-                    useMouse = true;
-                }
-
-                // movement actions
-                if (Keyboard.IsKeyDown(goLeftKey1) || Keyboard.IsKeyDown(goLeftKey2))
-                {
-                    x += -1;
-                    useMouse = false;
-                }
-
-                if (Keyboard.IsKeyDown(goRightKey1) || Keyboard.IsKeyDown(goRightKey2))
-                {
-                    x += 1;
-                    useMouse = false;
-                }
-
-                if (Keyboard.IsKeyDown(goUpKey1) || Keyboard.IsKeyDown(goUpKey2))
-                {
-                    y += -1;
-                    useMouse = false;
-                }
-
-                if (Keyboard.IsKeyDown(goDownKey1) || Keyboard.IsKeyDown(goDownKey2))
-                {
-                    y += 1;
-                    useMouse = false;
-                }
-
-                move = new Vector2(x, y);
-                //mainWindow.DebugWrite(x.ToString());
-
-                // shoot actions
-
-                if (Keyboard.IsKeyDown(shootKey1) || Mouse.LeftButton == MouseButtonState.Pressed)
-                {
-                    shoot1 = true;
-                }
-                else
-                    shoot1 = false;
-
-                if (Keyboard.IsKeyDown(shootKey2) || Mouse.RightButton == MouseButtonState.Pressed)
-                {
-                    shoot2 = true;
-                }
-                else
-                    shoot2 = false;
-
-                // misc actions
-
-                if (Keyboard.IsKeyDown(slowKey1))
-                {
-                    slow = true;
-                }
-                else
-                    slow = false;
-                if (Keyboard.IsKeyDown(bombKey))
-                {
-                }
-
-                if (Keyboard.IsKeyDown(pauseKey))
-                {
-                    if (!pauseHeld)
-                    {
-                        if (!mainWindow.world.pause)
-                        {
-                            mainWindow.world.Pause();
-                        }
-                        else
-                        {
-                            mainWindow.world.UnPause();
-                        }
-                    }
-                    pauseHeld = true;
-                } else
-                {
-                    pauseHeld = false;
-                }
-
-                previousMousePos = newMousePos;
-            }
-        }
-
 
     }
 }

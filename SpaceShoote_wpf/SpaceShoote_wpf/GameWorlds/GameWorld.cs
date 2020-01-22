@@ -102,10 +102,16 @@ namespace SpaceShoote_wpf.GameWorlds
                         wavesCleared++;
                         if (currentWave.difficultyFactor > 0.2f)
                             currentWave.difficultyFactor -= 0.01f;
+
                         
-                        currentWave.GenerateWave(random.Next(1, 11));
+                        if (wavesCleared % 10 == 0 && wavesCleared > 8)
+                            currentWave.GenerateWave(10);
+                        else
+                            currentWave.GenerateWave(random.Next(1, 10));
+                        
+                        //currentWave.GenerateWave(8);
                         mainWindow.DebugWrite(currentWave.difficultyFactor.ToString());
-                        //currentWave.GenerateWave(10);
+                        //
 
                         //set thing
                     }

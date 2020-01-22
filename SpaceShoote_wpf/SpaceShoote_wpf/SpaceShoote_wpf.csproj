@@ -194,5 +194,8 @@
     <Resource Include="graphics\ui\GameOverENG.png" />
     <Resource Include="graphics\ui\GameOverPL.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="graphics\ui\num_spreadsheet_x11x16.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

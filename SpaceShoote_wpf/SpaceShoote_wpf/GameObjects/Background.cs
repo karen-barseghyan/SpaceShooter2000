@@ -169,8 +169,9 @@ namespace SpaceShoote_wpf.GameObjects
 
     public class TextImage : GameObject
     {
-        public string language = "ENG";
         public string name = "Press";
+        List<GameObject> numbers;
+        bool simple = true;
         public TextImage(MainWindow mainwindow, GameWorld world, string text)
         {
             gameWorld = world;
@@ -181,11 +182,69 @@ namespace SpaceShoote_wpf.GameObjects
             name = text;
             try
             {
-                spriteSheet = BitmapFactory.FromResource("graphics/ui/" + name + language + ".png");
+                spriteSheet = BitmapFactory.FromResource("graphics/ui/" + name + mainWindow.language + ".png");
             }
-            catch (Exception e)
+            catch
             {
                 spriteSheet = BitmapFactory.FromResource("graphics/ui/font_spreadsheet_x11x16.png");
+            }
+        }
+        public TextImage(MainWindow mainwindow, GameWorld world, float score, bool _simple)
+        {
+            simple = false;
+            gameWorld = world;
+            mainWindow = mainwindow;
+            showHitbox = false;
+            transitionDuration = 0;
+            spriteCount = 10;
+            spriteSheet = BitmapFactory.FromResource("graphics/ui/num_spreadsheet_x11x16.png");
+            numbers = new List<GameObject>();
+
+            int t = (int)score;
+            while (t > 0)
+            {
+                int div = t / 10;
+                int num = t - (10*div);
+                numbers.Add(Copy(num));
+                t /= 10;
+            }
+        }
+
+        public TextImage(MainWindow mainwindow, GameWorld world, int num)
+        {
+            gameWorld = world;
+            mainWindow = mainwindow;
+            transitionDuration = 0;
+            spriteCount = 10;
+            showHitbox = false;
+            spriteSizeX = 11;
+            spriteSizeY = 16;
+            spriteCycle = num;
+        }
+
+        public TextImage Copy(int num)
+        {
+            TextImage p = new TextImage(mainWindow, gameWorld, num);
+            p.spriteSheet = spriteSheet;
+            p.Scale = new Vector2(2, 2);
+            return p;
+        }
+
+        public override void Draw(WriteableBitmap surface)
+        {
+            
+            if (simple)
+            {
+                base.Draw(surface);
+            } else
+            {
+                //MessageBox.Show(simple.ToString());
+                for (int i = numbers.Count - 1; i >= 0; i--)
+                {
+                    float offset = (numbers.Count - 1 - i) * spriteSizeX * Scale.X;
+                    numbers[i].Position = new Vector2(Position.X + offset, Position.Y);
+                    numbers[i].Draw(surface);
+                }
             }
         }
     }
