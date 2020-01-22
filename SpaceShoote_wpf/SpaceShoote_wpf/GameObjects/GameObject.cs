@@ -24,10 +24,10 @@ namespace SpaceShoote_wpf.GameObjects
         public int spriteSizeX = 32;
         public int spriteSizeY = 32;
         public Vector2 Scale = new Vector2(1, 1);
-        protected int spriteCycle = 0;
+        public int spriteCycle = 0;
         public int spriteCount = 1;
         protected int animoffset = 0;
-        protected int transitionDuration = 100;
+        public int transitionDuration = 100;
         protected int transitionTo;
         protected TimeSpan transitionTime = TimeSpan.FromMilliseconds(0);
         //movement controll variables
@@ -66,16 +66,19 @@ namespace SpaceShoote_wpf.GameObjects
         public virtual void Draw(WriteableBitmap surface)
         {
             // timed animation cycle
-            if (gameWorld.GameTimer.ElapsedMilliseconds > transitionTime.TotalMilliseconds)
+            if (transitionDuration > 0)
             {
-                transitionTime = TimeSpan.FromMilliseconds(gameWorld.GameTime() + transitionDuration);
-                spriteCycle += 1;
-                if (spriteCycle > spriteCount)
+                
+                if (gameWorld.GameTimer.ElapsedMilliseconds > transitionTime.TotalMilliseconds)
                 {
-                    spriteCycle = 0;
+                    transitionTime = TimeSpan.FromMilliseconds(gameWorld.GameTime() + transitionDuration);
+                    spriteCycle += 1;
+                    if (spriteCycle > spriteCount)
+                    {
+                        spriteCycle = 0;
+                    }
                 }
             }
-
 
             // rectangle to crop from the sprite sheet
             Rect sourceRect = new Rect(spriteCycle * spriteSizeX, 0, spriteSizeX, spriteSizeY);

@@ -40,7 +40,7 @@ namespace SpaceShoote_wpf.GameObjects
             p.spriteSizeY = spriteSizeY;
             p.Scale = Scale;
             p.spriteCount = spriteCount;
-            p.spriteCycle = 0;
+            p.spriteCycle = spriteCycle;
             p.animoffset = 0;
             p.transitionDuration = transitionDuration;
             p.slowFactor = slowFactor;

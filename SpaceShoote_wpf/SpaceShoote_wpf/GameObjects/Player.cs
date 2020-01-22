@@ -75,6 +75,8 @@ namespace SpaceShoote_wpf.GameObjects
             projectile.spriteSizeX = 12;
             projectile.spriteSizeY = 12;
             projectile.Scale = new Vector2(2, 2);
+            projectile.spriteCycle = 2;
+            projectile.transitionDuration = 0;
             projectile.collisionMask = new string[] { "player", "player projectile", "enemy projectile" };
             projectile.collisionDamage = 20;
             projectile.tag = "player projectile";
