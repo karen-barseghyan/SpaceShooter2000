@@ -10,8 +10,15 @@ using System.Windows.Media.Imaging;
 
 namespace GameObjects
 {
+    /// <summary>
+    /// Explosion that happens after bullet impact or death of an enemy.
+    /// </summary>
     public class Explosion : GameObject
     {
+        /// <summary>
+        /// Explosion Constructor with Game World as parameter for reference.
+        /// </summary>
+        /// <param name="world">World that the object is added to. </param>
         public Explosion(GameWorld world)
         {
             gameWorld = world;
@@ -27,6 +34,9 @@ namespace GameObjects
             spriteSheet = BitmapFactory.FromResource("graphics/projectiles/explosion_spreadsheet_x30x30.png");
         }
 
+        /// <summary>
+        /// Variation from Draw funciton of GameObject
+        /// </summary>
         public override void Draw(WriteableBitmap surface)
         {
             if (gameWorld.GameTimer.ElapsedMilliseconds > transitionTime.TotalMilliseconds)
@@ -50,6 +60,12 @@ namespace GameObjects
             }
         }
 
+        /// <summary>
+        /// Copies the drawn explosion to increase performance instead of making a new object.
+        /// </summary>
+        /// <param name="position">Position of the object</param>
+        /// <param name="size">Size of the object. </param>
+        /// <param name="damaging">Whether the object can damage objects with life or not. </param>
         public Explosion Copy(Vector2 position, float size, bool damaging)
         {
             

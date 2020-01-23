@@ -6,9 +6,15 @@ using System.Windows.Media.Imaging;
 
 namespace GameObjects
 {
-    public class BackgroundLayer1 : Ship
+    /// <summary>
+    /// First layer of a two-layer background.
+    /// </summary>
+    public class BackgroundLayer1 : GameObject
     {
-        //player constructor with main window as parameter for reference
+        /// <summary>
+        /// Constructor with game World as parameter for reference.
+        /// </summary>
+        /// <param name="world">World that the object is added to. </param>
         public BackgroundLayer1(GameWorld world)
         {
             gameWorld = world;
@@ -23,16 +29,14 @@ namespace GameObjects
             spriteSheet = BitmapFactory.FromResource("graphics/ui/background_stars_layer1.png");
         }
 
-        //player constructor with main window for reference and starting position
-        public BackgroundLayer1(float posx, float posy)
-        {
-            Position = new System.Numerics.Vector2(300, -1500);
-            checkCollisions = false;
-        }
-
-        // tick function of player, runs every frame
+        /// <summary>
+        /// Simplified Tick function of GameObject
+        /// </summary>
         public override void Tick()
         {
+            /// <summary>
+            /// Speed at which sprite goes in default.
+            /// </summary>
             Position = Position -= Speed * 20 / 1000f;
             
             if (Position.Y > 643)
@@ -48,20 +52,17 @@ namespace GameObjects
 
         public override void Draw(WriteableBitmap surface)
         {
-            //base.Draw(surface);
-            // rectangle to crop from the sprite sheet
-
             Rect sourceRect = new Rect(animoffset * spriteSizeX, 0, spriteSizeX, spriteSizeY);
-            // destination where to apply cropped image from the sprite sheet
             Rect destRect = new Rect((int)Position.X - spriteSizeX * Scale.X / 2, (int)Position.Y - spriteSizeY * Scale.Y / 2, spriteSizeX * Scale.X, spriteSizeY * Scale.Y);
-            // apply cropped image to writablebitmap
             surface.Blit(destRect, spriteSheet, sourceRect);
         }
     }
-    
-    public class BackgroundLayer2 : Ship
+    /// <summary>
+    /// Second layer of a two-layer background.
+    /// </summary>
+    public class BackgroundLayer2 : GameObject
     {
-        //player constructor with main window as parameter for reference
+
         public BackgroundLayer2(GameWorld world)
         {
             gameWorld = world;
@@ -76,22 +77,12 @@ namespace GameObjects
             checkCollisions = false;
         }
 
-        //player constructor with main window for reference and starting position
-        public BackgroundLayer2(float posx, float posy)
-        {
-            Position = new System.Numerics.Vector2(posx, posy);
-            checkCollisions = false;
-
-        }
-
-        // tick function of player, runs every frame
         public override void Tick()
         {
             Position = Position -= Speed * 20 / 1000f;
 
             if (Position.Y > 643)
             {
-                //  Velocity = new Vector2(0, 3000);
                 Position = new System.Numerics.Vector2(300, -1500);
             }
 
@@ -101,23 +92,39 @@ namespace GameObjects
 
         public override void Draw(WriteableBitmap surface)
         {
-            //base.Draw(surface);
-            // rectangle to crop from the sprite sheet
             Rect sourceRect = new Rect(animoffset * spriteSizeX, 0, spriteSizeX, spriteSizeY);
-            // destination where to apply cropped image from the sprite sheet
             Rect destRect = new Rect((int)Position.X - spriteSizeX * Scale.X / 2, (int)Position.Y - spriteSizeY * Scale.Y / 2, spriteSizeX * Scale.X, spriteSizeY * Scale.Y);
-            // apply cropped image to writablebitmap
             surface.Blit(destRect, spriteSheet, sourceRect);
         }
     }
 
+    /// <summary>
+    /// Bar - ui element for displaying a number in a visualy pleasing way. en. health bars, timer.
+    /// it is a thin (8px high) and full-window wide. Positions relative to it's top-left corner and retracts to the left 
+    /// </summary>
     public class Bar : GameObject
     {
+        /// <summary>
+        /// Current color of the bar. Interpolates between startColor and endColor.
+        /// </summary>
         private Color color;
+        /// <summary>
+        /// Starting color of the bar. Present when percent is equal to 1000
+        /// </summary>
         public Vector3 startColor = new Vector3(255, 255, 255);
+        /// <summary>
+        /// Starting color of the bar. Present when percent is equal to 0
+        /// </summary>
         public Vector3 endColor = new Vector3(50, 0, 0);
+        /// <summary>
+        /// Factor for interpolation between colors. Number from 0-1000. Above 1000 becomes wider than window
+        /// </summary>
         public float percent;
 
+        /// <summary>
+        /// Constructor with gameWorld as parameter for reference.
+        /// </summary>
+        /// <param name="world">World that the object is added to. </param>
         public Bar(GameWorld world)
         {
             gameWorld = world;
@@ -133,7 +140,7 @@ namespace GameObjects
         }
 
         /// <summary>
-        /// Draws health bar, positionned relative to the top-left corner
+        /// Draws the bar, positionned relative to the top-left corner
         /// </summary>
         /// <param name="surface"></param>
         public override void Draw(WriteableBitmap surface)
@@ -148,11 +155,26 @@ namespace GameObjects
         }
     }
 
+    /// <summary>
+    /// Image Text class, used for displaying images that represent text on screen.
+    /// Also includes generating numbers (use the TextImage(GameWorld world, float score, bool _simple) constructor)
+    /// </summary>
     public class TextImage : GameObject
     {
+        /// <summary>
+        /// name of the image. Adds this to path string to find correct recourse. Make sure it makes a correct path
+        /// </summary>
         public string name = "Press";
+        /// <summary>
+        /// List of digits for generating numbers. Empty if it is just an imageText
+        /// </summary>
         public List<GameObject> numbers;
+        
         bool simple = true;
+        /// <summary>
+        /// Simple constructor for TextImage
+        /// </summary>
+        /// <param name="text"> Add name part in text param for path string</param>
         public TextImage(GameWorld world, string text)
         {
             gameWorld = world;
@@ -169,6 +191,12 @@ namespace GameObjects
                 spriteSheet = BitmapFactory.FromResource("graphics/ui/font_spreadsheet_x11x16.png");
             }
         }
+        /// <summary>
+        /// Constructor for number generation
+        /// </summary>
+        /// <param name="world">world reference</param>
+        /// <param name="score">number you want to generate</param>
+        /// <param name="_simple">bool to turn of simple mode</param>
         public TextImage(GameWorld world, float score, bool _simple)
         {
             simple = false;
@@ -194,7 +222,11 @@ namespace GameObjects
                 }
             }
         }
-
+        /// <summary>
+        /// Simple constructor for digits
+        /// </summary>
+        /// <param name="world">World reference</param>
+        /// <param name="num">which digit you want to represent (0-10)</param>
         public TextImage(GameWorld world, int num)
         {
             gameWorld = world;
@@ -205,7 +237,12 @@ namespace GameObjects
             spriteSizeY = 16;
             spriteCycle = num;
         }
-
+        
+        /// <summary>
+        /// Copies TextImage to avoid Creating a new bitmap to save processing time
+        /// </summary>
+        /// <param name="num">Cuts out Desired Digit</param>
+        /// <returns>returns new Copy object reference</returns>
         public TextImage Copy(int num)
         {
             TextImage p = new TextImage(gameWorld, num);
@@ -213,7 +250,10 @@ namespace GameObjects
             p.Scale = Scale;
             return p;
         }
-
+        /// <summary>
+        /// updates the number for generated number display
+        /// </summary>
+        /// <param name="score">new number to display</param>
         public void UpdateNumber(float score)
         {
             numbers = new List<GameObject>();
@@ -236,6 +276,10 @@ namespace GameObjects
             Position = new Vector2(gameWorld.windowSize.X - numbers.Count * spriteSizeX * Scale.X, gameWorld.windowSize.Y - spriteSizeY*Scale.Y);
         }
 
+        /// <summary>
+        /// Draw function of TextImage. Same as GameOjbect in simple mode, Draws all digits in advanced mode
+        /// </summary>
+        /// <param name="surface">writablebitmap referecne to draw on</param>
         public override void Draw(WriteableBitmap surface)
         {
             

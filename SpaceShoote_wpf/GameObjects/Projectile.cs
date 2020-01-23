@@ -8,8 +8,15 @@ using System.Windows.Media.Imaging;
 
 namespace GameObjects
 {
+    /// <summary>
+    /// Creating projectile that ships shoot.
+    /// </summary>
     public class Projectile : GameObject
     {
+        /// <summary>
+        /// Preparing a projectile.
+        /// </summary>
+        /// <param name="world">World that the object is added to. </param>
         public Projectile(GameWorld world)
         {
             gameWorld = world;
@@ -27,6 +34,10 @@ namespace GameObjects
             spriteSheet = BitmapFactory.FromResource("graphics/projectiles/projectile5_spreadsheet_x11x11.png");
         }
 
+        /// <summary>
+        /// Copying projectile to not put a heavy load on the PC.
+        /// </summary>
+        /// <param name="position">Position of the projectile spawned</param>
         public Projectile Copy(Vector2 position)
         {
             Projectile p = new Projectile(gameWorld);
