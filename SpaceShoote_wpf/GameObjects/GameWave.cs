@@ -7,21 +7,56 @@ using System.Threading.Tasks;
 
 namespace GameObjects
 {
+    /// <summary>
+    /// Generating a wave of enemies.
+    /// </summary>
     public class GameWave
     {
         private GameWorld gameWorld;
+        /// <summary>
+        /// List of enemies.
+        /// </summary>
         public List<SpawnData> enemies;
+        /// <summary>
+        /// List of objects other than enemies
+        /// </summary>
         public List<SpawnData> otherObjects;
+        /// <summary>
+        /// Time limit of the wave.
+        /// </summary>
         public TimeSpan timeLimit;
+        /// <summary>
+        /// Duration of the wave.
+        /// </summary>
         public float duration = 5000;
+        /// <summary>
+        /// Difficulty of the wave.
+        /// </summary>
         public float difficultyFactor = 1;
+        /// <summary>
+        /// Group of the wave.
+        /// </summary>
         public int WaveGroup;
+        /// <summary>
+        /// Bonus for clearing the wave.
+        /// </summary>
         public int WaveClearScore = 100;
+        /// <summary>
+        /// Ends wave if all enemies defeated.
+        /// </summary>
         public bool clearedEnemiesSkip = true; //ends wave if all enemies are defeated
-
+        /// <summary>
+        /// Time until next enemy.
+        /// </summary>
         public TimeSpan nextEnemy;
+        /// <summary>
+        /// Time until next object
+        /// </summary>
         public TimeSpan nextObject;
-
+        /// <summary>
+        /// Making the waves of enemies.
+        /// </summary>
+        /// <param name="world">World that the object is added to. </param>
         public GameWave(GameWorld gameworld)
         {
             gameWorld = gameworld;
@@ -29,7 +64,11 @@ namespace GameObjects
             GenerateWave(random.Next(2,5));
             WaveGroup = gameWorld.wavesCleared;
         }
-
+        /// <summary>
+        /// Making the waves of enemies according to seed.
+        /// </summary>
+        /// <param name="world">World that the object is added to. </param>
+        /// <param name="seed">Seed used to generate enemies </param>
         public GameWave(GameWorld gameworld, int seed)
         {
             gameWorld = gameworld;
@@ -37,7 +76,10 @@ namespace GameObjects
             GenerateWave(seed);
             WaveGroup = seed;
         }
-
+        /// <summary>
+        /// Generating the waves of enemies according to seed.
+        /// </summary>
+        /// <param name="seed">Seed used to generate enemies </param>
         public void GenerateWave(int seed)
         {
             enemies = new List<SpawnData>();
@@ -45,25 +87,23 @@ namespace GameObjects
             nextEnemy = TimeSpan.FromMilliseconds(0);
             nextObject = TimeSpan.FromMilliseconds(0);
             WaveGroup = gameWorld.GameTime();
-            //add more cases (enemy spawn patterns) (leave 0 as empty wave)
-            // next wave will have seed (Random 2-5) each time
+            /// <summary>
+            /// Next wave will have seed (Random 2-5) each time
+            /// </summary>
             switch (seed) {
                 case 0:
                     {
                         duration = 3000;
                         WaveClearScore = 200;
                         timeLimit = TimeSpan.FromMilliseconds(gameWorld.GameTime() + duration * difficultyFactor);
-
-                        //add enemies to the list (enemy, miliseconds until spawning NEXT enemy (if not last enemy in the list)
-                        //  enemies.Add(new SpawnData(boss, 0));
-
-                        // works same with "otherObjects". Use that for Background / Asteroid etc. objects they use a seperate list
-                        // all enemies, but not all objects have to be removed to clear wave
+                        /// <summary>
+                        /// All enemies, but not all objects have to be removed to clear wave
+                        /// </summary>
                         break;
                     }
                 case 1:
                     {
-                        //30 discs 
+
                         duration = 10000;
                         WaveClearScore = 200;
                         timeLimit = TimeSpan.FromMilliseconds(gameWorld.GameTime() + duration * difficultyFactor);
@@ -86,7 +126,6 @@ namespace GameObjects
                         duration = 5000;
                         WaveClearScore = 200;
                         timeLimit = TimeSpan.FromMilliseconds(gameWorld.GameTime() + duration * difficultyFactor);
-                        // 10 beetles, 10 wasps
                         var rand = new Random();
                         for (int i = 0; i < 5; i++)
                         {
@@ -137,7 +176,6 @@ namespace GameObjects
                         duration = 7000;
                         WaveClearScore = 200;
                         timeLimit = TimeSpan.FromMilliseconds(gameWorld.GameTime() + duration * difficultyFactor);
-                        //little beetles+drones
                         var rand = new Random();
                         for (int i = 0; i < 10; i++)
                         {
@@ -335,7 +373,6 @@ namespace GameObjects
                         duration = 5000;
                         WaveClearScore = 200;
                         timeLimit = TimeSpan.FromMilliseconds(gameWorld.GameTime() + duration * difficultyFactor);
-                        //lots of drones
                         var rand = new Random();
                         for (int i = 0; i < 50; i++)
                         {
@@ -356,7 +393,6 @@ namespace GameObjects
                         WaveClearScore = 5000;
                         timeLimit = TimeSpan.FromMilliseconds(gameWorld.GameTime() + duration * difficultyFactor);
                         clearedEnemiesSkip = true;
-                        //boss + some little fishes
                         var rand = new Random();
                         for (int i = 0; i < 1; i++)
                         {
@@ -373,7 +409,9 @@ namespace GameObjects
                         for (int i = 0; i < 20; i++)
                         {
                             Enemy8 newEnemy = new Enemy8(gameWorld);
-                            //no wave group means killing the boss is enough to skip the wave, but they still have to at least spawn
+                            /// <summary>
+                            /// No wave group means killing the boss is enough to skip the wave, but they still have to at least spawn
+                            /// </summary>
                             newEnemy.group = 0;
                             newEnemy.Velocity = new Vector2(0, 100);
                             newEnemy.Scale = new Vector2(2, 2);
@@ -386,34 +424,35 @@ namespace GameObjects
                 default:
                     {
                         duration = 5000;
-                        // add limit to how long will the wave last until it moves on to the next one
-                        timeLimit = TimeSpan.FromMilliseconds(gameWorld.GameTime() + duration * difficultyFactor);
-                        //if boss wave, add a long time limit and clearedEnemiesSkip = true;
-                        
-         
+                        timeLimit = TimeSpan.FromMilliseconds(gameWorld.GameTime() + duration * difficultyFactor);       
                         break;
                     }
             } 
             
         }
-        //
+        /// <summary>
+        /// Checking if the wave is over.
+        /// </summary>
         public bool IsWaveOver()
         {
             if (gameWorld.GameTime() > timeLimit.TotalMilliseconds)
                 return true;
             if (!gameWorld.AnyObjectsFromGroup(WaveGroup) && enemies.Count == 0 && clearedEnemiesSkip)
             {
-                // give clear bonus only here
+                /// <summary>
+                /// Gives clear bonus only here.
+                /// </summary>
                 int bonus = (int)(WaveClearScore + (int)(timeLimit.TotalMilliseconds - gameWorld.GameTime())/1000/difficultyFactor/difficultyFactor);
                 gameWorld.score += bonus;
                 return true;
             }  
             return false;
         }
-
+        /// <summary>
+        /// Add next enemy.
+        /// </summary>
         public GameObject GetNextEnemy()
         {
-            //mainWindow.DebugWrite("add enemy");
             var enemy = enemies[0].gameObject;
             nextEnemy = TimeSpan.FromMilliseconds(enemies[0].delay + gameWorld.GameTime());
             enemies.Remove(enemies[0]);
@@ -421,10 +460,25 @@ namespace GameObjects
         }
     }
 
+    /// <summary>
+    /// Structure responsible for how the enemy spawns.
+    /// </summary>
     public struct SpawnData
     {
+        /// <summary>
+        /// What GameObject is the enemy.
+        /// </summary>
         public GameObject gameObject;
+        /// <summary>
+        /// When they spawn.
+        /// </summary>
         public float delay;
+        /// <summary>
+        /// Constructing the spawn.
+        /// </summary>
+        /// <param name="o">What enemy is.</param>
+        /// <param name="d">When they spawn. </param>
+
         public SpawnData(GameObject o, float d)
         {
             gameObject = o;
