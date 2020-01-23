@@ -32,8 +32,17 @@ namespace GameObjects
            
             spriteSheet = BitmapFactory.FromResource("graphics/aliens/megabeetle_spreadsheet_x32x32.png");           
         }
+        /// <summary>
+        /// Whether the object is supposed to go left or not.
+        /// </summary>
         bool goleft = false;
+        /// <summary>
+        /// Whether the object is supposed to go right or not.
+        /// </summary>
         bool goright = true;
+        /// <summary>
+        /// override Tick function of enemy. Adds behaviour patterns on top of base Tick() function of GameObject
+        /// </summary>
         public override void Tick()
         {
             base.Tick();
@@ -95,7 +104,6 @@ namespace GameObjects
 
             // PROJECTILE 1
             fireRate1 = 1.2f;
-
             projectile = new Projectile(gameWorld);
 
             projectile.Velocity = new Vector2(0, 300);
@@ -103,13 +111,19 @@ namespace GameObjects
             projectile.spriteSizeX = 11;
             projectile.spriteSizeY = 11;
             projectile.Scale = new Vector2(2, 2);
+            /// <summary>
+            /// Setting the collission mask of the projectile. Enemy projectiles only collide with Player, so mask masks everything else
+            /// </summary>
             projectile.collisionMask = new string[] { "enemy", "enemy projectile", "player projectile" };
             projectile.collisionDamage = 10;
             projectile.tag = "enemy projectile";
         }
         bool goleft1 = false;
         bool goright1 = true;
-        bool stop = false;  
+        bool stop = false;
+        /// <summary>
+        /// override Tick function of enemy. Adds behaviour patterns on top of base Tick() function of GameObject
+        /// </summary>
         public override void Tick()
         {
             base.Tick();
@@ -154,7 +168,9 @@ namespace GameObjects
      
         }
     }
-
+    /// <summary>
+    /// Third enemy, so called Beetle, it goes down while bouncing of the walls at fast speed, does not shoot, only deals contact damage.
+    /// </summary>
     public class Enemy3 : Ship
     {
         public Enemy3(GameWorld world)
@@ -176,6 +192,9 @@ namespace GameObjects
 
         bool goleft2 = false;
         bool goright2 = true;
+        /// <summary>
+        /// override Tick function of enemy. Adds behaviour patterns on top of base Tick() function of GameObject
+        /// </summary>
         public override void Tick()
         {
             base.Tick();
@@ -208,7 +227,9 @@ namespace GameObjects
 
         }
     }
-
+    /// <summary>
+    /// Fourth enemy, so called Skitter, it bounces up, down, left, right and shoots while bouncing from top wall.
+    /// </summary>
     public class Enemy4 : Ship
     {
 
@@ -301,7 +322,9 @@ namespace GameObjects
 
         }
     }
-
+    /// <summary>
+    /// Fifth enemy, so called Disc, it goes down very slowly but bounces very fast, does not shoot.
+    /// </summary>
     public class Enemy5 : Ship
     {
         public Enemy5(GameWorld world)
@@ -325,7 +348,9 @@ namespace GameObjects
 
         bool goleft = false;
         bool goright = true;
-
+        /// <summary>
+        /// override Tick function of enemy. Adds behaviour patterns on top of base Tick() function of GameObject
+        /// </summary>
         public override void Tick()
         {
             base.Tick();
@@ -360,7 +385,9 @@ namespace GameObjects
 
         }
     }
-
+    /// <summary>
+    /// Sixth enemy, so called Eye, it goes down rapidly, can bounce but usually does not, does not shoot.
+    /// </summary>
     public class Enemy6 : Ship
     {
         public Enemy6(GameWorld world)
@@ -384,7 +411,9 @@ namespace GameObjects
 
         bool goleft = false;
         bool goright = true;
-
+        /// <summary>
+        /// override Tick function of enemy. Adds behaviour patterns on top of base Tick() function of GameObject
+        /// </summary>
         public override void Tick()
         {
             base.Tick();
@@ -420,6 +449,9 @@ namespace GameObjects
         }
     }
 
+    /// <summary>
+    /// Seventh enemy, so called Drone, bounces from one wall to another but bounces faster on one side, shoots sparks down, spawns in swarms.
+    /// </summary>
     public class Enemy7 : Ship
     {
 
@@ -456,6 +488,9 @@ namespace GameObjects
 
         bool goleft2 = false;
         bool goright2 = true;
+        /// <summary>
+        /// override Tick function of enemy. Adds behaviour patterns on top of base Tick() function of GameObject
+        /// </summary>
         public override void Tick()
         {
             base.Tick();
@@ -491,6 +526,9 @@ namespace GameObjects
         }
     }
 
+    /// <summary>
+    /// Eighth enemy, so called Fish, acts like a skitter but doesn't shoot, usually announces the boss.
+    /// </summary>
     public class Enemy8 : Ship
     {
         public Enemy8(GameWorld world)
@@ -514,6 +552,9 @@ namespace GameObjects
         bool goleft3 = false;
         bool godown = true;
         bool goup = false;
+        /// <summary>
+        /// override Tick function of enemy. Adds behaviour patterns on top of base Tick() function of GameObject
+        /// </summary>
         public override void Tick()
         {
             base.Tick();
@@ -570,6 +611,9 @@ namespace GameObjects
         }
     }
 
+    /// <summary>
+    /// Ninth enemy, so called Brain, goes down rapidly but stops to form a line, fires in burst, very high damage and toughness.
+    /// </summary>
     public class Enemy9 : Ship
     {
         public Enemy9(GameWorld world)
@@ -613,6 +657,9 @@ namespace GameObjects
         bool goright1 = true;
         bool stop = false;
 
+        /// <summary>
+        /// override Tick function of enemy. Adds behaviour patterns on top of base Tick() function of GameObject
+        /// </summary>
         public override void Tick()
         {
             base.Tick();
@@ -656,6 +703,9 @@ namespace GameObjects
 
             }
         }
+        /// <summary>
+        /// Overrides shoot to fire in burst.
+        /// </summary>
         public override void Shoot(int type)
         {
             if (canShoot1)
@@ -682,6 +732,9 @@ namespace GameObjects
         }
     }
 
+    /// <summary>
+    /// Boss, so called Boss Snail, very slow but extremely high hp and difficult pattern of shooting to avoid.
+    /// </summary>
     public class Boss : Ship
     {
         public Boss(GameWorld world)
@@ -724,6 +777,9 @@ namespace GameObjects
         bool goright1 = true;
         bool stop = false;
 
+        /// <summary>
+        /// override Tick function of enemy. Adds behaviour patterns on top of base Tick() function of GameObject
+        /// </summary>
         public override void Tick()
         {
             var rand = new Random();

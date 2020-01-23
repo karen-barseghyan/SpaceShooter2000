@@ -138,8 +138,9 @@ namespace GameObjects
             float slowMult = 1;
 
             //newMousePos = mainWindow.mousePos;
+            Mouse.Capture(Application.Current.MainWindow);
             newMousePos = new Vector2((float)Mouse.GetPosition(Application.Current.MainWindow).X, (float)Mouse.GetPosition(Application.Current.MainWindow).Y);
-
+            Application.Current.MainWindow.ReleaseMouseCapture();
             // doesn't update cursor position if it would be outside of game window
             if (!(newMousePos.X < gameWorld.windowSize.X && newMousePos.Y > 0 && newMousePos.Y < gameWorld.windowSize.Y) && mouse_mode == 1)
                 newMousePos = mousePreviousPos;
