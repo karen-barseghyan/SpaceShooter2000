@@ -1,5 +1,6 @@
 # Bug In The Matrix
 Project name: SpaceShooter2000 (A.K.A Bug In The Matrix)
+
 Description: It's a fun space shooter arcade game, you fly around and shoot aliens, fighting some bosses and collecting points.
 Table of Contents: Optionally, include a table of contents in order to allow other people to quickly navigate especially long or detailed READMEs.
 Installation: Go to Installer folder and click the .msi file, installation wizard is wise and will guide you through the rest.
