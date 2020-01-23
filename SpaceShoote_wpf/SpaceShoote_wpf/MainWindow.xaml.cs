@@ -1,5 +1,4 @@
-﻿
-using GameObjects;
+﻿using GameObjects;
 using System;
 using System.Collections.Generic;
 using System.IO;

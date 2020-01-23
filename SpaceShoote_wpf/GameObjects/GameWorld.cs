@@ -54,6 +54,10 @@ namespace GameObjects
 
         public TimeSpan showGameOver;
         public int gameState = 0;
+        private Vector2 v1;
+        private string v2;
+        private Vector2 vector2;
+        private string v;
 
         // game world Constructor
         public GameWorld(Vector2 windowsize, string lang)
