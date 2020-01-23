@@ -32,7 +32,6 @@ namespace GameObjects
         bool useMouse;
         Vector2 mousePreviousPos;
         Vector2 newMousePos;
-        int mouse_mode; // 0 - no mouse, 1 - mouse mode 1, 2 - mouse mode 2
 
         int flameSpriteCount = 2;
         float flameTransitionDuration = 100;
@@ -138,11 +137,11 @@ namespace GameObjects
             float slowMult = 1;
 
             //newMousePos = mainWindow.mousePos;
-            Mouse.Capture(Application.Current.MainWindow);
+            //Mouse.Capture(Application.Current.MainWindow);
             newMousePos = new Vector2((float)Mouse.GetPosition(Application.Current.MainWindow).X, (float)Mouse.GetPosition(Application.Current.MainWindow).Y);
-            Application.Current.MainWindow.ReleaseMouseCapture();
+            //Application.Current.MainWindow.ReleaseMouseCapture();
             // doesn't update cursor position if it would be outside of game window
-            if (!(newMousePos.X < gameWorld.windowSize.X && newMousePos.Y > 0 && newMousePos.Y < gameWorld.windowSize.Y) && mouse_mode == 1)
+            if (!(newMousePos.X < gameWorld.windowSize.X && newMousePos.Y > 0 && newMousePos.Y < gameWorld.windowSize.Y))
                 newMousePos = mousePreviousPos;
 
             // makes game use mouse logic for movement rather than keybord if mouse movement was detected
