@@ -1,6 +1,0 @@
-Adam Malec:
-Zaprojektowanie mechaniki gry
-Przygotowanie Klas bazowych (Game World, Game Object, Ship, Player, Projectile, 1 przykładowy Enemy, zarys GameWave)
-Stworzenie prostego silnika fizyki
-Obsługa kontroli gracza (klawiatura, myszka)
-Implementacja WriteableBitmapEx, zaprogramowanie animacjii
