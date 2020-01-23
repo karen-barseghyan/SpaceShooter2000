@@ -101,7 +101,7 @@ namespace GameObjects
         /// </summary>
         public string tag = "enemy";
         /// <summary>
-        /// Setting the collission mask.
+        /// Setting the collission mask. Does NOT collide with objets with those tags
         /// </summary>
         public string[] collisionMask = { "enemy", "enemy projectile" };
         /// <summary>
