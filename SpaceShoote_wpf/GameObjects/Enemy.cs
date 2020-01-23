@@ -1,5 +1,4 @@
-﻿using SpaceShoote_wpf.GameWorlds;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -7,16 +6,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
-namespace SpaceShoote_wpf.GameObjects
+namespace GameObjects
 {
-           
+    /// <summary>
+    /// First enemy, so called Mega Beetle, it goes down while bouncing of the walls at steady speed, does not shoot, only deals contact damage.
+    /// </summary>
     public class Enemy1 : Ship
     {
- 
-
-        public Enemy1(MainWindow mainwindow, GameWorld world)
+        public Enemy1(GameWorld world)
         {
-            mainWindow = mainwindow;
             gameWorld = world;
             points = 30;
             life = 100;
@@ -70,12 +68,13 @@ namespace SpaceShoote_wpf.GameObjects
 
     }
 
-
+    /// <summary>
+    /// First enemy, so called Wasp, it goes down while and stops at certain height, afterwards it stops and shoots bullets while going left and right.
+    /// </summary>
     public class Enemy2 : Ship
     {  
-        public Enemy2(MainWindow mainwindow, GameWorld world)
+        public Enemy2(GameWorld world)
         {
-            mainWindow = mainwindow;
             gameWorld = world;
             points = 20;
             life = 100;
@@ -97,7 +96,7 @@ namespace SpaceShoote_wpf.GameObjects
             // PROJECTILE 1
             fireRate1 = 1.2f;
 
-            projectile = new Projectile(mainWindow, gameWorld);
+            projectile = new Projectile(gameWorld);
 
             projectile.Velocity = new Vector2(0, 300);
             projectile.spriteSheet = BitmapFactory.FromResource("graphics/projectiles/projectile5_spreadsheet_x11x11.png");
@@ -158,9 +157,8 @@ namespace SpaceShoote_wpf.GameObjects
 
     public class Enemy3 : Ship
     {
-        public Enemy3(MainWindow mainwindow, GameWorld world)
+        public Enemy3(GameWorld world)
         {
-            mainWindow = mainwindow;
             gameWorld = world;
             points = 10;
             life = 50;
@@ -214,9 +212,8 @@ namespace SpaceShoote_wpf.GameObjects
     public class Enemy4 : Ship
     {
 
-        public Enemy4(MainWindow mainwindow, GameWorld world)
+        public Enemy4(GameWorld world)
         {
-            mainWindow = mainwindow;
             gameWorld = world;
             points = 10;
             life = 50;
@@ -233,7 +230,7 @@ namespace SpaceShoote_wpf.GameObjects
 
             fireRate1 = 1f;
 
-            projectile = new Projectile(mainWindow, gameWorld);
+            projectile = new Projectile(gameWorld);
 
             projectile.Velocity = new Vector2(0, 400);
             projectile.spriteSheet = BitmapFactory.FromResource("graphics/projectiles/projectile4_spreadsheet_x11x11.png");
@@ -307,9 +304,8 @@ namespace SpaceShoote_wpf.GameObjects
 
     public class Enemy5 : Ship
     {
-        public Enemy5(MainWindow mainwindow, GameWorld world)
+        public Enemy5(GameWorld world)
         {
-            mainWindow = mainwindow;
             gameWorld = world;
             points = 5;
             life = 50;
@@ -367,9 +363,8 @@ namespace SpaceShoote_wpf.GameObjects
 
     public class Enemy6 : Ship
     {
-        public Enemy6(MainWindow mainwindow, GameWorld world)
+        public Enemy6(GameWorld world)
         {
-            mainWindow = mainwindow;
             gameWorld = world;
             points = 5;
             life = 10;
@@ -428,9 +423,8 @@ namespace SpaceShoote_wpf.GameObjects
     public class Enemy7 : Ship
     {
 
-        public Enemy7(MainWindow mainwindow, GameWorld world)
+        public Enemy7(GameWorld world)
         {
-            mainWindow = mainwindow;
             gameWorld = world;
             points = 15;
             life = 10;
@@ -447,7 +441,7 @@ namespace SpaceShoote_wpf.GameObjects
 
             fireRate1 = 5f;
 
-            projectile = new Projectile(mainWindow, gameWorld);
+            projectile = new Projectile(gameWorld);
 
             projectile.Velocity = new Vector2(0, 300);
             projectile.spriteSheet = BitmapFactory.FromResource("graphics/projectiles/projectile6_spreadsheet_x11x13.png");
@@ -499,9 +493,8 @@ namespace SpaceShoote_wpf.GameObjects
 
     public class Enemy8 : Ship
     {
-        public Enemy8(MainWindow mainwindow, GameWorld world)
+        public Enemy8(GameWorld world)
         {
-            mainWindow = mainwindow;
             gameWorld = world;
             points = 10;
             life = 50;
@@ -579,9 +572,8 @@ namespace SpaceShoote_wpf.GameObjects
 
     public class Enemy9 : Ship
     {
-        public Enemy9(MainWindow mainwindow, GameWorld world)
+        public Enemy9(GameWorld world)
         {
-            mainWindow = mainwindow;
             gameWorld = world;
             points = 40;
             life = 1000;
@@ -601,7 +593,7 @@ namespace SpaceShoote_wpf.GameObjects
             explosionSize = 6;
             fireRate1 = 4f;
 
-            projectile = new Projectile(mainWindow, gameWorld);
+            projectile = new Projectile(gameWorld);
 
             projectile.Velocity = new Vector2(0, 200);
 
@@ -678,7 +670,7 @@ namespace SpaceShoote_wpf.GameObjects
                     burstI = 0;
                     canShootNext1 = TimeSpan.FromMilliseconds(gameWorld.GameTime() + fireRate1 * 1000);
                 }
-                projectile.Velocity = Vector2.Normalize(mainWindow.player.Position - Position) * 200;
+                projectile.Velocity = Vector2.Normalize(gameWorld.player.Position - Position) * 200;
                 Vector2 posA = new Vector2(Position.X - spriteSizeX, Position.Y);
                 Vector2 posB = new Vector2(Position.X + spriteSizeX, Position.Y);
                 Projectile copyA = projectile.Copy(posA);
@@ -692,9 +684,8 @@ namespace SpaceShoote_wpf.GameObjects
 
     public class Boss : Ship
     {
-        public Boss(MainWindow mainwindow, GameWorld world)
+        public Boss(GameWorld world)
         {
-            mainWindow = mainwindow;
             gameWorld = world;
             points = 500;
             life = 5000;
@@ -717,7 +708,7 @@ namespace SpaceShoote_wpf.GameObjects
 
             explosionSize = 10;
 
-            projectile = new Projectile(mainWindow, gameWorld);
+            projectile = new Projectile(gameWorld);
             var rand = new Random();
             projectile.Velocity = new Vector2(rand.Next(100)-50, 200);
             projectile.spriteSheet = BitmapFactory.FromResource("graphics/projectiles/projectile3_spreadsheet_x11x11.png");

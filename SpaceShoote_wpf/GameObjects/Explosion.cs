@@ -1,5 +1,4 @@
-﻿using SpaceShoote_wpf.GameWorlds;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -9,13 +8,12 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace SpaceShoote_wpf.GameObjects
+namespace GameObjects
 {
     public class Explosion : GameObject
     {
-        public Explosion(MainWindow window, GameWorld world)
+        public Explosion(GameWorld world)
         {
-            mainWindow = window;
             gameWorld = world;
             spriteSizeX = 30;
             spriteSizeY = 30;
@@ -55,10 +53,9 @@ namespace SpaceShoote_wpf.GameObjects
         public Explosion Copy(Vector2 position, float size, bool damaging)
         {
             
-            Explosion p = new Explosion(mainWindow, gameWorld);
+            Explosion p = new Explosion(gameWorld);
             p.gameWorld = gameWorld;
             p.parent = parent;
-            p.mainWindow = mainWindow;
             p.spriteSheet = spriteSheet;
             p.spriteSizeX = spriteSizeX;
             p.spriteSizeY = spriteSizeY;

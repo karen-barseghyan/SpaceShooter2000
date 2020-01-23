@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
-using System.Windows.Media.Imaging;
-using SpaceShoote_wpf.GameWorlds;
 using System.Windows;
-using System.Windows.Media;
 
-namespace SpaceShoote_wpf.GameObjects
+namespace GameLogic
 {
     public abstract class GameObject
     {

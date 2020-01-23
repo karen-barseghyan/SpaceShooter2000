@@ -1,5 +1,4 @@
-﻿using SpaceShoote_wpf.GameWorlds;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -7,10 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
-namespace SpaceShoote_wpf.GameObjects
+namespace GameLogic
 {
     public class Player : Ship
     {

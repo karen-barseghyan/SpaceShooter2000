@@ -1,5 +1,5 @@
-﻿using SpaceShoote_wpf.GameObjects;
-using SpaceShoote_wpf.GameWorlds;
+﻿
+using GameObjects;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -33,20 +33,9 @@ namespace SpaceShoote_wpf
         public int height, width;
         WriteableBitmap writeableBmp;
         GameWorld world;
-        public Player player;
-        public Bar playerHealth;
-        public Bar bossHealth;
-        public Bar waveTimer;
-        public TextImage pauseText;
-        public TextImage gameOverText;
-        public TextImage pressStart;
-        public TextImage scoreText;
-        public TextImage scoreNumber;
-        public string language = "ENG";
-        public TimeSpan showGameOver;
 
-        public int gameState = 0; // 0 before start, 1 playing, 2 pouse, 3 game over, 4 awaiting for game over
-
+        private string language = "ENG";
+        private float difficultyIncrease = 0.02f;
         bool pauseHeld = false;
 
         /// initializing Viewport and writable bitmap
@@ -73,7 +62,7 @@ namespace SpaceShoote_wpf
         {
             CreateWorld();
             world.StartTimer(true);
-            gameState = 1;
+            world.gameState = 1;
         }
 
         private async Task LoadSettings()
@@ -87,12 +76,23 @@ namespace SpaceShoote_wpf
                     //DebugLine.Text += line + "\n";
                     string[] lines = line.Split('\n');
                     DebugWrite(line);
-                    language = lines[1];
+
+                    if ((language != "ENG" && language != "PL"))
+                    {
+                        language = "ENG";
+                        throw new ArgumentException("Wrong language setting: line 2");
+                    }
+                   
+                    difficultyIncrease = float.Parse(lines[3], System.Globalization.CultureInfo.InvariantCulture);
+                    
                 }
             }
             catch (Exception ex)
             {
+                MessageBox.Show("Failed loading settings. Error:\n" + ex.Message);
                 DebugWrite(ex.Message);
+                difficultyIncrease = 0.02f;
+                language = "ENG";
             }
         }
         /// main game loop
@@ -125,7 +125,7 @@ namespace SpaceShoote_wpf
                 pauseHeld = false;
             }
 
-            switch (gameState)
+            switch (world.gameState)
             {
                 case 0:
                     if (Mouse.LeftButton == MouseButtonState.Pressed || Mouse.LeftButton == MouseButtonState.Pressed)
@@ -134,19 +134,22 @@ namespace SpaceShoote_wpf
                     }
                     break;
                 case 1:
-                    bossHealth.Draw(writeableBmp);
-                    playerHealth.Draw(writeableBmp);
-                    waveTimer.Draw(writeableBmp);
+                    world.bossHealth.Draw(writeableBmp);
+                    world.playerHealth.Draw(writeableBmp);
+                    world.waveTimer.Draw(writeableBmp);
+                    world.realTimeScore.Draw(writeableBmp);
+                    world.rtScoreText.Draw(writeableBmp);
+
                     break;
                 case 2:
-                    pauseText.Draw(writeableBmp);
+                    world.pauseText.Draw(writeableBmp);
                     break;
                 case 3:
-                    gameOverText.Draw(writeableBmp);
-                    pressStart.Draw(writeableBmp);
-
-                    scoreText.Draw(writeableBmp);
-                    scoreNumber.Draw(writeableBmp);
+                    world.gameOverText.Draw(writeableBmp);
+                    world.pressStart.Draw(writeableBmp);
+                   
+                    world.scoreText.Draw(writeableBmp);
+                    world.scoreNumber.Draw(writeableBmp);
 
                     if (Mouse.LeftButton == MouseButtonState.Pressed || Mouse.LeftButton == MouseButtonState.Pressed)
                     {
@@ -155,35 +158,38 @@ namespace SpaceShoote_wpf
                     break;
             }
 
-            if (showGameOver != null && gameState == 4)
+            if (world.showGameOver != null && world.gameState == 4)
             {
                 DebugWrite("game over");
-                if (world.GameTime() > showGameOver.TotalMilliseconds)
+                if (world.GameTime() > world.showGameOver.TotalMilliseconds)
                 {
-                    
-                    gameState = 3;
-                    gameOverText = new TextImage(this, world, "GameOver");
+
+                    world.gameState = 3;
+                    TextImage gameOverText = new TextImage(world, "GameOver");
                     gameOverText.Position = new Vector2(width / 2, height / 2 - 64);
                     gameOverText.name = "GameOver";
                     gameOverText.spriteSizeX = 105;
                     gameOverText.spriteSizeY = 16;
                     gameOverText.Scale = new Vector2(4, 4);
+                    world.gameOverText = gameOverText;
 
-                    scoreText = new TextImage(this, world, "Points");
+                    TextImage scoreText = new TextImage(world, "Points");
                     scoreText.name = "Points";
                     scoreText.spriteSizeX = 71;
                     scoreText.spriteSizeY = 16;
                     scoreText.Position = new Vector2(width / 2 - scoreText.spriteSizeX, height / 2);
                     scoreText.Scale = new Vector2(2, 2);
+                    world.scoreText = scoreText;
 
-                    scoreNumber = new TextImage(this, world, world.score, false);
+                    TextImage scoreNumber = new TextImage(world, world.score, false);
                     scoreNumber.name = "font_spreadsheet_x11x16.png";
                     scoreNumber.spriteSizeX = 11;
                     scoreNumber.spriteSizeY = 16;
                     scoreNumber.Position = new Vector2(width / 2 + 44, height / 2);
                     scoreNumber.Scale = new Vector2(2, 2);
+                    world.scoreNumber = scoreNumber;
 
-                    pressStart.Position = new Vector2(width / 2, height / 2 + 256);
+                    world.pressStart.Position = new Vector2(width / 2, height / 2 + 256);
                 }
             }
 
@@ -193,15 +199,15 @@ namespace SpaceShoote_wpf
 
         public void CreateStartScreen()
         {
-            gameState = 0;
-            world = new GameWorld(this);
-            var backgroundlayer1 = new BackgroundLayer1(this, world);
-            var backgroundlayer2 = new BackgroundLayer2(this, world);
+            world = new GameWorld(new Vector2(width, height), language);
+            world.gameState = 0;
+            var backgroundlayer1 = new BackgroundLayer1(world);
+            var backgroundlayer2 = new BackgroundLayer2(world);
 
             world.AddObject(backgroundlayer1);
             world.AddObject(backgroundlayer2);
 
-            TextImage title = new TextImage(this, world, "Title");
+            TextImage title = new TextImage(world, "Title");
             title.Position = new Vector2(width / 2, height / 2 - 64);
             title.name = "Title";
             title.spriteSizeX = 190;
@@ -210,46 +216,41 @@ namespace SpaceShoote_wpf
             world.AddObject(title);
 
 
-            pressStart = new TextImage(this, world, "Press");
+            TextImage pressStart = new TextImage(world, "Press");
             pressStart.Position = new Vector2(width / 2, height / 2  + 64);
             pressStart.name = "Press";
             pressStart.spriteSizeX = 275;
             pressStart.spriteSizeY = 47;
             pressStart.Scale = new Vector2(2, 2);
             world.AddObject(pressStart);
-
-            pauseText = new TextImage(this, world, "Pause");
-            pauseText.Position = new Vector2(width / 2, height / 2 + 64);
-            pauseText.name = "Pause";
-            pauseText.spriteSizeX = 65;
-            pauseText.Scale = new Vector2(3, 3);
-            pauseText.spriteSizeY = 16;
+            world.pressStart = pressStart;
         }
 
         /// initializing game world
         public void CreateWorld()
         {
             world = null;
-            world = new GameWorld(this);  
+            world = new GameWorld(new Vector2(width, height), language);
 
-            player = new Player(this, world);
-            player.Position = new Vector2(width / 2, height - player.spriteSizeY * player.Scale.Y);
-            var backgroundlayer1 = new BackgroundLayer1(this, world);
-            var backgroundlayer2 = new BackgroundLayer2(this, world);
-            playerHealth = new Bar(this, world);
+            world.player = new Player(world);
+            world.player.Position = new Vector2(width / 2, height - world.player.spriteSizeY * world.player.Scale.Y);
+            var backgroundlayer1 = new BackgroundLayer1(world);
+            var backgroundlayer2 = new BackgroundLayer2(world);
+            world.playerHealth = new Bar(world);
+            world.playerHealth.startColor = new Vector3(50, 150, 50);
 
-            bossHealth = new Bar(this, world);
-            bossHealth.Position = new Vector2(0, bossHealth.spriteSizeY);
-            bossHealth.startColor = new Vector3(255, 80, 50);
+            world.bossHealth = new Bar(world);
+            world.bossHealth.Position = new Vector2(0, world.bossHealth.spriteSizeY);
+            world.bossHealth.startColor = new Vector3(255, 80, 50);
 
-            waveTimer = new Bar(this, world);
-            waveTimer.Position = new Vector2(0, 0);
-            waveTimer.startColor = new Vector3(200, 200, 200);
-            waveTimer.endColor = new Vector3(255, 100, 0);
+            world.waveTimer = new Bar(world);
+            world.waveTimer.Position = new Vector2(0, 0);
+            world.waveTimer.startColor = new Vector3(250, 250, 100);
+            world.waveTimer.endColor = new Vector3(50, 50, 0);
 
             world.AddObject(backgroundlayer1);
             world.AddObject(backgroundlayer2);
-            world.AddObject(player);
+            world.AddObject(world.player);
         }
 
         /// Textbox used for debugging
@@ -282,7 +283,7 @@ namespace SpaceShoote_wpf
 
         void MainWindow_KeyDown(object sender, KeyEventArgs e)
         {
-            if (gameState == 0 || gameState == 3)
+            if (world.gameState == 0 || world.gameState == 3)
                 StartGame();
         }
 
