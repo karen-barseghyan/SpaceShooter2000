@@ -75,7 +75,7 @@ namespace SpaceShoote_wpf
                     //DebugLine.Text += line + "\n";
                     string[] lines = line.Split('\n');
                     DebugWrite(line);
-
+                    language = lines[1].Trim();
                     if ((language != "ENG" && language != "PL"))
                     {
                         language = "ENG";
