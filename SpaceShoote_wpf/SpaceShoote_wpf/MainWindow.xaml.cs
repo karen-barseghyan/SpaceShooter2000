@@ -92,7 +92,6 @@ namespace SpaceShoote_wpf
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
                 DebugWrite(ex.Message);
             }
         }
