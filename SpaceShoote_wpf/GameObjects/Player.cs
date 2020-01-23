@@ -11,6 +11,9 @@ using System.Windows.Media.Imaging;
 
 namespace GameObjects
 {
+    /// <summary>
+    /// Player class. Player takes control over this game object
+    /// </summary>
     public class Player : Ship
     {
         Key goLeft1;
@@ -28,7 +31,9 @@ namespace GameObjects
         Key slow1;
         MouseAction shoot1mouse;
         MouseAction shoot2mouse;
-
+        /// <summary>
+        /// whether to use mouse this frame or not. 
+        /// </summary>
         bool useMouse;
         Vector2 mousePreviousPos;
         Vector2 newMousePos;
@@ -37,7 +42,10 @@ namespace GameObjects
         float flameTransitionDuration = 100;
         TimeSpan flameTransitionTime = TimeSpan.FromMilliseconds(0);
 
-        //player constructor with main window as parameter for reference
+        /// <summary>
+        /// Player constructor
+        /// </summary>
+        /// <param name="world">game world reference</param>
         public Player(GameWorld world)  
         {
             gameWorld = world;
@@ -96,7 +104,6 @@ namespace GameObjects
 
             InitializeKeyInputs();
         }
-
         private void InitializeKeyInputs()
         {
             goLeft1 = Key.A;
@@ -116,19 +123,16 @@ namespace GameObjects
             shoot1mouse = MouseAction.LeftClick;
             shoot2mouse = MouseAction.RightClick;
 
-            bomb = Key.Space;
+            bomb = Key.B;
             pause = Key.Escape;
 
             slow1 = Key.LeftShift;
         }
 
-        //player constructor with main window for reference and starting position
-        public Player(float posx, float posy)
-        {
-            Position = new System.Numerics.Vector2(posx,posy);
-        }
-
-        // tick function of player, runs every frame
+        /// <summary>
+        /// Expanded tick function form game object.
+        /// Captures mouse and keyboard inputs for shooting and movement
+        /// </summary>
         public override void Tick()
         {
             float x = 0;
@@ -219,6 +223,11 @@ namespace GameObjects
             base.Tick();
         }
 
+
+        /// <summary>
+        /// Custom Draw, the sprite is dependent on velocity and also adds flame sprites
+        /// </summary>
+        /// <param name="surface"></param>
         public override void Draw(WriteableBitmap surface)
         {
             // draws cursor
@@ -309,6 +318,9 @@ namespace GameObjects
             }
         }
 
+        /// <summary>
+        /// custom die function that ends the game
+        /// </summary>
         protected override void Die()
         {
             base.Die();
