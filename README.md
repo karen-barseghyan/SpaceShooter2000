@@ -21,3 +21,6 @@ Credits: Adam Malec and Karen Barseghyan.
 
 
 License: Freeware. 
+
+
+Borrowed libraries: WritableBitmap from here: https://github.com/reneschulte/WriteableBitmapEx
