@@ -50,7 +50,7 @@ namespace SpaceShoote_wpf
         bool pauseHeld = false;
 
         /// initializing Viewport and writable bitmap
-        private void Viewport_Loaded(object sender, RoutedEventArgs e)
+        private async void Viewport_Loaded(object sender, RoutedEventArgs e)
         {
             width = (int)this.ViewPortCointainer.ActualWidth;
             height = (int)this.ViewPortCointainer.ActualHeight;
@@ -59,6 +59,7 @@ namespace SpaceShoote_wpf
             Viewport.Cursor = Cursors.None;
             Viewport.Source = writeableBmp;
 
+            await LoadSettings();
 
             CreateStartScreen();
             //CreateWorld();
@@ -74,9 +75,30 @@ namespace SpaceShoote_wpf
             world.StartTimer(true);
             gameState = 1;
         }
+
+        private async Task LoadSettings()
+        {
+            DebugLine.Text += Directory.GetCurrentDirectory() + "\n";
+            try
+            {
+                using (StreamReader sr = new StreamReader("../../config.txt"))
+                {
+                    string line = await sr.ReadToEndAsync();
+                    //DebugLine.Text += line + "\n";
+                    string[] lines = line.Split('\n');
+                    DebugWrite(line);
+                    language = lines[1];
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                DebugWrite(ex.Message);
+            }
+        }
         /// main game loop
         /// calls every frame (same as monitor refresh rate)
-        private void CompositionTarget_Rendering(object sender, EventArgs e)
+         private void CompositionTarget_Rendering(object sender, EventArgs e)
         {
             //await Task.Run(new Action(world.GameTick));
             world.GameTick();
