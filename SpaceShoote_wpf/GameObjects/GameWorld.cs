@@ -8,58 +8,122 @@ using System.Threading.Tasks;
 
 namespace GameObjects
 {
+    /// <summary>
+    /// GameWorld class.
+    /// Responsible for holding reference to everything in the game world, calling all object's functions
+    /// </summary>
     public class GameWorld
     {
-        // list of objects in game world
+        /// list of objects in game world
         public List<GameObject> gameObjects { get; }
 
-        // game timer
-        // used for controlling timed events
+        /// game timer
+        /// used for controlling timed events
         public Stopwatch GameTimer { get; }
-        // time of last game tick (frame)
+        /// time of last game tick (frame)
         public TimeSpan previousGameTick;
-
+        /// <summary>
+        /// Current Wave Reference
+        /// </summary>
         public GameWave currentWave;
+        /// <summary>
+        /// Current Boss reference, to display his remaining health on top of screen
+        /// </summary>
         public Boss currentBoss;
-
+        /// <summary>
+        /// Explosion Prefab that all objects use when they die
+        /// </summary>
         public Explosion explosionPrefab;
-
+        /// <summary>
+        /// keeps track of cleared waves. used for wave variations
+        /// </summary>
         public int wavesCleared = 0;
+        /// <summary>
+        /// Keeps track of player score. Game's aim is for player to strive for highest score!
+        /// </summary>
         public int score = 0;
         Random random = new Random();
-        //puses the game cycle
+        ///puses the game cycle
         public bool pause;
 
         int framecounter;
         int previousSecondFrameCount;
         TimeSpan PreviousSecond;
-
+        /// <summary>
+        /// how much does the wave time decreases after previous one. % based (1-0.2) more than 1 extends the wave time
+        /// </summary>
         public float difficultyIncraese = 0.02f;
-
+        /// <summary>
+        /// Saves window size, used by other objects
+        /// </summary>
         public Vector2 windowSize;
+        /// <summary>
+        /// Selects language for various Texts
+        /// </summary>
         public string language;
+        /// <summary>
+        /// Player reference
+        /// </summary>
         public Player player;
+        /// <summary>
+        /// player Healthbar reference
+        /// </summary>
         public Bar playerHealth;
+        /// <summary>
+        /// Wave time reference
+        /// </summary>
         public Bar waveTimer;
+        /// <summary>
+        /// Boss' health bar reference
+        /// </summary>
         public Bar bossHealth;
-
+        /// <summary>
+        /// Text image responsible for displaying in-game score
+        /// </summary>
         public TextImage realTimeScore;
+        /// <summary>
+        /// text image that says "Points" to show where on screen to look for current score
+        /// </summary>
         public TextImage rtScoreText;
-
+        /// <summary>
+        /// Text image for pause state
+        /// </summary>
         public TextImage pauseText;
+        /// <summary>
+        /// Text image for game over state
+        /// </summary>
         public TextImage gameOverText;
+        /// <summary>
+        /// Text image telling player to press any key to start
+        /// </summary>
         public TextImage pressStart;
+        /// <summary>
+        /// Text image displaying "Points" text next to score number on Game Over screen
+        /// </summary>
         public TextImage scoreText;
+        /// <summary>
+        /// Text image displaying actual score on game over screen
+        /// </summary>
         public TextImage scoreNumber;
-
+        /// <summary>
+        /// Keeps track of the delay after player dies and before game over screen comes up
+        /// </summary>
         public TimeSpan showGameOver;
+        /// <summary>
+        /// Keeps track of current game state
+        /// 0 - before game launches, "press any key to start"
+        /// 1 - active game
+        /// 2 - paused game
+        /// 3 - game over screen
+        /// 4 - transition to game over screen 
+        /// </summary>
         public int gameState = 0;
-        private Vector2 v1;
-        private string v2;
-        private Vector2 vector2;
-        private string v;
 
-        // game world Constructor
+        /// <summary>
+        /// GameWorld Constructor. Initializes and prepares various objects necessery for proper gameplay
+        /// </summary>
+        /// <param name="windowsize"></param>
+        /// <param name="lang"></param>
         public GameWorld(Vector2 windowsize, string lang)
         {
             float width = windowsize.X;
@@ -100,13 +164,18 @@ namespace GameObjects
             rtScoreText.Position = new Vector2(width - 8 * 11 * realTimeScore.Scale.X - rtScoreText.spriteSizeX, height - 16);
         }
 
-        // Function used for adding objects to list of game objects in game world
+        /// <summary>
+        /// Function used for adding objects to list of game objects in game world
+        /// </summary>
+        /// <param name="o">Object to add to gameworld objects lists</param>
         public void AddObject(GameObject o)
         {
             gameObjects.Add(o);
         }
 
-        //returns time since last tick (frame) in miliseconds
+        /// <summary>
+        /// Returns time between previous and current frame in miliseconds
+        /// </summary>
         public float deltatime
         {
             get
@@ -114,7 +183,10 @@ namespace GameObjects
                 return (float)(GameTimer.Elapsed - previousGameTick).TotalMilliseconds;
             }
         }
-        //initialize game timer
+        /// <summary>
+        /// Start timer
+        /// </summary>
+        /// <param name="real"></param>
         public void StartTimer(bool real)
         {
             
@@ -130,9 +202,11 @@ namespace GameObjects
             }
         }
 
-        //tick function of game wolrd
-        // runs every tick (frame
-        // calls tick function of every object in game world
+        /// <summary>
+        /// tick function of game wolrd
+        /// runs every frame, unless game is paused (function still is called, but does nothing)
+        /// calls tick function of every object in game world
+        /// </summary>
         public void GameTick()
         {   
             if (!pause)
@@ -206,7 +280,8 @@ namespace GameObjects
                     gameObjects[i].Tick();
                 }
 
-                //tu crashuje
+                //I tried asynchronous programming of object's movement, but could not get it to work,
+                // so game runs synchroniously
                 //List<Task> allTasks = new List<Task>();
 
                 foreach (var o in gameObjects.ToList())
@@ -229,7 +304,11 @@ namespace GameObjects
                 framecounter++;
             }
         }
-
+        /// <summary>
+        /// Checks if any objects are present in gameworld from a given Game Wave group
+        /// </summary>
+        /// <param name="group">group id</param>
+        /// <returns>returns true if there is an object present that belongs to given group</returns>
         public bool AnyObjectsFromGroup(int group)
         {
             foreach (GameObject o in gameObjects)
@@ -239,27 +318,37 @@ namespace GameObjects
             }
             return false;
         }
-
+        /// <summary>
+        /// Gets Number of frames since last second
+        /// </summary>
+        /// <returns>Number of frames since last second</returns>
         public int GetFPS()
         {
             return previousSecondFrameCount;
         }
 
-        //pauses the game
+        /// <summary>
+        /// pauses the game
+        /// </summary>
         public void Pause()
         {
             GameTimer.Stop();
             gameState = 2;
             pause = true;
         }
-        //unpauses the game
+        /// <summary>
+        /// resumes the game
+        /// </summary>
         public void UnPause()
         {
             GameTimer.Start();
             pause = false;
             gameState = 1;
         }
-
+        /// <summary>
+        /// GameTime since start in milliseconds
+        /// </summary>
+        /// <returns>GameTime since start in milliseconds</returns>
         public int GameTime()
         {
             return (int)GameTimer.Elapsed.TotalMilliseconds;
